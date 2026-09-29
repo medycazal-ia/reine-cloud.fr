@@ -13,7 +13,7 @@
 - TVA non applicable, art. 293 B du CGI.
 
 ## Hébergement
-Le site est hébergé en France par LWS (Ligne Web Services), 4 rue Galvani, 75838 Paris Cedex 17, téléphone : 01 77 62 30 03.
+Le site est hébergé en France par LWS (Ligne Web Services), 4 rue Galvani, 75017 Paris, RCS Paris 450 453 881, téléphone : 01 77 62 30 03.
 
 ## Propriété intellectuelle
 Les textes, images, logos, illustrations (dont la prune couronnée) et le graphisme du site sont la propriété de leur éditeur. Toute reproduction sans autorisation écrite est interdite.
