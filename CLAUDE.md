@@ -47,6 +47,10 @@ encore à préciser.
   cazal@medy.site depuis contact@reine-cloud.fr). Site en ligne en HTTPS.
 - Guide pas à pas pour Medy : `docs/mode-emploi-lws.md`.
 - Hébergement LWS : date d'expiration affichée 27-10-2026, à vérifier.
-- Mentions légales, CGV, confidentialité (à valider par un juriste).
+- Base de données LWS en place (table `demandes`, copie des messages du
+  formulaire). Polices hébergées sur le site (aucun appel à Google).
+- Mentions légales, confidentialité : brouillons dans `docs/juridique/`, à
+  compléter (forme juridique, SIRET, adresse, directeur de publication,
+  hébergeur) et à valider par un juriste. CGV à rédiger.
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.

@@ -96,4 +96,33 @@ Fonctionnement : le formulaire envoie ses données à `contact.php`, qui
 envoie un e-mail à la boîte de réception et renvoie le visiteur sur la page
 avec un message de confirmation. Un champ caché sert de piège à robots.
 
-## Étape 7 : base de données, seulement si utile (à venir)
+## Étape 7 : base de données (demandes du formulaire)
+7a. cPanel > « Bases de données » > « Manage My Databases » : créer la base
+    `reine` (elle devient `COMPTE_reine`, le préfixe est ajouté par cPanel).
+7b. Créer l'utilisateur `rcweb` (mot de passe généré et rangé dans un
+    gestionnaire), puis l'ajouter à la base avec « Tous les privilèges ».
+7c. phpMyAdmin > base `COMPTE_reine` > onglet « SQL » : coller le contenu de
+    `docs/base-de-donnees/schema.sql`, « Exécuter ». Le tableau `demandes`
+    apparaît.
+7d. Gestionnaire de fichiers, dossier PRINCIPAL du compte (celui qui contient
+    `public_html`, pas dedans) : créer `config-reine-cloud.php` avec le modèle
+    `docs/base-de-donnees/config-exemple.php`, en y mettant le vrai nom de base,
+    d'utilisateur et le mot de passe. Ce fichier n'est jamais mis dans le dépôt.
+Pourquoi hors de `public_html` : ce qui s'y trouve est lisible depuis
+internet, le reste du compte ne l'est pas.
+
+## Étape 8 : polices hébergées sur le site
+Le site n'appelle plus Google Fonts : les polices sont dans le dossier `fonts`
+de `public_html` (3 fichiers `.woff2` du dossier `site/fonts` du dépôt).
+Déploiement : renommer l'ancien `index.html` en copie de secours, créer le
+dossier `fonts`, y téléverser les 3 polices, puis téléverser `contact.php` et
+`index.html` dans `public_html`.
+Test : page identique en fenêtre privée, message de test envoyé, e-mail reçu et
+ligne présente dans phpMyAdmin (`demandes` > « Afficher »).
+Fait le 2026-09-29.
+
+## Entretien
+- Purge des demandes de plus de 3 ans : requête en commentaire à la fin de
+  `schema.sql`, à lancer de temps en temps (ou tâche Cron).
+- Sauvegardes : cPanel > « Sauvegardes » avant toute grosse modification.
+- Renouvellement de l'hébergement : voir l'encadré « Rappel » plus haut.
