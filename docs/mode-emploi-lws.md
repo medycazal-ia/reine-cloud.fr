@@ -26,11 +26,19 @@ rangent uniquement dans un gestionnaire de mots de passe.
 5. Cliquer sur « Charger » et les envoyer dans `public_html`.
 6. Ouvrir http://reine-cloud.fr dans le navigateur pour vérifier.
 Remarque : un avertissement « certificat auto-signé » est normal avant
-l'étape 4.
+l'étape 4 (Paramètres avancés > Continuer, sur son propre site seulement).
+Si l'ancien `index.html` de LWS existe, le renommer en `index-ancien.html`
+avant l'envoi (ne pas le supprimer).
+Fait le 2026-09-29 : la page s'affiche.
 Aide LWS : https://tutoriels.lws.fr/site-web/mettre-un-site-en-ligne
 
-## Étape 3 : vérifier le domaine (à venir)
-## Étape 4 : activer le HTTPS gratuit (à venir)
+## Étape 3 : vérifier le domaine
+Si l'adresse reine-cloud.fr répond (même avec un avertissement de
+certificat), le domaine pointe bien vers l'hébergement : rien d'autre à faire.
+## Étape 4 : activer le HTTPS gratuit
+1. cPanel > section « Sécurité » > « SSL/TLS Status ».
+2. Cocher `reine-cloud.fr` et `www.reine-cloud.fr`, puis « Run AutoSSL ».
+3. Attendre 2 à 10 minutes, recharger : cadenas vert = réussi.
 Aide LWS : https://aide.lws.fr/base/Hebergement-web-mutualise/Outils-web/activer-redirection-web-https-SSL-automatique
 
 ## Étape 5 : adresse e-mail et formulaire de contact (à venir)
