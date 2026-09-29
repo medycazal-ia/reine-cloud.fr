@@ -63,7 +63,7 @@ Les mensualités sont payables d'avance, à réception de facture, par virement 
 tout autre moyen indiqué sur la facture, sous 15 jours. Le cadrage et la mise en place
 sont facturés selon le devis (50 % à la commande, solde à la livraison).
 
-Le paiement peut être effectué en ligne, de façon sécurisée, sur la page de paiement de notre prestataire Stripe (carte bancaire ou autre moyen proposé lors de la commande). Pour les abonnements, le montant est prélevé automatiquement chaque mois à la même date jusqu'à la résiliation. Le Prestataire n'a jamais accès aux numéros de carte. Une facture est envoyée par e-mail à chaque paiement. Le Client peut gérer son moyen de paiement et ses factures, et résilier son abonnement, depuis l'espace de gestion indiqué dans l'e-mail de confirmation, ou en écrivant à cazal@medy.site.
+Le paiement peut être effectué en ligne, de façon sécurisée, sur la page de paiement de notre prestataire de paiement, dont le nom y figure (carte bancaire ou autre moyen proposé lors de la commande). Selon l'offre, le règlement est demandé chaque mois par facture ou par prélèvement automatique jusqu'à la résiliation. Le Prestataire n'a jamais accès aux numéros de carte. Une facture est envoyée par e-mail à chaque paiement. Le Client peut résilier son abonnement en écrivant à cazal@medy.site.
 
 En cas de retard, sont exigibles de plein droit des pénalités de retard égales à trois
 fois le taux d'intérêt légal, ainsi qu'une indemnité forfaitaire de 40 € pour frais de

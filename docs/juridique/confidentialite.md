@@ -17,7 +17,7 @@ Votre accord, donné en cochant la case du formulaire, et notre intérêt à ré
 Le formulaire envoie un e-mail à l'éditeur et en garde une copie dans une base de données protégée, hébergée en France chez l'hébergeur du site. Seul l'éditeur y accède.
 
 ## Paiement en ligne
-Si vous payez en ligne, le paiement est traité par Stripe Payments Europe, société du groupe Stripe (Irlande), qui agit pour son propre compte comme prestataire de paiement. Nous recevons votre nom, votre e-mail, le montant et l'état du paiement, jamais votre numéro de carte. Stripe peut traiter des données en dehors de l'Union européenne, avec les garanties prévues par le règlement européen (clauses contractuelles types). Voir la politique de confidentialité de Stripe sur stripe.com. Les données de facturation sont conservées selon les obligations comptables (jusqu'à dix ans).
+Si vous payez en ligne, le paiement est traité par un prestataire de paiement agréé, dont le nom figure sur la page de paiement, et qui agit pour son propre compte. Nous recevons votre nom, votre e-mail, le montant et l'état du paiement, jamais votre numéro de carte. Consultez la politique de confidentialité de ce prestataire pour connaître le détail de son traitement. Les données de facturation sont conservées selon les obligations comptables (jusqu'à dix ans).
 
 ## Combien de temps ?
 Trois ans après notre dernier échange, puis suppression. Si un devis ou un contrat est signé, les pièces sont conservées selon les obligations légales (jusqu'à dix ans pour les pièces comptables).
