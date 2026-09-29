@@ -135,6 +135,20 @@ section{padding:110px 0}
 .contact .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .contact .coord{margin-top:2.6rem;color:#BFAFD6;font-size:.9rem}
 .contact .coord a{color:var(--or-clair);text-decoration:none}
+.formulaire{max-width:640px;margin:2.6rem auto 0;text-align:left;display:grid;gap:16px}
+.formulaire label{display:block;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--or-clair);margin-bottom:6px}
+.formulaire input[type=text],.formulaire input[type=email],.formulaire select,.formulaire textarea{width:100%;padding:13px 14px;font:inherit;font-size:.95rem;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(217,169,58,.45);border-radius:0}
+.formulaire select option{color:#25182F}
+.formulaire textarea{min-height:150px;resize:vertical}
+.formulaire input:focus,.formulaire select:focus,.formulaire textarea:focus{outline:2px solid var(--or);outline-offset:1px}
+.formulaire label.accord{text-transform:none;letter-spacing:0;font-weight:400}
+.formulaire .accord{display:flex;gap:10px;align-items:flex-start;font-size:.8rem;color:#BFAFD6;line-height:1.5}
+.formulaire .accord input{margin-top:4px;accent-color:var(--or)}
+.formulaire .piege{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.formulaire button.btn{cursor:pointer;font-family:inherit;justify-self:start}
+.retour-form{max-width:640px;margin:1.6rem auto 0;padding:14px 18px;border:1px solid var(--or);color:#fff;font-size:.95rem;text-align:left;display:none}
+.retour-form.erreur{border-color:#E58A8A}
+.ou{margin-top:2.2rem;color:#BFAFD6;font-size:.85rem}
 
 footer{background:#170A29;color:#9C8BB8;font-size:.78rem;padding:34px 0}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
@@ -329,6 +343,38 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <div class="eyebrow">Contact</div>
     <h2>Parlons de votre projet.</h2>
     <p class="lead">Un site, une boîte mail, un agent IA, ou un projet plus sensible : dites-nous où vous en êtes.</p>
+    <div class="retour-form" id="retour-form" role="status"></div>
+    <form class="formulaire" action="contact.php" method="post">
+      <div>
+        <label for="nom">Votre nom</label>
+        <input type="text" id="nom" name="nom" maxlength="100" required autocomplete="name">
+      </div>
+      <div>
+        <label for="email">Votre e-mail</label>
+        <input type="email" id="email" name="email" maxlength="200" required autocomplete="email">
+      </div>
+      <div>
+        <label for="sujet">Votre besoin</label>
+        <select id="sujet" name="sujet">
+          <option>Hébergement / site web</option>
+          <option>E-mails professionnels</option>
+          <option>Agent IA</option>
+          <option>Projet santé / données sensibles</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div>
+        <label for="message">Votre message</label>
+        <textarea id="message" name="message" maxlength="5000" required></textarea>
+      </div>
+      <div class="piege" aria-hidden="true">
+        <label for="site_web">Ne pas remplir</label>
+        <input type="text" id="site_web" name="site_web" tabindex="-1" autocomplete="off">
+      </div>
+      <label class="accord"><input type="checkbox" name="accord" value="1" required> J'accepte que ces informations soient utilisées uniquement pour me répondre.</label>
+      <button class="btn plein" type="submit">Envoyer le message</button>
+    </form>
+    <p class="ou">Vous préférez écrire directement ?</p>
     <div class="actions">
       <a class="btn plein" href="mailto:cazal@medy.site">Écrire un e-mail</a>
       <a class="btn ligne" href="https://wa.me/33674201662">WhatsApp</a>
@@ -344,5 +390,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <span>Hébergé en France · Mentions légales et confidentialité à venir</span>
   </div>
 </footer>
+<script>
+(function(){
+  var m={ok:['Merci, votre message est bien parti. Nous vous répondons rapidement.',0],
+    erreur:['Le message n’a pas pu être envoyé : vérifiez les champs et cochez la case d’accord.',1],
+    echec:['Le message n’a pas pu partir. Écrivez-nous directement par e-mail ou WhatsApp.',1]};
+  var e=(location.search.match(/[?&]contact=([a-z]+)/)||[])[1];
+  if(e&&m[e]){var b=document.getElementById('retour-form');
+    if(b){b.textContent=m[e][0];b.style.display='block';if(m[e][1])b.className+=' erreur';}}
+})();
+</script>
 </body>
 </html>
