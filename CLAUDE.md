@@ -1,8 +1,8 @@
 # reine-cloud.fr — consignes pour les sessions Claude
 
-Projet **distinct de whaoo** (ne rien mélanger : pas de Render, pas de
-Supabase, pas de variables d'environnement de whaoo). Langue : français,
-vouvoiement, sans jargon. Ne jamais committer de clé, mot de passe, lien de
+Projet indépendant : il ne partage ni code, ni hébergement, ni clés, ni
+réglages avec aucun autre projet de Medy. Langue : français, vouvoiement,
+sans jargon. Ne jamais committer de clé, mot de passe, lien de
 session cPanel, coût, marge ou nom de fournisseur interne.
 
 ## Concept (voulu par Medy)

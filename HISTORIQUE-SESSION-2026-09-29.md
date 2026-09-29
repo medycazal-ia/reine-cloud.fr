@@ -13,6 +13,6 @@
    de mot de passe ni de clé dans le chat.
 5. Render écarté : pas de serveurs en France, contraire au message.
    Décision : tout sur LWS. Medy a précisé que reine-cloud.fr est un projet
-   totalement séparé de whaoo.
+   totalement indépendant de ses autres projets.
 6. Restent : dépôt du zip dans `public_html`, DNS et SSL, usage de la clé API
    LWS, formulaire PHP, mentions légales.
