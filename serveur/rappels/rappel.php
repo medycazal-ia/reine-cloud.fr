@@ -17,8 +17,6 @@ const EXPEDITEUR     = 'contact@reine-cloud.fr';
 const LIEN_RENOUVELLEMENT = 'https://panel.lws.fr';
 // Délais avant l'échéance, du plus lointain au plus proche (en secondes).
 const DELAIS = [
-    '1 mois'    => 30 * 86400,
-    '15 jours'  => 15 * 86400,
     '1 semaine' => 7 * 86400,
     '2 jours'   => 2 * 86400,
     '1 jour'    => 86400,
@@ -92,9 +90,6 @@ if ($maintenant > $echeance + 7 * 86400) {
 }
 
 $atteints = delais_atteints($maintenant, $echeance);
-if (!$atteints) {
-    exit;
-}
 
 $config = dirname(__DIR__) . '/config-reine-cloud.php';
 if (!is_file($config)) {
@@ -112,6 +107,10 @@ $pdo->exec('CREATE TABLE IF NOT EXISTS rappels (
     cle VARCHAR(80) NOT NULL PRIMARY KEY,
     envoye_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
+
+if (!$atteints) {
+    exit; // aucun délai atteint pour l'instant (la table est créée : le cron fonctionne)
+}
 
 $cle = fn(string $libelle): string => ECHEANCE . '|' . $libelle;
 $deja = $pdo->query('SELECT cle FROM rappels')->fetchAll(PDO::FETCH_COLUMN);

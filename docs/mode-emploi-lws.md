@@ -129,8 +129,8 @@ Fait le 2026-09-29.
 
 ## Étape 9 : rappels automatiques de renouvellement
 Un petit script (`serveur/rappels/rappel.php` dans le dépôt) envoie un e-mail à
-cazal@medy.site : 1 mois, 15 jours, 1 semaine, 2 jours, 1 jour, 6 heures et
-1 heure avant l'échéance de l'hébergement (27-10-2026 par défaut).
+cazal@medy.site : 1 semaine, 2 jours, 1 jour, 6 heures et 1 heure avant
+l'échéance de l'hébergement (27-10-2026 par défaut).
 9a. Gestionnaire de fichiers, dossier PRINCIPAL du compte (pas `public_html`) :
     créer un dossier `rappels`.
 9b. Y téléverser `rappel.php` (téléchargé depuis le dossier `serveur/rappels/`
@@ -139,8 +139,9 @@ cazal@medy.site : 1 mois, 15 jours, 1 semaine, 2 jours, 1 jour, 6 heures et
     `php /home/COMPTE/rappels/rappel.php test` : un e-mail de test arrive.
 9d. cPanel > « Avancé » > « Tâches Cron » > ajouter : minute `*/10`, les autres
     champs `*`, commande `php /home/COMPTE/rappels/rappel.php`.
-Premier passage : le script envoie tout de suite le rappel du délai déjà atteint
-(le rappel « 1 mois » ce jour-là), ce qui confirme que tout marche.
+Vérification du cron : au premier passage, le tableau `rappels` apparaît dans
+phpMyAdmin (aucun e-mail n'est envoyé tant qu'aucun délai n'est atteint).
+Cycle mensuel (essai) : pas de rappel à 1 mois ni à 15 jours.
 Après chaque renouvellement : ouvrir `rappel.php` (Modifier) et changer la date
 de la ligne ECHEANCE. Les rappels de l'ancienne échéance ne sont pas renvoyés.
 
