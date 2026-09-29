@@ -54,5 +54,12 @@ encore à préciser.
   et à faire relire par un juriste. Éditeur : entrepreneur individuel ; hébergeur
   LWS cité dans les mentions (accord de Medy). CGV : `site/cgv.html` (texte dans `docs/juridique/cgv.md`, confirmé par Medy le
   2026-09-29, clients professionnels uniquement), à mettre en ligne et à relire.
+- Paiement en ligne : parcours de commande (`site/commander.html`, `site/payer.html`), liens
+  dans `site/paiement.js` (aucun secret). Prestataire envisagé : Revolut Pro (liens
+  de paiement, pas d'API). État au 2026-09-29 : lien de TEST à 1 € sur les quatre
+  boutons, à remplacer par les vrais liens ; abonnements mensuels (récurrent) non
+  tranchés (facturation mensuelle, paiement annuel ou Stripe). Examen du site par
+  Revolut en cours.
+- Rappels de renouvellement de l'hébergement : `serveur/rappels/rappel.php` (cron LWS).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.
