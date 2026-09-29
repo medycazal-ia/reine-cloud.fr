@@ -177,3 +177,28 @@ Aucun secret dans ce fichier : les liens sont publics. Effacer un lien le désac
 Fichiers à téléverser dans `public_html` : `index.html`, `commander.html`,
 `payer.html`, `paiement.js`, `merci.html`, `cgv.html`, `confidentialite.html`,
 `mentions-legales.html` (copie de secours de l'ancien `index.html` avant).
+
+## Étape 13 : abonnements automatiques (code sur LWS, sans outil tiers)
+Fonctionnement : chaque abonné a une échéance mensuelle. Le script quotidien envoie
+par e-mail le lien de paiement 7 jours avant l'échéance (le lien reste valable), un
+rappel la veille et une relance 3 jours après. Une copie de chaque e-mail part vers
+cazal@medy.site. Après réception du paiement, on clique sur « Marquer payé » dans la
+page de gestion : l'échéance avance d'un mois.
+13a. Fichiers : dossier `serveur/abonnements/` du dépôt (`lib.php`, `rappels.php`) à
+     téléverser dans un dossier `abonnements` du dossier PRINCIPAL du compte (pas dans
+     `public_html`). Page de gestion : `site/gestion/index.php` à téléverser dans un
+     dossier `gestion` de `public_html`.
+13b. Réglages : ouvrir `config-reine-cloud.php` (dossier principal) et ajouter le bloc
+     `'liens' => [ 'socle' => '…', 'libre' => '…' ]` (voir `docs/base-de-donnees/config-exemple.php`).
+     Les liens sont ceux de Revolut : `socle` (19,99 €, réutilisable) et `libre` (montant saisi).
+13c. Protéger la page : cPanel > « Fichiers » > « Confidentialité du répertoire » >
+     dossier `public_html/gestion` > activer la protection, créer un identifiant et un
+     mot de passe (rangés dans un gestionnaire). Sans cette protection, la page refuse de s'ouvrir.
+13d. Essai : dans le Terminal cPanel, `php /home/COMPTE/abonnements/rappels.php simulation`
+     (n'envoie rien, affiche ce qui partirait).
+13e. Tâche Cron quotidienne : cPanel > « Tâches Cron » : minute `7`, heure `8`, autres champs `*`,
+     commande `/usr/local/bin/php /home/COMPTE/abonnements/rappels.php`.
+13f. Ajouter les abonnés dans la page de gestion (`reine-cloud.fr/gestion/`).
+Limite : le script ne voit pas les paiements Revolut tout seul ; le clic « Marquer payé »
+reste manuel (une connexion automatique demanderait l'offre Revolut Business avec interface de programmation).
+

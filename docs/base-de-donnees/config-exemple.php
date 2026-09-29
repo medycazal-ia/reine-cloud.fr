@@ -9,4 +9,9 @@ return [
     'base'  => 'COMPTE_reine',   // nom complet de la base, préfixe cPanel compris
     'user'  => 'COMPTE_rcweb',   // nom complet de l'utilisateur, préfixe compris
     'mdp'   => 'COLLER_ICI_LE_MOT_DE_PASSE',
+    // Liens de paiement (publics, pas des secrets) utilisés dans les e-mails d'échéance :
+    'liens' => [
+        'socle' => 'https://…',   // lien à 19,99 € (réutilisable)
+        'libre' => 'https://…',   // lien à montant saisi par le client
+    ],
 ];
