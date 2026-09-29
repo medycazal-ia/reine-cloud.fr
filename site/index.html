@@ -397,7 +397,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     echec:['Le message n’a pas pu partir. Écrivez-nous directement par e-mail ou WhatsApp.',1]};
   var e=(location.search.match(/[?&]contact=([a-z]+)/)||[])[1];
   if(e&&m[e]){var b=document.getElementById('retour-form');
-    if(b){b.textContent=m[e][0];b.style.display='block';if(m[e][1])b.className+=' erreur';}}
+    if(b){b.textContent=m[e][0];b.style.display='block';if(m[e][1])b.className+=' erreur';
+      setTimeout(function(){b.scrollIntoView({behavior:'smooth',block:'center'});},150);}}
 })();
 </script>
 </body>
