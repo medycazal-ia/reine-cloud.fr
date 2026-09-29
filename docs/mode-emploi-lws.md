@@ -36,10 +36,18 @@ Aide LWS : https://tutoriels.lws.fr/site-web/mettre-un-site-en-ligne
 Si l'adresse reine-cloud.fr répond (même avec un avertissement de
 certificat), le domaine pointe bien vers l'hébergement : rien d'autre à faire.
 ## Étape 4 : activer le HTTPS gratuit
-1. cPanel > section « Sécurité » > « SSL/TLS Status ».
-2. Cocher `reine-cloud.fr` et `www.reine-cloud.fr`, puis « Run AutoSSL ».
-3. Attendre 2 à 10 minutes, recharger : cadenas vert = réussi.
+1. cPanel > section « Sécurité » > « SSL/TLS Certificates » > onglet « État ».
+2. Cliquer sur « Run AutoSSL » (ou « Exécuter AutoSSL »).
+3. Attendre 5 à 10 minutes, recharger : cadenas vert = réussi.
+Piège rencontré : juste après l'achat d'un domaine, AutoSSL répond
+« unmanaged » (domaine non géré). C'est la propagation DNS : attendre
+quelques heures, puis relancer. Le certificat Let's Encrypt est gratuit et
+se renouvelle tout seul.
 Aide LWS : https://aide.lws.fr/base/Hebergement-web-mutualise/Outils-web/activer-redirection-web-https-SSL-automatique
 
-## Étape 5 : adresse e-mail et formulaire de contact (à venir)
-## Étape 6 : base de données, seulement si utile (à venir)
+## Étape 5 : forcer l'ouverture en HTTPS
+cPanel > « Domaines » > interrupteur « Force HTTPS Redirect » sur
+`reine-cloud.fr`. Test : `http://reine-cloud.fr` doit basculer sur `https://`.
+
+## Étape 6 : adresse e-mail et formulaire de contact (à venir)
+## Étape 7 : base de données, seulement si utile (à venir)
