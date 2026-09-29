@@ -4,12 +4,12 @@
 
 ## Éditeur du site
 - Site : reine-cloud.fr
-- Éditeur : Medy CAZAL, entrepreneur individuel, exerçant sous le nom commercial La Maison du CREL
+- Éditeur : Medy Harry CAZAL, entrepreneur individuel, exerçant sous le nom commercial La Maison du CREL
 - SIRET : 415 030 550 00139
 - Adresse : 231 rue du Faubourg Saint-Honoré, 75001 Paris, France
 - E-mail : cazal@medy.site
 - Téléphone : +33 6 74 20 16 62
-- Directeur de la publication : Medy CAZAL
+- Directeur de la publication : Medy Harry CAZAL
 - TVA non applicable, art. 293 B du CGI.
 
 ## Hébergement

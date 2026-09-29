@@ -6,7 +6,7 @@ Dernière mise à jour : 29 septembre 2026
 
 ## 1. Qui vend, à qui ?
 Ces conditions s'appliquent aux ventes de services de reine-cloud.fr, exploité par
-Medy CAZAL, entrepreneur individuel, sous le nom commercial La Maison du CREL,
+Medy Harry CAZAL, entrepreneur individuel, sous le nom commercial La Maison du CREL,
 231 rue du Faubourg Saint-Honoré, 75001 Paris, SIRET 415 030 550 00139
 (« le Prestataire »).
 
@@ -69,6 +69,8 @@ En cas de retard, sont exigibles de plein droit des pénalités de retard égale
 fois le taux d'intérêt légal, ainsi qu'une indemnité forfaitaire de 40 € pour frais de
 recouvrement (article L.441-10 du Code de commerce). Le Prestataire peut suspendre
 les services 15 jours après une relance restée sans effet.
+
+Remboursement : le mois entamé n'est pas remboursé. Toute somme versée pour un service non fourni ou non livré est remboursée dans un délai de 14 jours, sur demande écrite à cazal@medy.site.
 
 ## 7. Engagements du Prestataire
 Le Prestataire s'engage à mettre en œuvre les moyens raisonnables pour fournir les

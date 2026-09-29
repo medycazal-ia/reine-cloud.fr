@@ -3,7 +3,7 @@
 > Dernière mise à jour : 29 septembre 2026. Version à faire valider par un juriste avant toute modification importante.
 
 ## Qui est responsable de vos données ?
-Medy CAZAL, entrepreneur individuel (La Maison du CREL), 231 rue du Faubourg Saint-Honoré, 75001 Paris, joignable à cazal@medy.site.
+Medy Harry CAZAL, entrepreneur individuel (La Maison du CREL), 231 rue du Faubourg Saint-Honoré, 75001 Paris, joignable à cazal@medy.site.
 
 ## Quelles données, pourquoi ?
 Lorsque vous utilisez le formulaire de contact, nous recevons votre nom, votre adresse e-mail, le type de besoin et votre message.

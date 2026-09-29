@@ -161,15 +161,19 @@ téléverser dans `public_html` `cgv.html`, `mentions-legales.html`,
 `confidentialite.html` et le nouvel `index.html`. Le pied de page de chaque page
 renvoie aux trois textes. Texte source : `docs/juridique/cgv.md`.
 
-## Étape 12 : boutons de paiement
-Les boutons « Payer en ligne » (socle, agent, cadrage) et la page `payer.html`
-sont prêts mais invisibles tant qu'aucun lien n'est renseigné.
-Pour les activer : ouvrir `paiement.js` dans `public_html` (Gestionnaire de
-fichiers > Modifier, traduction Chrome désactivée) et coller entre les guillemets
-les adresses `https://…` des liens de paiement créés chez le prestataire :
-`socle`, `agent`, `cadrage` (199 €) et `libre` (montant saisi par le client).
-Enregistrer : les boutons apparaissent aussitôt (rafraîchir avec Ctrl + Maj + R).
+## Étape 12 : commande et paiement en ligne
+Parcours : bouton « Commander » sur chaque offre (page d'accueil) > page
+`commander.html` (récapitulatif, case « je suis un professionnel et j'accepte les
+CGV ») > bouton de paiement. La page `payer.html` sert à régler une facture ou un
+devis (cadrage 199 € ou montant convenu).
+Tant qu'aucun lien de paiement n'est renseigné, le bouton s'appelle « Recevoir mon
+lien de paiement » et ouvre un e-mail prérempli vers cazal@medy.site.
+Pour activer le vrai paiement : ouvrir `paiement.js` dans `public_html`
+(Gestionnaire de fichiers > Modifier, traduction Chrome désactivée) et coller entre
+les guillemets les adresses `https://…` des liens créés chez le prestataire :
+`socle`, `agent`, `cadrage` (199 €), `libre` (montant saisi par le client).
+Enregistrer, puis rafraîchir avec Ctrl + Maj + R : le bouton devient « Payer en ligne ».
 Aucun secret dans ce fichier : les liens sont publics. Effacer un lien le désactive.
-Déploiement initial : téléverser `index.html`, `payer.html`, `paiement.js`, `merci.html`
-(page de retour si le prestataire permet de la choisir) et les pages légales.
-
+Fichiers à téléverser dans `public_html` : `index.html`, `commander.html`,
+`payer.html`, `paiement.js`, `merci.html`, `cgv.html`, `confidentialite.html`,
+`mentions-legales.html` (copie de secours de l'ancien `index.html` avant).
