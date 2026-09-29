@@ -145,3 +145,13 @@ Cycle mensuel (essai) : pas de rappel à 1 mois ni à 15 jours.
 Après chaque renouvellement : ouvrir `rappel.php` (Modifier) et changer la date
 de la ligne ECHEANCE. Les rappels de l'ancienne échéance ne sont pas renvoyés.
 
+## Étape 10 : pages « Mentions légales » et « Confidentialité »
+Deux pages sont prêtes dans le dossier `site/` du dépôt : `mentions-legales.html`
+et `confidentialite.html` (textes sources dans `docs/juridique/`). Le pied de la
+page d'accueil y renvoie.
+Mise en ligne : téléverser dans `public_html` les deux pages ET le nouvel
+`index.html` (copie de secours de l'ancien avant remplacement). Vérifier que les
+deux liens du pied de page s'ouvrent.
+À faire relire par un juriste ; en attendant, les pages contiennent les
+informations légales minimales (éditeur, hébergeur, données personnelles).
+

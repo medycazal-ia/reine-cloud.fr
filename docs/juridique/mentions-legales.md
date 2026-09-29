@@ -1,39 +1,32 @@
-# Mentions légales — BROUILLON à valider par un juriste
+# Mentions légales
 
-> Les passages entre crochets [ … ] sont à compléter par Medy.
-> Ne pas publier avant validation.
+> Dernière mise à jour : 29 septembre 2026. Version à faire valider par un juriste avant toute modification importante.
 
 ## Éditeur du site
 - Site : reine-cloud.fr
-- Éditeur : La Maison du CREL
-- Forme juridique : [à compléter]
-- SIRET : [à compléter]
-- Adresse : [à compléter]
+- Éditeur : Medy CAZAL, entrepreneur individuel, exerçant sous le nom commercial La Maison du CREL
+- SIRET : 415 030 550 00139
+- Adresse : 23 rue du Faubourg Saint-Honoré, 75001 Paris, France
 - E-mail : cazal@medy.site
 - Téléphone : +33 6 74 20 16 62
-- Directeur de la publication : [à compléter]
-- TVA : non applicable, art. 293 B du CGI.
+- Directeur de la publication : Medy CAZAL
+- TVA non applicable, art. 293 B du CGI.
 
 ## Hébergement
-Le site est hébergé en France par : [nom de l'hébergeur, adresse, téléphone :
-à recopier depuis les mentions légales de l'hébergeur, avec l'accord de Medy].
+Le site est hébergé en France par LWS (Ligne Web Services), 4 rue Galvani, 75838 Paris Cedex 17, téléphone : 01 77 62 30 03.
 
 ## Propriété intellectuelle
-Les textes, images, logos, illustrations (dont la prune couronnée) et le
-graphisme du site sont la propriété de leur éditeur. Toute reproduction sans
-autorisation écrite est interdite.
+Les textes, images, logos, illustrations (dont la prune couronnée) et le graphisme du site sont la propriété de leur éditeur. Toute reproduction sans autorisation écrite est interdite.
 
 ## Responsabilité
-Les informations du site sont données à titre indicatif et peuvent évoluer.
-Les offres et prix affichés ne constituent pas un devis : les conditions
-détaillées sont communiquées avec chaque devis.
+Les informations du site sont données à titre indicatif et peuvent évoluer. Les offres et prix affichés ne constituent pas un devis : les conditions détaillées sont communiquées avec chaque devis.
 
 ## Santé et hébergement de données de santé (HDS)
-Des solutions compatibles HDS sont un projet en préparation. À ce jour,
-aucune certification HDS n'est détenue ni revendiquée.
+Des solutions compatibles HDS sont un projet en préparation. À ce jour, aucune certification HDS n'est détenue ni revendiquée.
 
 ## Données personnelles
 Voir la page « Politique de confidentialité ».
 
 ## Droit applicable
 Droit français. En cas de litige, les tribunaux français sont compétents.
+

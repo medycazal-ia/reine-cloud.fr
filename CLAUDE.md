@@ -49,8 +49,9 @@ encore à préciser.
 - Hébergement LWS : date d'expiration affichée 27-10-2026, à vérifier.
 - Base de données LWS en place (table `demandes`, copie des messages du
   formulaire). Polices hébergées sur le site (aucun appel à Google).
-- Mentions légales, confidentialité : brouillons dans `docs/juridique/`, à
-  compléter (forme juridique, SIRET, adresse, directeur de publication,
-  hébergeur) et à valider par un juriste. CGV à rédiger.
+- Mentions légales et confidentialité : pages prêtes (`site/mentions-legales.html`,
+  `site/confidentialite.html`, textes dans `docs/juridique/`), à mettre en ligne
+  et à faire relire par un juriste. Éditeur : entrepreneur individuel ; hébergeur
+  LWS cité dans les mentions (accord de Medy). CGV à rédiger.
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.
