@@ -32,8 +32,8 @@ session cPanel, coût, marge ou nom de fournisseur interne.
 ## Offres affichées (ne rien modifier sans l'accord de Medy)
 Socle 19,99 €/mois ; agent standard 99 €/mois par agent (remises dès 3
 agents) ; sur mesure dès 299 €/mois, mise en place dès 1 500 €, cadrage
-199 €, engagement 24 mois ; heure à 49 €. « Hébergé en France » est à
-confirmer par Medy avant publication.
+199 €, engagement 24 mois ; heure à 49 €. « Hébergé en France » est confirmé par
+Medy (2026-09-29).
 
 ## Hébergement (décision du 2026-09-29)
 Tout sur **LWS** (cPanel, serveurs en France) : `index.html` et

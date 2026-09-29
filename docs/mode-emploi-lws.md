@@ -46,8 +46,38 @@ se renouvelle tout seul.
 Aide LWS : https://aide.lws.fr/base/Hebergement-web-mutualise/Outils-web/activer-redirection-web-https-SSL-automatique
 
 ## Étape 5 : forcer l'ouverture en HTTPS
-cPanel > « Domaines » > interrupteur « Force HTTPS Redirect » sur
-`reine-cloud.fr`. Test : `http://reine-cloud.fr` doit basculer sur `https://`.
+Sur la formule cPanel (CloudCP), la page « Domaines » n'a pas d'interrupteur
+de redirection et l'espace LWS n'a pas de rubrique « SSL » : on passe par le
+fichier `.htaccess`.
+1. cPanel > « Gestionnaire de fichiers » > dossier `public_html`.
+2. Sélectionner `.htaccess` > « Copier » > destination
+   `/public_html/.htaccess-sauvegarde` (copie de secours).
+3. Sélectionner `.htaccess` > « Modifier ». Ne pas toucher au bloc
+   « DÉBUT… FIN » généré par cPanel.
+4. Ajouter à la fin ces 5 lignes, puis « Enregistrer les modifications » :
+```
+# Redirection vers HTTPS (reine-cloud.fr)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+```
+5. Test : ouvrir `reine-cloud.fr` sans `https://` (fenêtre privée) : le
+   cadenas doit apparaître.
+Contrôle : le fichier passe de 614 à 805 octets.
+Retour arrière : recopier `.htaccess-sauvegarde` sur `.htaccess`.
+Pièges rencontrés :
+- La traduction automatique de Chrome déforme l'affichage de l'éditeur
+  (« On » devient « activé »…). Elle ne change pas le fichier enregistré,
+  mais il vaut mieux la désactiver avant de modifier.
+- Si Chrome affiche encore « Non sécurisé » alors que la fenêtre privée est
+  bonne : `chrome://restart` (il garde en mémoire le « continuer malgré
+  l'avertissement »).
+- Sur Chromebook : Ctrl + Maj + R pour recharger sans la mémoire.
+
+## Rappel
+La formule d'hébergement affiche une date d'expiration (27-10-2026) :
+vérifier le renouvellement chez LWS pour ne pas perdre le site.
 
 ## Étape 6 : adresse e-mail et formulaire de contact (à venir)
 ## Étape 7 : base de données, seulement si utile (à venir)
