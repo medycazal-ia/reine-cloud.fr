@@ -61,7 +61,24 @@ function creer_tables(PDO $pdo): void
         jour INT NOT NULL,
         prochaine_echeance DATE NOT NULL,
         actif INT NOT NULL DEFAULT 1,
+        mode VARCHAR(10) NOT NULL DEFAULT 'auto',
+        lien_perso VARCHAR(500) NOT NULL DEFAULT '',
         cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )$fin");
+    // Mise à niveau d'une base créée par une version précédente (sans effet si les colonnes existent).
+    foreach (["ALTER TABLE abonnes ADD COLUMN mode VARCHAR(10) NOT NULL DEFAULT 'auto'",
+              "ALTER TABLE abonnes ADD COLUMN lien_perso VARCHAR(500) NOT NULL DEFAULT ''"] as $sql) {
+        try {
+            $pdo->exec($sql);
+        } catch (Throwable $e) {
+        }
+    }
+    $pdo->exec("CREATE TABLE IF NOT EXISTS journal (
+        id $id,
+        le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        type VARCHAR(30) NOT NULL,
+        destinataire VARCHAR(200) NOT NULL,
+        detail VARCHAR(500) NOT NULL
     )$fin");
     $pdo->exec("CREATE TABLE IF NOT EXISTS envois (
         abonne_id INT NOT NULL,
@@ -112,14 +129,47 @@ function etapes_dues(string $aujourdhui, string $echeance, array $deja): array
     return [in_array($derniere, $deja, true) ? null : $derniere, $atteintes];
 }
 
-/** Lien de paiement à utiliser : lien fixe du socle, sinon lien à montant libre. */
+function lien_valide(string $u): bool
+{
+    return (bool) preg_match('~^https://[^\s"\'<>]+$~', $u);
+}
+
+/**
+ * Lien de paiement à utiliser pour un abonné :
+ * 1. le lien personnel de l'abonné, s'il en a un ;
+ * 2. le lien fixe du socle, si le montant est bien celui du socle ;
+ * 3. sinon le lien à montant libre (le montant est alors indiqué dans l'e-mail).
+ */
 function lien_pour(array $abonne, array $cfg): array
 {
+    if (!empty($abonne['lien_perso']) && lien_valide((string) $abonne['lien_perso'])) {
+        return [$abonne['lien_perso'], false];
+    }
     $liens = $cfg['liens'] ?? [];
-    if ($abonne['offre'] === 'socle' && !empty($liens['socle'])) {
+    $montant_socle = (float) ($cfg['montant_socle'] ?? 19.99);
+    if ($abonne['offre'] === 'socle' && !empty($liens['socle']) && abs((float) $abonne['montant'] - $montant_socle) < 0.005) {
         return [$liens['socle'], false];
     }
     return [$liens['libre'] ?? '', true];
+}
+
+function journaliser(PDO $pdo, string $type, string $destinataire, string $detail): void
+{
+    $pdo->prepare('INSERT INTO journal (type, destinataire, detail) VALUES (?, ?, ?)')
+        ->execute([$type, mb_substr($destinataire, 0, 200), mb_substr($detail, 0, 500)]);
+}
+
+/** E-mail d'une demande de paiement ponctuelle (hors abonnement). */
+function mail_ponctuel(string $nom, string $motif, float $montant, string $lien, bool $libre): array
+{
+    $m = euros($montant);
+    $corps = "Bonjour $nom,\n\nVoici votre demande de paiement : $motif — $m.\n\n"
+        . "Pour régler en ligne, en toute sécurité : $lien\n"
+        . ($libre ? "Sur cette page, saisissez exactement le montant : $m.\n" : '')
+        . "Ce lien reste valable : vous pouvez payer dès maintenant.\n\n"
+        . "Une facture acquittée vous est adressée après paiement. Pour toute question, répondez simplement à cet e-mail.\n"
+        . "Conditions : https://reine-cloud.fr/cgv.html\n\nCordialement,\nMedy Harry CAZAL — La Maison du CREL\nreine-cloud.fr · +33 6 74 20 16 62\n";
+    return ["Demande de paiement — $motif", $corps];
 }
 
 function euros($m): string
@@ -179,7 +229,7 @@ function envoyer_mail(string $a, string $sujet, string $corps): bool
 function traiter_rappels(PDO $pdo, string $aujourdhui, array $cfg): array
 {
     $actions = [];
-    $abonnes = $pdo->query('SELECT * FROM abonnes WHERE actif = 1 ORDER BY prochaine_echeance')->fetchAll(PDO::FETCH_ASSOC);
+    $abonnes = $pdo->query("SELECT * FROM abonnes WHERE actif = 1 AND mode = 'auto' ORDER BY prochaine_echeance")->fetchAll(PDO::FETCH_ASSOC);
     foreach ($abonnes as $a) {
         $q = $pdo->prepare('SELECT etape FROM envois WHERE abonne_id = ? AND echeance = ?');
         $q->execute([$a['id'], $a['prochaine_echeance']]);

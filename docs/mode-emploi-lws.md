@@ -178,27 +178,34 @@ Fichiers à téléverser dans `public_html` : `index.html`, `commander.html`,
 `payer.html`, `paiement.js`, `merci.html`, `cgv.html`, `confidentialite.html`,
 `mentions-legales.html` (copie de secours de l'ancien `index.html` avant).
 
-## Étape 13 : abonnements automatiques (code sur LWS, sans outil tiers)
-Fonctionnement : chaque abonné a une échéance mensuelle. Le script quotidien envoie
-par e-mail le lien de paiement 7 jours avant l'échéance (le lien reste valable), un
-rappel la veille et une relance 3 jours après. Une copie de chaque e-mail part vers
-cazal@medy.site. Après réception du paiement, on clique sur « Marquer payé » dans la
-page de gestion : l'échéance avance d'un mois.
-13a. Fichiers : dossier `serveur/abonnements/` du dépôt (`lib.php`, `rappels.php`) à
-     téléverser dans un dossier `abonnements` du dossier PRINCIPAL du compte (pas dans
-     `public_html`). Page de gestion : `site/gestion/index.php` à téléverser dans un
-     dossier `gestion` de `public_html`.
+## Étape 13 : espace d'administration (abonnements et liens de paiement)
+Adresse : `reine-cloud.fr/gestion/` (protégée par mot de passe). Code maison sur LWS.
+Pour chaque client, deux modes :
+- Automatique : le lien de paiement part par e-mail 7 jours avant l'échéance (il reste
+  valable), un rappel la veille, une relance 3 jours après ; copie à cazal@medy.site.
+- Manuel : rien ne part sans votre clic sur « Envoyer le lien ».
+À tout moment, même en plein abonnement, « Modifier » permet de changer le montant, la
+date d'échéance, l'intitulé, l'e-mail, le mode et de coller un lien de paiement personnel
+(un lien Revolut valable pour ce client). Si le montant d'un abonné « socle » n'est plus
+19,99 €, le lien à montant libre est utilisé et le montant exact est écrit dans l'e-mail.
+« Envoyer un lien de paiement ponctuel » sert pour un cadrage, une mise en place, des heures,
+un client sans abonnement : on saisit le motif et le montant, et on colle un lien (ou on
+laisse vide pour le lien à montant libre). Un journal garde la trace des actions.
+Après chaque paiement reçu : « Marquer payé » (l'échéance avance d'un mois).
+13a. Fichiers : dossier `serveur/abonnements/` du dépôt (`lib.php`, `rappels.php`) à téléverser
+     dans un dossier `abonnements` du dossier PRINCIPAL du compte (pas dans `public_html`).
+     Page d'administration : `site/gestion/index.php` à téléverser dans un dossier `gestion`
+     de `public_html`.
 13b. Réglages : ouvrir `config-reine-cloud.php` (dossier principal) et ajouter le bloc
-     `'liens' => [ 'socle' => '…', 'libre' => '…' ]` (voir `docs/base-de-donnees/config-exemple.php`).
-     Les liens sont ceux de Revolut : `socle` (19,99 €, réutilisable) et `libre` (montant saisi).
-13c. Protéger la page : cPanel > « Fichiers » > « Confidentialité du répertoire » >
-     dossier `public_html/gestion` > activer la protection, créer un identifiant et un
-     mot de passe (rangés dans un gestionnaire). Sans cette protection, la page refuse de s'ouvrir.
+     `'liens' => [ 'socle' => '…', 'libre' => '…' ]` (modèle : `docs/base-de-donnees/config-exemple.php`).
+     Liens Revolut : `socle` (19,99 €, réutilisable) et `libre` (montant saisi par le client).
+13c. Protéger la page : cPanel > « Fichiers » > « Confidentialité du répertoire » > dossier
+     `public_html/gestion` > activer la protection, créer identifiant et mot de passe (rangés
+     dans un gestionnaire). Sans cette protection, la page refuse de s'ouvrir.
 13d. Essai : dans le Terminal cPanel, `php /home/COMPTE/abonnements/rappels.php simulation`
      (n'envoie rien, affiche ce qui partirait).
 13e. Tâche Cron quotidienne : cPanel > « Tâches Cron » : minute `7`, heure `8`, autres champs `*`,
      commande `/usr/local/bin/php /home/COMPTE/abonnements/rappels.php`.
-13f. Ajouter les abonnés dans la page de gestion (`reine-cloud.fr/gestion/`).
-Limite : le script ne voit pas les paiements Revolut tout seul ; le clic « Marquer payé »
-reste manuel (une connexion automatique demanderait l'offre Revolut Business avec interface de programmation).
-
+Limite : le script ne voit pas les paiements Revolut tout seul ; « Marquer payé » reste manuel
+(une connexion automatique demanderait l'offre Revolut Business avec interface de programmation).
+Règle HDS : ne jamais écrire de donnée de santé dans les intitulés, motifs ou e-mails.
