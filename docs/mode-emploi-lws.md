@@ -155,3 +155,9 @@ deux liens du pied de page s'ouvrent.
 À faire relire par un juriste ; en attendant, les pages contiennent les
 informations légales minimales (éditeur, hébergeur, données personnelles).
 
+## Étape 11 : page « CGV »
+Ajouter aux fichiers de l'étape 10 la page `cgv.html` (dossier `site/` du dépôt) :
+téléverser dans `public_html` `cgv.html`, `mentions-legales.html`,
+`confidentialite.html` et le nouvel `index.html`. Le pied de page de chaque page
+renvoie aux trois textes. Texte source : `docs/juridique/cgv.md`.
+

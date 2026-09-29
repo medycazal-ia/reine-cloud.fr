@@ -52,6 +52,7 @@ encore à préciser.
 - Mentions légales et confidentialité : pages prêtes (`site/mentions-legales.html`,
   `site/confidentialite.html`, textes dans `docs/juridique/`), à mettre en ligne
   et à faire relire par un juriste. Éditeur : entrepreneur individuel ; hébergeur
-  LWS cité dans les mentions (accord de Medy). CGV à rédiger.
+  LWS cité dans les mentions (accord de Medy). CGV : `site/cgv.html` (texte dans `docs/juridique/cgv.md`, confirmé par Medy le
+  2026-09-29, clients professionnels uniquement), à mettre en ligne et à relire.
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.
