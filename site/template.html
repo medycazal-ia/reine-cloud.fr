@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>reine-cloud.fr — Hébergement, cloud et IA souverains</title>
+<meta name="description" content="Hébergement web, e-mails professionnels et agents IA, hébergés en France. Le cloud souverain qui a de la couronne.">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --violet:#491E65; --violet-2:#6B3878; --nuit:#22103A; --nuit-2:#2E1650;
+  --or:#D9A93A; --or-clair:#F3D77A; --or-ombre:#A97B1E;
+  --emeraude:#1E9A5C; --prune:#8DB040;
+  --ivoire:#FAF7F0; --ivoire-2:#F2ECE0; --encre:#25182F; --gris:#6B6275; --trait:#E4DCCD;
+  --serif:"Cormorant Garamond",Georgia,serif; --sans:"Montserrat",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--encre);background:var(--ivoire);line-height:1.65;font-weight:400;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:var(--or-ombre)}
+.dark .eyebrow{color:var(--or)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.08}
+h2{font-size:clamp(2rem,4.4vw,3.1rem);color:var(--violet);margin:.5rem 0 1rem}
+.dark h2{color:#fff}
+.lead{font-size:1.05rem;color:var(--gris);max-width:640px}
+.dark .lead{color:#CFC3DE}
+.or-line{display:block;width:56px;height:2px;background:linear-gradient(90deg,var(--or-ombre),var(--or-clair));margin:1.2rem 0}
+
+/* header */
+header{position:absolute;inset:0 0 auto 0;z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:88px}
+header .logo svg{height:46px;width:auto;display:block}
+nav{display:flex;gap:30px;align-items:center}
+nav a{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:#E7DEF2;font-weight:500}
+nav a:hover{color:var(--or-clair)}
+.btn{display:inline-block;padding:14px 30px;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-decoration:none;border:1px solid var(--or);transition:.25s}
+.btn.plein{background:linear-gradient(135deg,var(--or-clair),var(--or) 55%,var(--or-ombre));color:var(--nuit);border-color:transparent}
+.btn.plein:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ligne{color:var(--or-clair)}
+.btn.ligne:hover{background:rgba(217,169,58,.12)}
+nav .btn{padding:10px 20px;color:var(--or-clair)}
+
+/* hero */
+.hero{position:relative;color:#fff;background:
+  radial-gradient(900px 520px at 78% 38%,rgba(107,56,120,.55),transparent 65%),
+  radial-gradient(600px 400px at 10% 90%,rgba(30,154,92,.16),transparent 70%),
+  linear-gradient(160deg,var(--nuit) 0%,#2B1249 60%,#1B0C30 100%);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;min-height:100vh;padding-top:120px;padding-bottom:80px}
+.hero h1{font-size:clamp(2.8rem,6.6vw,5.2rem);letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--or-clair)}
+.hero p.sous{font-size:1.1rem;color:#D8CCE8;max-width:520px;margin:1.6rem 0 2.2rem;font-weight:300}
+.hero .actions{display:flex;gap:16px;flex-wrap:wrap}
+.hero .sceau{margin-top:2.6rem;display:flex;gap:14px;align-items:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#BFAFD6}
+.drap{display:inline-flex;width:34px;height:22px;border:1px solid rgba(255,255,255,.25);overflow:hidden}
+.drap i{flex:1}.drap i:nth-child(1){background:#2B4DA8}.drap i:nth-child(2){background:#fff}.drap i:nth-child(3){background:#D63A3A}
+.fruit{position:relative;display:grid;place-items:center}
+.fruit::before{content:"";position:absolute;width:88%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(217,169,58,.35);box-shadow:0 0 0 26px rgba(217,169,58,.05),0 0 0 27px rgba(217,169,58,.18)}
+.fruit svg{position:relative;width:min(400px,80%);height:auto;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.defile{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:#9C8BB8}
+
+/* bande */
+.bande{background:var(--ivoire-2);border-bottom:1px solid var(--trait)}
+.bande .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);font-weight:500}
+.bande span::before{content:"◆";color:var(--or);margin-right:10px;font-size:.6rem}
+
+section{padding:110px 0}
+/* histoire */
+.histoire .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.histoire .jeu{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.6rem);color:var(--violet);line-height:1.1}
+.histoire .jeu span{color:var(--emeraude);font-style:italic}
+.histoire p{margin-bottom:1rem;color:#4B3F58}
+.histoire blockquote{border-left:2px solid var(--or);padding:.2rem 0 .2rem 22px;margin-top:1.6rem;font-family:var(--serif);font-size:1.5rem;color:var(--violet);font-style:italic}
+
+/* piliers */
+.piliers{background:#fff;border-block:1px solid var(--trait)}
+.grille{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--trait);border:1px solid var(--trait);margin-top:3rem}
+.pilier{background:#fff;padding:38px 28px;transition:.3s}
+.pilier:hover{background:var(--ivoire)}
+.pilier .n{font-family:var(--serif);font-size:1.1rem;color:var(--or-ombre);font-style:italic}
+.pilier h3{font-size:1.7rem;color:var(--violet);margin:.6rem 0 .7rem}
+.pilier p{font-size:.92rem;color:var(--gris)}
+
+/* souveraineté */
+.souv{color:#fff;background:linear-gradient(170deg,var(--nuit-2),var(--nuit))}
+.souv .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center}
+.carte{position:relative;aspect-ratio:1;max-width:420px;margin:auto;width:100%}
+.carte svg{width:100%;height:100%}
+.souv ul{list-style:none;margin-top:1.6rem}
+.souv li{display:flex;gap:16px;padding:16px 0;border-top:1px solid rgba(255,255,255,.12);color:#DCD1EA;font-size:.98rem}
+.souv li b{color:#fff;font-weight:600;display:block}
+.souv li::before{content:"";flex:0 0 9px;height:9px;margin-top:9px;background:var(--or);transform:rotate(45deg)}
+
+/* santé */
+.sante .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.cadre{border:1px solid var(--or);padding:44px;position:relative;background:linear-gradient(180deg,#fff,var(--ivoire))}
+.cadre::before{content:"";position:absolute;inset:8px;border:1px solid var(--trait);pointer-events:none}
+.badge{display:inline-block;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--emeraude);border:1px solid var(--emeraude);padding:5px 12px;margin-bottom:1.2rem}
+.cadre h3{font-size:2rem;color:var(--violet);margin-bottom:.8rem}
+.cadre p{color:var(--gris);font-size:.95rem}
+.cadre .avert{margin-top:1.2rem;padding-top:1rem;border-top:1px dashed var(--trait);font-size:.82rem}
+
+/* offres */
+.offres{background:var(--ivoire-2)}
+.cartes{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:3rem;align-items:stretch}
+.offre{background:#fff;border:1px solid var(--trait);padding:44px 34px;display:flex;flex-direction:column;position:relative}
+.offre.vedette{background:linear-gradient(170deg,var(--violet),var(--nuit));color:#fff;border-color:var(--or);transform:translateY(-14px);box-shadow:0 30px 60px -25px rgba(73,30,101,.55)}
+.offre .tag{position:absolute;top:-13px;left:34px;background:var(--or);color:var(--nuit);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:5px 12px}
+.offre h3{font-size:2rem;color:var(--violet)}
+.offre.vedette h3{color:#fff}
+.offre .prix{margin:1rem 0 .3rem;font-family:var(--serif);font-size:3.2rem;font-weight:600;color:var(--violet);line-height:1}
+.offre.vedette .prix{color:var(--or-clair)}
+.offre .prix small{font-family:var(--sans);font-size:.8rem;font-weight:400;color:var(--gris);letter-spacing:.04em}
+.offre.vedette .prix small{color:#C9BBDD}
+.offre .note{font-size:.76rem;color:var(--gris);margin-bottom:1.4rem}
+.offre.vedette .note{color:#BFAFD6}
+.offre ul{list-style:none;margin:.4rem 0 2rem;flex:1}
+.offre li{padding:9px 0 9px 26px;position:relative;font-size:.92rem;border-top:1px solid var(--trait)}
+.offre.vedette li{border-color:rgba(255,255,255,.14)}
+.offre li::before{content:"✓";position:absolute;left:0;color:var(--emeraude);font-weight:700}
+.offre.vedette li::before{color:var(--or)}
+.offre .btn{text-align:center;color:var(--violet);border-color:var(--violet)}
+.offre .btn:hover{background:var(--violet);color:#fff}
+.offre.vedette .btn{border-color:transparent}
+.legal{margin-top:2.4rem;font-size:.8rem;color:var(--gris);text-align:center}
+
+/* contact */
+.contact{color:#fff;text-align:center;background:radial-gradient(700px 400px at 50% 0%,rgba(107,56,120,.6),transparent 70%),var(--nuit)}
+.contact h2{margin-inline:auto}
+.contact .lead{margin:0 auto 2.4rem}
+.contact .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contact .coord{margin-top:2.6rem;color:#BFAFD6;font-size:.9rem}
+.contact .coord a{color:var(--or-clair);text-decoration:none}
+
+footer{background:#170A29;color:#9C8BB8;font-size:.78rem;padding:34px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+
+@media(max-width:960px){
+  .hero .wrap,.histoire .wrap,.souv .wrap,.sante .wrap{grid-template-columns:1fr;gap:40px}
+  .hero .wrap{min-height:auto;padding-top:130px}
+  .fruit{order:-1;max-width:280px;margin:0 auto}
+  .grille{grid-template-columns:1fr 1fr}
+  .cartes{grid-template-columns:1fr}
+  .offre.vedette{transform:none}
+  nav a:not(.btn){display:none}
+  section{padding:80px 0}
+  .defile{display:none}
+}
+@media(max-width:560px){.grille{grid-template-columns:1fr}header .logo svg{height:38px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="reine-cloud.fr, accueil">%%LOGO_H%%</a>
+    <nav>
+      <a href="#histoire">L'esprit</a>
+      <a href="#souverainete">Souveraineté</a>
+      <a href="#sante">Santé</a>
+      <a href="#offres">Offres</a>
+      <a class="btn" href="#contact">Nous écrire</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero dark" style="padding:0">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Hébergement · Cloud · IA · Souveraineté</div>
+      <h1>Le cloud français<br>qui a de la <em>couronne</em>.</h1>
+      <p class="sous">Sites web, e-mails professionnels et agents IA, hébergés en France. Un seul interlocuteur, des serveurs sur le territoire, et un ton qui change des grandes plateformes.</p>
+      <div class="actions">
+        <a class="btn plein" href="#offres">Découvrir les offres</a>
+        <a class="btn ligne" href="#contact">Parler de votre projet</a>
+      </div>
+      <div class="sceau"><span class="drap" aria-hidden="true"><i></i><i></i><i></i></span> Serveurs en France</div>
+    </div>
+    <div class="fruit">%%ICONE%%</div>
+  </div>
+  <div class="defile">Faites défiler</div>
+</section>
+
+<div class="bande"><div class="wrap">
+  <span>Hébergement en France</span><span>Données sous droit français</span><span>Agents IA sur mesure</span><span>Un seul interlocuteur</span>
+</div></div>
+
+<section class="histoire" id="histoire">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">L'esprit de la maison</div>
+      <div class="jeu">Reine<span>-claude</span>,<br>reine<span>-cloud</span>.</div>
+      <span class="or-line"></span>
+      <blockquote>Une prune bien de chez nous, couronnée.</blockquote>
+    </div>
+    <div>
+      <p>La reine-claude est ce fruit que tous les Français connaissent : verte, dorée, un peu précieuse, profondément locale. Le nom de la maison joue avec elle, et ce n'est pas un hasard.</p>
+      <p><strong>« Reine »</strong>, c'est la souveraineté : rester maître de ses données, de son site, de ses outils. <strong>« Cloud »</strong>, c'est la promesse d'un service moderne, sans la lourdeur ni l'opacité qu'on prête au secteur.</p>
+      <p>Un jeu de mots pour donner du sens à l'hébergement web et à l'intelligence artificielle : des solutions sérieuses, servies avec un sourire et une couronne.</p>
+    </div>
+  </div>
+</section>
+
+<section class="piliers">
+  <div class="wrap">
+    <div class="eyebrow">Ce que nous faisons</div>
+    <h2>Quatre piliers, une seule maison.</h2>
+    <p class="lead">Tout ce qu'il faut pour exister en ligne et travailler avec l'IA, sans jongler entre cinq fournisseurs.</p>
+    <div class="grille">
+      <div class="pilier"><div class="n">I</div><h3>Hébergement</h3><p>Votre site en ligne, rapide et entretenu : sauvegardes, mises à jour, suivi. Hébergé en France.</p></div>
+      <div class="pilier"><div class="n">II</div><h3>Cloud &amp; e-mails</h3><p>Des adresses e-mail professionnelles à votre nom et un socle fiable pour vos outils du quotidien.</p></div>
+      <div class="pilier"><div class="n">III</div><h3>Agents IA</h3><p>Des agents prêts à l'emploi ou conçus sur mesure pour automatiser vos tâches répétitives.</p></div>
+      <div class="pilier"><div class="n">IV</div><h3>Souveraineté</h3><p>Des données qui restent chez nous, sous droit français, dans un cadre conforme au RGPD.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="souv dark" id="souverainete">
+  <div class="wrap">
+    <div class="carte" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="170" stroke="#D9A93A" stroke-opacity=".35"/>
+        <circle cx="200" cy="200" r="120" stroke="#D9A93A" stroke-opacity=".2"/>
+        <circle cx="200" cy="200" r="70" stroke="#D9A93A" stroke-opacity=".2"/>
+        <path d="M200 30v340M30 200h340" stroke="#fff" stroke-opacity=".06"/>
+        <path d="M200 62l112 40 20 118-70 96-62 26-62-26-70-96 20-118z" fill="#6B3878" fill-opacity=".45" stroke="#D9A93A" stroke-opacity=".8"/>
+        <circle cx="196" cy="196" r="7" fill="#F3D77A"/>
+        <circle cx="196" cy="196" r="18" stroke="#F3D77A" stroke-opacity=".5"/>
+        <circle cx="196" cy="196" r="34" stroke="#F3D77A" stroke-opacity=".25"/>
+      </svg>
+    </div>
+    <div>
+      <div class="eyebrow">Souveraineté</div>
+      <h2>Vos données restent<br>en France.</h2>
+      <p class="lead">L'emplacement des serveurs n'est pas un détail technique : c'est une question de confiance, de droit applicable et de maîtrise.</p>
+      <ul>
+        <li><div><b>Serveurs en France</b>Vos sites et vos e-mails sont hébergés sur le territoire français.</div></li>
+        <li><div><b>Cadre juridique français et européen</b>Un prestataire français, un contrat en français, le RGPD comme socle.</div></li>
+        <li><div><b>Un interlocuteur, pas un ticket</b>Vous savez qui appeler. Et il décroche.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sante" id="sante">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Feuille de route</div>
+      <h2>Et demain, la santé.</h2>
+      <span class="or-line"></span>
+      <p class="lead">Les données de santé exigent un niveau de protection à part. Nous préparons des solutions d'hébergement compatibles avec ce cadre, pour les projets de nos clients du secteur de la santé et pour un usage interne.</p>
+    </div>
+    <div class="cadre">
+      <span class="badge">Projet en préparation</span>
+      <h3>Hébergement de données de santé (HDS)</h3>
+      <p>Cabinets, établissements, éditeurs de solutions de santé, structures du médico-social : si votre projet touche à des données de santé, parlons-en dès maintenant pour cadrer vos besoins et ce qui sera nécessaire.</p>
+      <p class="avert">Cette offre n'est pas encore disponible. À ce jour, aucune certification HDS n'est revendiquée par reine-cloud.fr.</p>
+    </div>
+  </div>
+</section>
+
+<section class="offres" id="offres">
+  <div class="wrap">
+    <div class="eyebrow">Les offres</div>
+    <h2>Des formules claires, sans jargon.</h2>
+    <p class="lead">Des prix nets, affichés sans mauvaise surprise.</p>
+    <div class="cartes">
+      <article class="offre">
+        <h3>Le socle</h3>
+        <div class="prix">19,99&nbsp;€ <small>/ mois</small></div>
+        <div class="note">Moins de 0,70&nbsp;€ par jour</div>
+        <ul>
+          <li>Site et e-mails professionnels</li>
+          <li>Hébergement en France</li>
+          <li>Sauvegardes et mises à jour</li>
+          <li>Un interlocuteur unique</li>
+          <li>2 révisions par an d'environ 1&nbsp;heure</li>
+        </ul>
+        <a class="btn" href="#contact">Choisir le socle</a>
+      </article>
+      <article class="offre vedette">
+        <span class="tag">Le plus demandé</span>
+        <h3>L'agent standard</h3>
+        <div class="prix">99&nbsp;€ <small>/ mois par agent</small></div>
+        <div class="note">À peu près 4 h de travail d'un salarié : rentabilisé dès que l'agent vous en fait gagner davantage.</div>
+        <ul>
+          <li>Un agent, 2 problématiques proches sur le même outil</li>
+          <li>Adaptation gratuite à vos problématiques</li>
+          <li>Remise dès 3 agents, jusqu'à 40&nbsp;% avec 5 agents</li>
+          <li>Audit en visio facultatif</li>
+          <li>Modifications et suivi à 49&nbsp;€/h</li>
+        </ul>
+        <a class="btn plein" href="#contact">Adopter un agent</a>
+      </article>
+      <article class="offre">
+        <h3>Le sur mesure</h3>
+        <div class="prix"><small>à partir de</small> 299&nbsp;€ <small>/ mois</small></div>
+        <div class="note">Mise en place à partir de 1&nbsp;500&nbsp;€, après un cadrage à 199&nbsp;€</div>
+        <ul>
+          <li>Agent conçu autour de vos outils</li>
+          <li>Supervision et rapport mensuel</li>
+          <li>Forfait de 2&nbsp;h de révisions par mois</li>
+          <li>Engagement de 24 mois</li>
+          <li>Cadrage déduit à 50&nbsp;% si vous poursuivez</li>
+        </ul>
+        <a class="btn" href="#contact">Demander un cadrage</a>
+      </article>
+    </div>
+    <p class="legal">Prix nets : TVA non applicable, art. 293&nbsp;B du CGI. Heures supplémentaires à 49&nbsp;€/h. Conditions détaillées communiquées avec le devis.</p>
+  </div>
+</section>
+
+<section class="contact dark" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>Parlons de votre projet.</h2>
+    <p class="lead">Un site, une boîte mail, un agent IA, ou un projet plus sensible : dites-nous où vous en êtes.</p>
+    <div class="actions">
+      <a class="btn plein" href="mailto:cazal@medy.site">Écrire un e-mail</a>
+      <a class="btn ligne" href="https://wa.me/33674201662">WhatsApp</a>
+    </div>
+    <p class="coord">La Maison du CREL · <a href="mailto:cazal@medy.site">cazal@medy.site</a> · <a href="tel:+33674201662">+33 6 74 20 16 62</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 reine-cloud.fr · La Maison du CREL</span>
+    <span>Hébergé en France · Mentions légales et confidentialité à venir</span>
+  </div>
+</footer>
+</body>
+</html>
