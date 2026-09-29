@@ -161,3 +161,15 @@ téléverser dans `public_html` `cgv.html`, `mentions-legales.html`,
 `confidentialite.html` et le nouvel `index.html`. Le pied de page de chaque page
 renvoie aux trois textes. Texte source : `docs/juridique/cgv.md`.
 
+## Étape 12 : boutons de paiement
+Les boutons « Payer en ligne » (socle, agent, cadrage) et la page `payer.html`
+sont prêts mais invisibles tant qu'aucun lien n'est renseigné.
+Pour les activer : ouvrir `paiement.js` dans `public_html` (Gestionnaire de
+fichiers > Modifier, traduction Chrome désactivée) et coller entre les guillemets
+les adresses `https://…` des liens de paiement créés chez le prestataire :
+`socle`, `agent`, `cadrage` (199 €) et `libre` (montant saisi par le client).
+Enregistrer : les boutons apparaissent aussitôt (rafraîchir avec Ctrl + Maj + R).
+Aucun secret dans ce fichier : les liens sont publics. Effacer un lien le désactive.
+Déploiement initial : téléverser `index.html`, `payer.html`, `paiement.js`, `merci.html`
+(page de retour si le prestataire permet de la choisir) et les pages légales.
+
