@@ -79,5 +79,21 @@ Pièges rencontrés :
 La formule d'hébergement affiche une date d'expiration (27-10-2026) :
 vérifier le renouvellement chez LWS pour ne pas perdre le site.
 
-## Étape 6 : adresse e-mail et formulaire de contact (à venir)
+## Étape 6 : adresse d'expédition et formulaire de contact
+6a. cPanel > « E-mail » > « Comptes de messagerie » > « Créer » :
+    `contact@reine-cloud.fr` (mot de passe généré et rangé dans un
+    gestionnaire, jamais écrit ici). Cette adresse sert d'expéditeur.
+6b. Télécharger depuis le dossier `site/` du dépôt `contact.php` et
+    `index.html`. Dans `public_html` : renommer l'ancien `index.html` en copie
+    de secours, téléverser les deux fichiers, puis renommer un éventuel
+    `index (1).html` en `index.html` (nom exact).
+6c. Test dans une fenêtre privée : remplir le formulaire, envoyer, vérifier
+    le message « Merci… » et la réception sur `cazal@medy.site` (regarder
+    aussi les indésirables la première fois).
+6d. Quand tout marche, supprimer les copies de secours de `index.html`.
+Fait le 2026-09-29 : formulaire testé, messages reçus.
+Fonctionnement : le formulaire envoie ses données à `contact.php`, qui
+envoie un e-mail à la boîte de réception et renvoie le visiteur sur la page
+avec un message de confirmation. Un champ caché sert de piège à robots.
+
 ## Étape 7 : base de données, seulement si utile (à venir)

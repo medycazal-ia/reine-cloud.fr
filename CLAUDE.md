@@ -43,7 +43,10 @@ jamais les écrire dans le dépôt ni dans le chat ; usage de la clé API
 encore à préciser.
 
 ## À faire / questions ouvertes
-- Formulaire de contact en PHP (proposé, non fait).
+- Formulaire de contact en PHP : fait et testé (`site/contact.php`, envoi vers
+  cazal@medy.site depuis contact@reine-cloud.fr). Site en ligne en HTTPS.
+- Guide pas à pas pour Medy : `docs/mode-emploi-lws.md`.
+- Hébergement LWS : date d'expiration affichée 27-10-2026, à vérifier.
 - Mentions légales, CGV, confidentialité (à valider par un juriste).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.
