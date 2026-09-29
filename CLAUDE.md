@@ -67,6 +67,12 @@ encore à préciser.
   Page protégée par « Confidentialité du répertoire » de cPanel. RÈGLE HDS : ce système de
   facturation reste séparé de tout environnement de données de santé ; n'y jamais stocker de
   donnée de santé (notes, intitulés, motifs, factures, e-mails).
+- Confidentialité des échanges : e-mails et reçus SANS nom (référence de commande ou d'abonnement seulement) ;
+  la facture nominative n'est jamais envoyée, le client la récupère avec un lien secret et un QR code (`recu.php`,
+  `facture.php`). Base de la future GED (`docs/ged-conception.md`).
+- Suivi : `docs/RESTE-A-FAIRE.md` (à mettre à jour à chaque fin de session), `docs/JOURNAL-DES-VERSIONS.md`.
+  Sauvegarde complète versionnée : `python3 outils/construire_sauvegarde.py` (V1, V2…, incrémentée à chaque fin de
+  session ou à la demande de Medy) ; tests : `bash outils/tests/lancer-tests.sh`.
 - Rappels de renouvellement de l'hébergement : `serveur/rappels/rappel.php` (cron LWS).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.

@@ -70,10 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($nom === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $motif === '' || $montant <= 0 || !lien_valide($lien)) {
             flash('Vérifiez les champs : nom, e-mail, motif, montant et lien https (ou laissez le lien vide pour utiliser le lien à montant libre, à renseigner plus bas).', true);
         } else {
-            [$sujet, $corps] = mail_ponctuel($nom, $motif, $montant, $lien, $libre);
+            $reference = reference_ponctuelle();
+            [$sujet, $corps] = mail_ponctuel($motif, $montant, $lien, $libre, $reference);
             $ok = envoyer_mail($email, $sujet, $corps);
-            if ($ok) { journaliser($pdo, 'lien ponctuel', $email, "$motif, " . euros($montant)); }
-            flash($ok ? 'Demande de paiement envoyée.' : 'Échec de l\'envoi.', !$ok);
+            if ($ok) { journaliser($pdo, 'lien ponctuel', $email, "$reference — $motif, " . euros($montant)); }
+            flash($ok ? 'Demande de paiement envoyée (référence ' . $reference . '). L\'e-mail ne contient aucun nom.' : 'Échec de l\'envoi.', !$ok);
         }
     } elseif ($action === 'liens') {
         $liens = [];
@@ -112,7 +113,7 @@ $preclient = (int) ($_GET['client'] ?? 0);
   <td class="<?= $retard ? 'retard' : '' ?>"><?= h(date_fr($a['prochaine_echeance'])) ?><?= $retard ? '<br>en retard' : '' ?></td>
   <td>
     <?php if ($a['actif']): ?>
-      <?= bouton_action('paiements', 'paye', (int) $a['id'], 'Payé + facture par e-mail', 'pl', '', ['envoyer' => '1']) ?>
+      <?= bouton_action('paiements', 'paye', (int) $a['id'], 'Payé + reçu par e-mail', 'pl', '', ['envoyer' => '1']) ?>
       <?= bouton_action('paiements', 'paye', (int) $a['id'], 'Payé (sans e-mail)', '', '', ['envoyer' => '0']) ?>
       <?= bouton_action('paiements', 'envoyer', (int) $a['id'], 'Envoyer le lien') ?>
       <?= bouton_action('paiements', 'resilier', (int) $a['id'], 'Résilier', '', 'Résilier cet abonnement ?') ?>
@@ -140,7 +141,7 @@ $preclient = (int) ($_GET['client'] ?? 0);
 </form>
 
 <h2 id="lien-ponctuel">Envoyer un lien de paiement ponctuel</h2>
-<p class="note">Pour un client sans abonnement, un montant différent, un cadrage, une mise en place, des heures… Laissez le lien vide pour utiliser le lien à montant libre, ou collez un lien Revolut valable créé pour l'occasion. Motif : jamais de donnée de santé.</p>
+<p class="note">Pour un client sans abonnement, un montant différent, un cadrage, une mise en place, des heures… L'e-mail envoyé ne contient aucun nom (référence de commande seulement). Laissez le lien vide pour utiliser le lien à montant libre, ou collez un lien Revolut valable créé pour l'occasion. Motif : jamais de donnée de santé.</p>
 <form class="grille" method="post" action="?o=paiements"><?= champ_jeton() ?><input type="hidden" name="action" value="ponctuel">
   <div><label>Nom ou entreprise</label><input name="nom" required maxlength="120"></div>
   <div><label>E-mail</label><input type="email" name="email" required maxlength="200"></div>

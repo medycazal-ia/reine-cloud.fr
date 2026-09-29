@@ -116,15 +116,15 @@ function creer_facture(PDO $pdo, array $d): int
     for ($essai = 0; $essai < 3; $essai++) {
         $numero = prochain_numero($pdo, (int) substr($date, 0, 4));
         try {
-            $pdo->prepare('INSERT INTO factures (numero, date_facture, client_id, nom, email, adresse, objet, montant, statut, date_paiement, mode_paiement, jeton, abonne_id)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+            $pdo->prepare('INSERT INTO factures (numero, date_facture, client_id, nom, email, adresse, objet, montant, statut, date_paiement, mode_paiement, jeton, jeton_recu, abonne_id)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
                 ->execute([
                     $numero, $date, $d['client_id'] ?? null,
                     mb_substr((string) $d['nom'], 0, 160), mb_substr((string) ($d['email'] ?? ''), 0, 200), mb_substr((string) ($d['adresse'] ?? ''), 0, 300),
                     mb_substr((string) $d['objet'], 0, 250), (float) $d['montant'], $statut,
                     $statut === 'payee' ? ($d['date_paiement'] ?? $date) : null,
                     mb_substr((string) ($d['mode_paiement'] ?? ''), 0, 40),
-                    bin2hex(random_bytes(16)), $d['abonne_id'] ?? null,
+                    bin2hex(random_bytes(16)), bin2hex(random_bytes(16)), $d['abonne_id'] ?? null,
                 ]);
             return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
@@ -148,19 +148,28 @@ function facture_url(array $f): string
     return 'https://reine-cloud.fr/facture.php?t=' . $f['jeton'];
 }
 
-function envoyer_facture(PDO $pdo, int $id): bool
+function recu_url(array $f): string
+{
+    return 'https://reine-cloud.fr/recu.php?r=' . $f['jeton_recu'];
+}
+
+/**
+ * Envoie le REÇU de paiement : aucun nom, aucune facture. Seulement la référence de la commande.
+ * La facture nominative est retirée par le client lui-même (lien et QR code du reçu).
+ */
+function envoyer_recu(PDO $pdo, int $id): bool
 {
     $f = facture_par_id($pdo, $id);
-    if (!$f || $f['email'] === '') {
+    if (!$f || $f['statut'] !== 'payee' || $f['email'] === '') {
         return false;
     }
-    $etat = $f['statut'] === 'payee' ? 'acquittée' : 'à régler';
-    $corps = "Bonjour {$f['nom']},\n\nVotre facture {$f['numero']} ($etat) : " . euros($f['montant']) . " — {$f['objet']}.\n\n"
-        . 'Vous pouvez la consulter, l\'imprimer ou l\'enregistrer en PDF ici : ' . facture_url($f) . "\n\n"
-        . "Cordialement,\nMedy Harry CAZAL — La Maison du CREL\nreine-cloud.fr · " . param('ent_tel') . "\n";
-    $ok = envoyer_mail($f['email'], "Votre facture {$f['numero']}", $corps);
+    $corps = "Bonjour,\n\nNous avons bien reçu votre paiement de " . euros($f['montant']) . " (référence de la commande : {$f['numero']}).\n\n"
+        . 'Votre reçu de paiement (il ne comporte aucun nom) : ' . recu_url($f) . "\n\n"
+        . "Votre facture nominative est disponible sur ce reçu, grâce à un lien et à un QR code. Récupérez-la vous-même quand vous en avez besoin, et conservez le reçu.\n\n"
+        . "Cordialement,\nLa Maison du CREL\nreine-cloud.fr\n";
+    $ok = envoyer_mail($f['email'], "Reçu de paiement — référence {$f['numero']}", $corps);
     if ($ok) {
-        journaliser($pdo, 'facture envoyée', $f['email'], $f['numero']);
+        journaliser($pdo, 'reçu envoyé', $f['email'], $f['numero']);
     }
     return $ok;
 }
@@ -197,6 +206,35 @@ function facture_html(array $f): string
         . '<p>' . $e('mention_tva') . '</p>' . $iban
         . '<p class="petit">' . $e('cond_paiement') . '</p>'
         . ($acquittee ? '<p class="petit">Mode de règlement : ' . $h($f['mode_paiement'] ?: 'non précisé') . '.</p>' : '')
+        . '</body></html>';
+}
+
+/** Page du reçu de paiement : sans nom. Contient le lien et le QR code de la facture nominative. */
+function recu_html(array $f): string
+{
+    $e = fn(string $k) => htmlspecialchars(param($k), ENT_QUOTES, 'UTF-8');
+    $h = fn($v) => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-8');
+    $lien = facture_url($f);
+    return '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        . '<meta name="robots" content="noindex,nofollow"><title>Reçu de paiement ' . $h($f['numero']) . '</title><style>'
+        . 'body{font-family:system-ui,sans-serif;color:#25182F;max-width:640px;margin:0 auto;padding:28px 18px;line-height:1.55}'
+        . 'h1{color:#491E65;margin:0 0 4px}.ref{font-size:1.3rem;font-weight:700;color:#491E65}'
+        . '.tampon{display:inline-block;border:3px solid #1E9A5C;color:#1E9A5C;font-weight:800;padding:6px 14px;transform:rotate(-3deg);margin:10px 0}'
+        . 'table{width:100%;border-collapse:collapse;margin:16px 0}td{padding:9px 6px;border-bottom:1px solid #ddd}td:last-child{text-align:right;font-weight:600}'
+        . '.facture{margin-top:26px;padding:18px;border:1px solid #D9A93A;background:#FFFBF0;text-align:center}'
+        . '.facture a{word-break:break-all;color:#491E65}#qr svg{width:170px;height:170px}.petit{font-size:.8rem;color:#6B6275}'
+        . '.bt{margin:0 0 16px;padding:8px 14px;background:#491E65;color:#fff;border:0;border-radius:4px;cursor:pointer}@media print{.bt{display:none}}'
+        . '</style></head><body><button class="bt" onclick="window.print()">Imprimer / enregistrer en PDF</button>'
+        . '<h1>Reçu de paiement</h1><div class="ref">Référence de la commande : ' . $h($f['numero']) . '</div>'
+        . '<div class="tampon">PAIEMENT REÇU le ' . $h(date_fr($f['date_paiement'])) . '</div>'
+        . '<table><tr><td>Montant réglé</td><td>' . $h(euros($f['montant'])) . '</td></tr>'
+        . '<tr><td>Mode de règlement</td><td>' . $h($f['mode_paiement'] ?: 'non précisé') . '</td></tr>'
+        . '<tr><td>Vendeur</td><td>' . $e('ent_commercial') . ' — SIRET ' . $e('ent_siret') . '</td></tr></table>'
+        . '<p class="petit">' . $e('mention_tva') . ' Ce reçu ne comporte aucun nom ni aucune donnée personnelle.</p>'
+        . '<div class="facture"><b>Votre facture nominative</b><p class="petit">Scannez le QR code ou ouvrez le lien pour la récupérer vous-même. '
+        . 'Ce lien est personnel : conservez-le et ne le partagez qu\'avec les personnes de votre choix.</p>'
+        . '<div id="qr"></div><p><a href="' . $h($lien) . '">' . $h($lien) . '</a></p></div>'
+        . '<script src="/js/qrcode.js"></script><script>(function(){var q=qrcode(0,"M");q.addData(' . json_encode($lien, JSON_UNESCAPED_SLASHES) . ');q.make();document.getElementById("qr").innerHTML=q.createSvgTag(4,2);})();</script>'
         . '</body></html>';
 }
 

@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'montant' => $montant, 'statut' => $statut, 'date_facture' => $date, 'date_paiement' => $datep, 'mode_paiement' => trim((string) ($_POST['mode_paiement'] ?? ''))]);
             $f = facture_par_id($pdo, $fid);
             journaliser($pdo, 'facture', $email ?: $nom, $f['numero'] . ', ' . euros($montant));
-            if (($_POST['envoyer'] ?? '') === '1' && $email !== '') { envoyer_facture($pdo, $fid); }
+            if (($_POST['envoyer'] ?? '') === '1' && $email !== '' && $statut === 'payee') { envoyer_recu($pdo, $fid); }
             flash('Facture ' . $f['numero'] . ' créée.');
         }
     } elseif ($action === 'encaisser' && ($f = facture_par_id($pdo, $id))) {
@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         journaliser($pdo, 'encaissement', $f['email'] ?: $f['nom'], $f['numero'] . ', ' . euros($f['montant']));
         flash('Facture ' . $f['numero'] . ' marquée payée.');
     } elseif ($action === 'envoyer' && ($f = facture_par_id($pdo, $id))) {
-        $ok = envoyer_facture($pdo, $id);
-        flash($ok ? 'Facture envoyée à ' . $f['email'] . '.' : 'Envoi impossible (adresse e-mail manquante ou échec).', !$ok);
+        $ok = envoyer_recu($pdo, $id);
+        flash($ok ? 'Reçu de paiement (sans nom) envoyé à ' . $f['email'] . '.' : 'Envoi impossible (facture non payée, adresse e-mail manquante ou échec).', !$ok);
     }
     aller('?o=compta&a=' . $annee);
 }
@@ -59,6 +59,22 @@ $preclient = (int) ($_GET['client'] ?? 0);
 $seuil = (float) str_replace(',', '.', param('seuil_ca'));
 $noms_mois = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 ?>
+<?php
+$qr_facture = isset($_GET['qr']) ? facture_par_id($pdo, (int) $_GET['qr']) : null;
+if ($qr_facture): ?>
+<div class="carte" style="margin:0 0 18px">
+  <h2 style="margin-top:0">Lien et QR code — <?= h($qr_facture['numero']) ?></h2>
+  <p class="note">À remettre au client (en mains propres, ou dans une conversation privée). Le lien de la facture est personnel : il donne accès à un document nominatif.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
+    <div><b>Facture nominative</b><div class="qr" data-lien="<?= h(facture_url($qr_facture)) ?>"></div><a href="<?= h(facture_url($qr_facture)) ?>" target="_blank" rel="noopener" style="word-break:break-all;font-size:.8rem"><?= h(facture_url($qr_facture)) ?></a></div>
+    <?php if ($qr_facture['statut'] === 'payee'): ?>
+    <div><b>Reçu sans nom</b><div class="qr" data-lien="<?= h(recu_url($qr_facture)) ?>"></div><a href="<?= h(recu_url($qr_facture)) ?>" target="_blank" rel="noopener" style="word-break:break-all;font-size:.8rem"><?= h(recu_url($qr_facture)) ?></a></div>
+    <?php endif; ?>
+  </div>
+  <script src="/js/qrcode.js"></script>
+  <script>document.querySelectorAll('.qr').forEach(function(e){var q=qrcode(0,'M');q.addData(e.getAttribute('data-lien'));q.make();e.innerHTML=q.createSvgTag(4,2);e.querySelector('svg').style.cssText='width:170px;height:170px;margin:8px 0';});</script>
+</div>
+<?php endif; ?>
 <h1>Comptabilité</h1>
 <p class="filtres">Année :
 <?php for ($y = (int) date('Y') + 1; $y >= (int) date('Y') - 3; $y--): ?><a class="<?= $y === $annee ? 'on' : '' ?>" href="?o=compta&a=<?= $y ?>"><?= $y ?></a><?php endfor; ?></p>
@@ -79,10 +95,11 @@ $noms_mois = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juille
   <td><?= $f['statut'] === 'payee' ? '<span class="badge v">payée le ' . h(date_fr($f['date_paiement'])) . '</span>' : '<span class="badge r">à régler</span>' ?></td>
   <td>
     <?php if ($f['statut'] === 'emise'): ?><?= bouton_action('compta', 'encaisser', (int) $f['id'], 'Marquer payée', 'pl', '', ['mode_paiement' => 'Paiement en ligne']) ?><?php endif; ?>
-    <?php if ($f['email'] !== ''): ?><?= bouton_action('compta', 'envoyer', (int) $f['id'], 'Envoyer par e-mail') ?><?php endif; ?>
-    <a class="bouton" href="<?= h(facture_url($f)) ?>" target="_blank" rel="noopener">Voir / imprimer</a>
+    <?php if ($f['statut'] === 'payee' && $f['email'] !== ''): ?><?= bouton_action('compta', 'envoyer', (int) $f['id'], 'Envoyer le reçu') ?><?php endif; ?>
+    <a class="bouton" href="?o=compta&a=<?= $annee ?>&qr=<?= (int) $f['id'] ?>">Lien et QR code</a>
+    <a class="bouton" href="<?= h(facture_url($f)) ?>" target="_blank" rel="noopener">Voir la facture</a>
   </td></tr><?php endforeach; ?></table>
-<p class="note">Les factures ne se suppriment pas (numérotation continue obligatoire).</p>
+<p class="note">Les factures ne se suppriment pas (numérotation continue obligatoire). Aucune facture n'est envoyée par e-mail : le client récupère lui-même la sienne avec le lien et le QR code de son reçu.</p>
 <?php endif; ?>
 
 <h2 id="nouvelle-facture">Créer une facture</h2>
@@ -99,7 +116,7 @@ $noms_mois = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juille
   <div><label>État</label><select name="statut"><option value="emise">À régler</option><option value="payee">Déjà payée</option></select></div>
   <div><label>Date de paiement (si payée)</label><input type="date" name="date_paiement"></div>
   <div><label>Mode de règlement (si payée)</label><input name="mode_paiement" maxlength="40" placeholder="Virement, carte, Revolut…"></div>
-  <div><label>Envoyer par e-mail ?</label><select name="envoyer"><option value="1">Oui, si e-mail renseigné</option><option value="0">Non</option></select></div>
+  <div><label>Envoyer le reçu (sans nom) ?</label><select name="envoyer"><option value="1">Oui, si payée et e-mail renseigné</option><option value="0">Non</option></select></div>
   <div style="align-self:end"><button class="pl">Créer la facture</button></div>
 </form>
 

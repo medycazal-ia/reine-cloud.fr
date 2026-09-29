@@ -187,11 +187,11 @@ Adresse : `reine-cloud.fr/gestion/` (protégée par mot de passe). Sept onglets 
 - Demandes : messages du formulaire de contact (nouvelle/traitée/archivée), répondre,
   transformer une demande en fiche client.
 - Paiements : abonnements (mode automatique ou manuel, modification à tout moment du montant,
-  de la date, du lien personnel), « Payé + facture par e-mail », lien de paiement ponctuel,
+  de la date, du lien personnel), « Payé + reçu par e-mail », lien de paiement ponctuel,
   et liens de paiement du site : on les colle et « Enregistrer et publier » met à jour les
   boutons du site sans toucher aux fichiers.
-- Comptabilité : factures numérotées (F-2026-0001…) avec facture acquittée en ligne (lien secret
-  envoyé au client, imprimable en PDF), création de facture manuelle, livre des recettes par
+- Comptabilité : factures numérotées (F-2026-0001…) avec reçu de paiement anonyme envoyé par e-mail et facture
+  nominative retirée par le client (lien secret et QR code, imprimable en PDF), création de facture manuelle, livre des recettes par
   année et par mois, export CSV (Excel), chiffre d'affaires et seuil d'alerte facultatif.
 - Site et technique : état des composants (HTTPS, base, e-mails, tâche automatique, fichiers du site),
   e-mail de test, sauvegarde des tableaux en CSV.
@@ -199,7 +199,9 @@ Adresse : `reine-cloud.fr/gestion/` (protégée par mot de passe). Sept onglets 
   préfixe des factures, échéance de l'hébergement.
 Envoi automatique (mode automatique) : le lien de paiement part 7 jours avant l'échéance (il reste
 valable), un rappel la veille, une relance 3 jours après ; copie à cazal@medy.site.
-Les factures ne se suppriment pas (numérotation continue obligatoire).
+Confidentialité : les e-mails ne contiennent jamais de nom ; le reçu (référence de commande seulement) contient le lien
+et le QR code de la facture nominative, que le client récupère lui-même. Les factures ne se suppriment pas
+(numérotation continue obligatoire).
 13a. Paquet : `livrables/administration-a-deployer.zip` (dépôt GitHub). CPanel > Gestionnaire de
      fichiers > dossier PRINCIPAL du compte (pas `public_html`) > « Téléverser » le zip > clic droit
      sur le zip > « Extraire » (ou « Extract »). Il crée `abonnements/`, `public_html/gestion/` et
@@ -218,3 +220,9 @@ Limite : le script ne voit pas les paiements Revolut tout seul ; « Payé » res
 (une connexion automatique demanderait l'offre Revolut Business avec interface de programmation).
 Règle HDS : ne jamais écrire de donnée de santé dans les notes, intitulés, motifs, factures ou e-mails.
 Mise à jour ultérieure : reprendre le zip le plus récent et l'extraire de nouveau (il remplace les fichiers).
+
+## Sauvegarde versionnée
+`python3 outils/construire_sauvegarde.py` fabrique `sauvegardes/reine-cloud-sauvegarde-V<n>-<date>.zip` (tout le projet,
+historique git, outils, tests, reste à faire). Le numéro de version augmente à chaque exécution. À lancer en fin de session
+ou sur demande. La liste des versions est dans `docs/JOURNAL-DES-VERSIONS.md`, le reste à faire dans `docs/RESTE-A-FAIRE.md`.
+

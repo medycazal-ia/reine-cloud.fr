@@ -107,6 +107,7 @@ function creer_tables(PDO $pdo): void
         date_paiement DATE NULL,
         mode_paiement VARCHAR(40) NOT NULL DEFAULT '',
         jeton VARCHAR(40) NOT NULL,
+        jeton_recu VARCHAR(40) NOT NULL DEFAULT '',
         abonne_id INT NULL,
         cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     )$fin");
@@ -114,9 +115,16 @@ function creer_tables(PDO $pdo): void
         cle VARCHAR(60) NOT NULL PRIMARY KEY,
         valeur TEXT
     )$fin");
-    try {
-        $pdo->exec('ALTER TABLE abonnes ADD COLUMN client_id INT NULL');
-    } catch (Throwable $e) {
+    foreach (['ALTER TABLE abonnes ADD COLUMN client_id INT NULL',
+              "ALTER TABLE factures ADD COLUMN jeton_recu VARCHAR(40) NOT NULL DEFAULT ''"] as $sql) {
+        try {
+            $pdo->exec($sql);
+        } catch (Throwable $e) {
+        }
+    }
+    // Rattrapage : un jeton de reçu pour chaque facture qui n'en a pas encore.
+    foreach ($pdo->query("SELECT id FROM factures WHERE jeton_recu = ''")->fetchAll(PDO::FETCH_COLUMN) as $fid) {
+        $pdo->prepare('UPDATE factures SET jeton_recu = ? WHERE id = ?')->execute([bin2hex(random_bytes(16)), $fid]);
     }
     $pdo->exec("CREATE TABLE IF NOT EXISTS journal (
         id $id,
@@ -205,17 +213,23 @@ function journaliser(PDO $pdo, string $type, string $destinataire, string $detai
         ->execute([$type, mb_substr($destinataire, 0, 200), mb_substr($detail, 0, 500)]);
 }
 
-/** E-mail d'une demande de paiement ponctuelle (hors abonnement). */
-function mail_ponctuel(string $nom, string $motif, float $montant, string $lien, bool $libre): array
+/** E-mail d'une demande de paiement ponctuelle (hors abonnement) : aucun nom, une référence. */
+function mail_ponctuel(string $motif, float $montant, string $lien, bool $libre, string $reference): array
 {
     $m = euros($montant);
-    $corps = "Bonjour $nom,\n\nVoici votre demande de paiement : $motif — $m.\n\n"
+    $corps = "Bonjour,\n\nVoici votre demande de paiement (référence $reference) : $motif — $m.\n\n"
         . "Pour régler en ligne, en toute sécurité : $lien\n"
         . ($libre ? "Sur cette page, saisissez exactement le montant : $m.\n" : '')
         . "Ce lien reste valable : vous pouvez payer dès maintenant.\n\n"
-        . "Une facture acquittée vous est adressée après paiement. Pour toute question, répondez simplement à cet e-mail.\n"
-        . "Conditions : https://reine-cloud.fr/cgv.html\n\nCordialement,\nMedy Harry CAZAL — La Maison du CREL\nreine-cloud.fr · +33 6 74 20 16 62\n";
-    return ["Demande de paiement — $motif", $corps];
+        . "Après paiement, un reçu de paiement (sans nom, avec la seule référence de la commande) vous est envoyé. Votre facture nominative y est accessible grâce à un lien et un QR code que vous récupérez vous-même.\n"
+        . "Pour toute question, répondez à cet e-mail en rappelant la référence $reference.\n"
+        . "Conditions : https://reine-cloud.fr/cgv.html\n\nCordialement,\nLa Maison du CREL\nreine-cloud.fr\n";
+    return ["Demande de paiement — référence $reference", $corps];
+}
+
+function reference_ponctuelle(): string
+{
+    return 'PP-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 4));
 }
 
 function euros($m): string
@@ -228,31 +242,43 @@ function date_fr(string $d): string
     return (new DateTimeImmutable($d))->format('d/m/Y');
 }
 
+function reference_abonne(array $a): string
+{
+    return 'AB-' . sprintf('%04d', (int) ($a['id'] ?? 0));
+}
+
+/**
+ * E-mail d'échéance. Volontairement SANS nom ni intitulé libre : uniquement la référence
+ * de l'abonnement, le nom de l'offre, le montant et la date.
+ */
 function construire_mail(array $a, string $etape, string $lien, bool $libre): array
 {
+    $ref = reference_abonne($a);
+    $offre = OFFRES[$a['offre'] ?? ''] ?? 'Abonnement';
     $montant = euros($a['montant']);
     $echeance = date_fr($a['prochaine_echeance']);
     $bloc_lien = $lien !== ''
         ? "Pour régler en ligne, en toute sécurité : $lien\n"
           . ($libre ? "Sur cette page, saisissez exactement le montant : $montant.\n" : '')
           . "Ce lien reste valable : vous pouvez payer dès maintenant.\n"
-        : "Pour régler, répondez à ce message : nous vous indiquons le moyen de paiement.\n";
-    $debut = "Bonjour {$a['nom']},\n\n";
-    $fin = "\nUne facture acquittée vous est adressée après paiement. Pour toute question ou pour résilier, répondez simplement à cet e-mail.\n"
-         . "Conditions : https://reine-cloud.fr/cgv.html\n\nCordialement,\nMedy Harry CAZAL — La Maison du CREL\nreine-cloud.fr · +33 6 74 20 16 62\n";
+        : "Pour régler, répondez à ce message en rappelant la référence $ref.\n";
+    $debut = "Bonjour,\n\n";
+    $fin = "\nAprès paiement, un reçu de paiement (sans nom, avec la seule référence de la commande) vous est envoyé. Votre facture nominative y est accessible grâce à un lien et un QR code que vous récupérez vous-même.\n"
+         . "Pour toute question ou pour résilier, répondez à cet e-mail en rappelant la référence $ref.\n"
+         . "Conditions : https://reine-cloud.fr/cgv.html\n\nCordialement,\nLa Maison du CREL\nreine-cloud.fr\n";
     switch ($etape) {
         case 'J-1':
-            $sujet = "Rappel : échéance demain — {$a['libelle']}";
-            $corps = $debut . "Rappel : votre abonnement « {$a['libelle']} » ($montant par mois) arrive à échéance demain, le $echeance.\n\n" . $bloc_lien . $fin;
+            $sujet = "Rappel : échéance demain — abonnement $ref";
+            $corps = $debut . "Rappel : l'abonnement $ref ($offre, $montant par mois) arrive à échéance demain, le $echeance.\n\n" . $bloc_lien . $fin;
             break;
         case 'J+3':
-            $sujet = "Échéance dépassée — {$a['libelle']}";
-            $corps = $debut . "Nous n'avons pas encore reçu le règlement de votre abonnement « {$a['libelle']} » ($montant), échu le $echeance.\n\n" . $bloc_lien
+            $sujet = "Échéance dépassée — abonnement $ref";
+            $corps = $debut . "Nous n'avons pas encore reçu le règlement de l'abonnement $ref ($offre, $montant), échu le $echeance.\n\n" . $bloc_lien
                    . "\nSans règlement, le service pourra être suspendu 15 jours après relance (conditions générales de vente, article 6). Si vous avez déjà payé, merci d'ignorer ce message.\n" . $fin;
             break;
         default:
-            $sujet = "Votre échéance du $echeance — {$a['libelle']}";
-            $corps = $debut . "Votre abonnement « {$a['libelle']} » ($montant par mois) arrive à échéance le $echeance.\n\n" . $bloc_lien . $fin;
+            $sujet = "Votre échéance du $echeance — abonnement $ref";
+            $corps = $debut . "L'abonnement $ref ($offre, $montant par mois) arrive à échéance le $echeance.\n\n" . $bloc_lien . $fin;
     }
     return [$sujet, $corps];
 }
@@ -301,7 +327,7 @@ function traiter_rappels(PDO $pdo, string $aujourdhui, array $cfg): array
     return $actions;
 }
 
-function marquer_paye(PDO $pdo, int $id, bool $envoyer_facture = false, string $mode = 'Paiement en ligne'): ?int
+function marquer_paye(PDO $pdo, int $id, bool $envoyer_recu = false, string $mode = 'Paiement en ligne'): ?int
 {
     $a = $pdo->prepare('SELECT * FROM abonnes WHERE id = ?');
     $a->execute([$id]);
@@ -326,8 +352,8 @@ function marquer_paye(PDO $pdo, int $id, bool $envoyer_facture = false, string $
     ]);
     $pdo->prepare('UPDATE abonnes SET prochaine_echeance = ? WHERE id = ?')
         ->execute([mois_suivant($a['prochaine_echeance'], (int) $a['jour']), $id]);
-    if ($envoyer_facture) {
-        envoyer_facture($pdo, $facture_id);
+    if ($envoyer_recu) {
+        envoyer_recu($pdo, $facture_id);
     }
     return $facture_id;
 }
