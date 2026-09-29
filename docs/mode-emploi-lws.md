@@ -17,9 +17,16 @@ rangent uniquement dans un gestionnaire de mots de passe.
 4. On est au bon endroit quand on voit des icônes rangées par sections
    (Fichiers, Bases de données, Sécurité, Courrier…).
 
-## Étape 2 : envoyer la page d'accueil (à venir)
-Envoi de `index.html` et `favicon.ico` dans le dossier `public_html`
-avec le Gestionnaire de fichiers.
+## Étape 2 : envoyer la page d'accueil
+1. Dans cPanel, section « Fichiers », ouvrir « Gestionnaire de fichiers ».
+2. Cliquer sur le dossier `public_html` (à gauche) : c'est le dossier du site.
+3. Noter ce qu'il contient (un `index.html` par défaut peut exister).
+4. Télécharger `index.html` et `favicon.ico` depuis le dossier `site/` du
+   dépôt GitHub.
+5. Cliquer sur « Charger » et les envoyer dans `public_html`.
+6. Ouvrir http://reine-cloud.fr dans le navigateur pour vérifier.
+Remarque : un avertissement « certificat auto-signé » est normal avant
+l'étape 4.
 Aide LWS : https://tutoriels.lws.fr/site-web/mettre-un-site-en-ligne
 
 ## Étape 3 : vérifier le domaine (à venir)
