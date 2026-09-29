@@ -56,6 +56,25 @@ $en_tetes = [
 
 $objet = mb_encode_mimeheader('[reine-cloud.fr] ' . $sujet, 'UTF-8');
 
+// Copie dans la base de données, si elle est configurée (le fichier de réglages
+// se trouve hors de public_html). En cas de problème, l'e-mail part quand même.
+$config = dirname(__DIR__) . '/config-reine-cloud.php';
+if (is_file($config)) {
+    try {
+        $c = require $config;
+        $pdo = new PDO(
+            'mysql:host=' . $c['hote'] . ';dbname=' . $c['base'] . ';charset=utf8mb4',
+            $c['user'],
+            $c['mdp'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        $pdo->prepare('INSERT INTO demandes (nom, email, sujet, message) VALUES (?, ?, ?, ?)')
+            ->execute([$nom, $email, $sujet, $message]);
+    } catch (Throwable $e) {
+        // volontairement silencieux : ne jamais afficher d'erreur technique au visiteur
+    }
+}
+
 $envoye = mail(DESTINATAIRE, $objet, $corps, implode("\r\n", $en_tetes), '-f' . EXPEDITEUR);
 
 retour($envoye ? 'ok' : 'echec');
