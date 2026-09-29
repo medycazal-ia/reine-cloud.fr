@@ -18,4 +18,5 @@ if ($simulation) {
     $GLOBALS['MAILER'] = function ($a, $s, $c) { echo "[SIMULATION] à $a : $s\n"; return true; };
 }
 $actions = traiter_rappels($pdo, date('Y-m-d'), $cfg);
+set_param($pdo, 'cron_dernier', date('Y-m-d H:i:s'));   // signe de vie affiché dans l'administration
 echo $actions ? implode("\n", $actions) . "\n" : "Rien à envoyer aujourd'hui.\n";

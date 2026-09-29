@@ -73,6 +73,51 @@ function creer_tables(PDO $pdo): void
         } catch (Throwable $e) {
         }
     }
+    $pdo->exec("CREATE TABLE IF NOT EXISTS clients (
+        id $id,
+        nom VARCHAR(120) NOT NULL,
+        entreprise VARCHAR(160) NOT NULL DEFAULT '',
+        email VARCHAR(200) NOT NULL DEFAULT '',
+        telephone VARCHAR(40) NOT NULL DEFAULT '',
+        adresse VARCHAR(300) NOT NULL DEFAULT '',
+        statut VARCHAR(12) NOT NULL DEFAULT 'prospect',
+        notes TEXT,
+        cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )$fin");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS demandes (
+        id $id,
+        cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        nom VARCHAR(100) NOT NULL,
+        email VARCHAR(200) NOT NULL,
+        sujet VARCHAR(100) NOT NULL,
+        message TEXT NOT NULL,
+        statut VARCHAR(12) NOT NULL DEFAULT 'nouvelle'
+    )$fin");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS factures (
+        id $id,
+        numero VARCHAR(30) NOT NULL UNIQUE,
+        date_facture DATE NOT NULL,
+        client_id INT NULL,
+        nom VARCHAR(160) NOT NULL,
+        email VARCHAR(200) NOT NULL DEFAULT '',
+        adresse VARCHAR(300) NOT NULL DEFAULT '',
+        objet VARCHAR(250) NOT NULL,
+        montant DECIMAL(10,2) NOT NULL,
+        statut VARCHAR(10) NOT NULL DEFAULT 'emise',
+        date_paiement DATE NULL,
+        mode_paiement VARCHAR(40) NOT NULL DEFAULT '',
+        jeton VARCHAR(40) NOT NULL,
+        abonne_id INT NULL,
+        cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )$fin");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS parametres (
+        cle VARCHAR(60) NOT NULL PRIMARY KEY,
+        valeur TEXT
+    )$fin");
+    try {
+        $pdo->exec('ALTER TABLE abonnes ADD COLUMN client_id INT NULL');
+    } catch (Throwable $e) {
+    }
     $pdo->exec("CREATE TABLE IF NOT EXISTS journal (
         id $id,
         le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -146,11 +191,12 @@ function lien_pour(array $abonne, array $cfg): array
         return [$abonne['lien_perso'], false];
     }
     $liens = $cfg['liens'] ?? [];
+    $socle = param_lien('socle', $liens);
     $montant_socle = (float) ($cfg['montant_socle'] ?? 19.99);
-    if ($abonne['offre'] === 'socle' && !empty($liens['socle']) && abs((float) $abonne['montant'] - $montant_socle) < 0.005) {
-        return [$liens['socle'], false];
+    if ($abonne['offre'] === 'socle' && $socle !== '' && abs((float) $abonne['montant'] - $montant_socle) < 0.005) {
+        return [$socle, false];
     }
-    return [$liens['libre'] ?? '', true];
+    return [param_lien('libre', $liens), true];
 }
 
 function journaliser(PDO $pdo, string $type, string $destinataire, string $detail): void
@@ -255,16 +301,35 @@ function traiter_rappels(PDO $pdo, string $aujourdhui, array $cfg): array
     return $actions;
 }
 
-function marquer_paye(PDO $pdo, int $id): void
+function marquer_paye(PDO $pdo, int $id, bool $envoyer_facture = false, string $mode = 'Paiement en ligne'): ?int
 {
     $a = $pdo->prepare('SELECT * FROM abonnes WHERE id = ?');
     $a->execute([$id]);
     $a = $a->fetch(PDO::FETCH_ASSOC);
     if (!$a) {
-        return;
+        return null;
     }
     $pdo->prepare('INSERT INTO paiements (abonne_id, echeance, montant) VALUES (?, ?, ?)')
         ->execute([$id, $a['prochaine_echeance'], $a['montant']]);
+    $client = !empty($a['client_id']) ? client_par_id($pdo, (int) $a['client_id']) : null;
+    $facture_id = creer_facture($pdo, [
+        'client_id' => $client['id'] ?? null,
+        'nom' => $client ? ($client['entreprise'] ?: $client['nom']) : $a['nom'],
+        'email' => $client['email'] ?? $a['email'],
+        'adresse' => $client['adresse'] ?? '',
+        'objet' => "Abonnement « {$a['libelle']} » — échéance du " . date_fr($a['prochaine_echeance']),
+        'montant' => (float) $a['montant'],
+        'statut' => 'payee',
+        'date_paiement' => date('Y-m-d'),
+        'mode_paiement' => $mode,
+        'abonne_id' => $id,
+    ]);
     $pdo->prepare('UPDATE abonnes SET prochaine_echeance = ? WHERE id = ?')
         ->execute([mois_suivant($a['prochaine_echeance'], (int) $a['jour']), $id]);
+    if ($envoyer_facture) {
+        envoyer_facture($pdo, $facture_id);
+    }
+    return $facture_id;
 }
+
+require_once __DIR__ . '/lib_gestion.php';

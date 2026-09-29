@@ -60,10 +60,13 @@ encore à préciser.
   boutons, à remplacer par les vrais liens ; abonnements mensuels (récurrent) non
   tranchés (facturation mensuelle, paiement annuel ou Stripe). Examen du site par
   Revolut en cours.
-- Abonnements automatiques (code maison sur LWS) : `serveur/abonnements/` (cron quotidien) et
-  `site/gestion/` (page privée protégée par cPanel). RÈGLE HDS : le système de facturation et
-  d'abonnement reste séparé de tout environnement de données de santé ; n'y jamais stocker de
-  donnée de santé (ni dans les intitulés, ni dans les e-mails, ni dans les factures).
+- Administration maison sur LWS : `site/gestion/` (7 onglets : tableau de bord, clients, demandes,
+  paiements, comptabilité, site et technique, paramètres), `site/facture.php`, code métier dans
+  `serveur/abonnements/` (cron quotidien `rappels.php`). Paquet à déployer :
+  `livrables/administration-a-deployer.zip` (à régénérer après toute modification du code).
+  Page protégée par « Confidentialité du répertoire » de cPanel. RÈGLE HDS : ce système de
+  facturation reste séparé de tout environnement de données de santé ; n'y jamais stocker de
+  donnée de santé (notes, intitulés, motifs, factures, e-mails).
 - Rappels de renouvellement de l'hébergement : `serveur/rappels/rappel.php` (cron LWS).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.
