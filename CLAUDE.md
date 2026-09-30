@@ -73,6 +73,8 @@ encore à préciser.
 - Suivi : `docs/RESTE-A-FAIRE.md` (à mettre à jour à chaque fin de session), `docs/JOURNAL-DES-VERSIONS.md`.
   Sauvegarde complète versionnée : `python3 outils/construire_sauvegarde.py` (V1, V2…, incrémentée à chaque fin de
   session ou à la demande de Medy) ; tests : `bash outils/tests/lancer-tests.sh`.
+- Modèle déployable « model » : `model/` (sources avec champs `{{...}}`, `model_personnaliser.py`, `MODEL-LISEZ-MOI.md`) et
+  `livrables/model-site-deployable.zip`, généré par `python3 outils/model_generer.py` (à relancer après toute évolution du site).
 - Rappels de renouvellement de l'hébergement : `serveur/rappels/rappel.php` (cron LWS).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.

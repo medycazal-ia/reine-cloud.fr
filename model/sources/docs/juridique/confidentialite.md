@@ -1,0 +1,33 @@
+# Politique de confidentialité
+
+> Dernière mise à jour : 29 septembre 2026. Version à faire valider par un juriste avant toute modification importante.
+
+## Qui est responsable de vos données ?
+{{EDITEUR_NOM}}, entrepreneur individuel ({{NOM_COMMERCIAL}}), {{ADRESSE}}, joignable à {{EMAIL_CONTACT}}.
+
+## Quelles données, pourquoi ?
+Lorsque vous utilisez le formulaire de contact, nous recevons votre nom, votre adresse e-mail, le type de besoin et votre message.
+
+Ces informations servent uniquement à vous répondre. Elles ne sont ni vendues, ni utilisées pour de la publicité.
+
+## Sur quelle base légale ?
+Votre accord, donné en cochant la case du formulaire, et notre intérêt à répondre à votre demande.
+
+## Où vont-elles ?
+Le formulaire envoie un e-mail à l'éditeur et en garde une copie dans une base de données protégée, hébergée en France chez l'hébergeur du site. Seul l'éditeur y accède.
+
+## Paiement en ligne
+Si vous payez en ligne, le paiement est traité par un prestataire de paiement agréé, dont le nom figure sur la page de paiement, et qui agit pour son propre compte. Nous recevons votre nom, votre e-mail, le montant et l'état du paiement, jamais votre numéro de carte. Consultez la politique de confidentialité de ce prestataire pour connaître le détail de son traitement. Les données de facturation sont conservées selon les obligations comptables (jusqu'à dix ans). Nos reçus de paiement ne comportent aucun nom : seulement la référence de la commande. Votre facture nominative n'est pas envoyée par e-mail : vous la récupérez vous-même avec un lien personnel et un QR code. Pour les abonnements, nous conservons dans une base protégée, hébergée en France, votre nom, votre e-mail, votre offre, le montant et les dates d'échéance, afin de vous adresser vos liens de paiement et rappels.
+
+## Combien de temps ?
+Trois ans après notre dernier échange, puis suppression. Si un devis ou un contrat est signé, les pièces sont conservées selon les obligations légales (jusqu'à dix ans pour les pièces comptables).
+
+## Cookies et suivi
+Le site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience. Les polices de caractères sont hébergées sur le site lui-même : aucun service extérieur n'est contacté lors de votre visite.
+
+## Vos droits
+Vous pouvez demander l'accès, la rectification, l'effacement de vos données, vous opposer à leur usage ou retirer votre accord à tout moment, en écrivant à {{EMAIL_CONTACT}}. En cas de désaccord, vous pouvez saisir la CNIL (www.cnil.fr).
+
+## Sécurité
+Le site est servi en HTTPS. Les identifiants de la base de données sont stockés hors du dossier public du site.
+

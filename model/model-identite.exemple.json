@@ -1,0 +1,14 @@
+{
+  "DOMAINE": "A_REMPLIR (ex. monsite.fr)",
+  "EDITEUR_NOM": "A_REMPLIR (nom et prénom de l'éditeur ou de la société)",
+  "NOM_COMMERCIAL": "A_REMPLIR (nom commercial)",
+  "SIRET": "A_REMPLIR (ex. 123 456 789 00012)",
+  "ADRESSE": "A_REMPLIR (ex. 1 rue de la Paix, 75002 Paris, France)",
+  "EMAIL_CONTACT": "A_REMPLIR (adresse qui reçoit les messages)",
+  "EMAIL_EXPEDITEUR": "A_REMPLIR (ex. contact@monsite.fr, doit exister chez l'hébergeur)",
+  "TELEPHONE": "A_REMPLIR (ex. +33 1 23 45 67 89)",
+  "HEBERGEUR": "A_REMPLIR (nom, adresse et téléphone de l'hébergeur, comme dans ses mentions légales)",
+  "WHATSAPP": "",
+  "SLUG": "",
+  "COMPTE_CPANEL": "COMPTE"
+}

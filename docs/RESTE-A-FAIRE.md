@@ -40,6 +40,11 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [ ] Paiement automatique : brancher l'interface de programmation Revolut Business si Medy passe à cette offre (aujourd'hui « Payé » est un clic manuel).
 - [ ] Étudier un hébergement certifié HDS pour les futurs projets santé (rien à promettre avant d'avoir la certification).
 
+## B bis. Modèle déployable (« model »)
+- [x] Modèle créé le 2026-09-30 : `model/` et `livrables/model-site-deployable.zip` (guide : `model/MODEL-LISEZ-MOI.md`).
+- [ ] Pour un nouveau site : remplir `model-identite.json`, lancer `python3 model_personnaliser.py`, puis réécrire la page d'accueil, les offres et faire relire les textes juridiques.
+- [ ] Après toute évolution du site d'origine : `python3 outils/model_generer.py` pour remettre le modèle à jour.
+
 ## C. Décisions en attente
 - Formule des abonnements : l'administration envoie déjà le lien de paiement 7 jours avant l'échéance (mode automatique) ou à la demande (mode manuel) ; « Payé » reste manuel. À confirmer avec ce que propose Revolut.
 - Prestataire de paiement définitif (Revolut Pro envisagé ; Stripe et Stancer étudiés).

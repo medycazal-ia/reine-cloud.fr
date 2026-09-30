@@ -14,3 +14,8 @@ Première sauvegarde complète.
 - Outils : scripts de construction du paquet et de la sauvegarde, tests unitaires (59 contrôles) et de bout en bout.
 - Textes juridiques rédigés (à faire valider) ; note de conception de la GED.
 - Reste à faire : voir `docs/RESTE-A-FAIRE.md`.
+
+## Entre V1 et V2 — 30 septembre 2026
+- Ajout du **modèle déployable** (`model/`, `livrables/model-site-deployable.zip`) : copie du site avec champs à remplir et script de personnalisation.
+- Sera inclus dans la sauvegarde V2.
+

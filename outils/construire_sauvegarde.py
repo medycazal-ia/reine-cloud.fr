@@ -33,8 +33,9 @@ else:
         version = 1
 date = datetime.date.today().isoformat()
 
-# 2) paquet d'administration à jour
+# 2) paquets à jour : administration et modèle déployable (model)
 subprocess.run([sys.executable, 'outils/construire_paquet_admin.py'], check=True)
+subprocess.run([sys.executable, 'outils/model_generer.py'], check=True)
 
 # 3) historique git
 bundle = '/tmp/reine-cloud-historique.bundle'

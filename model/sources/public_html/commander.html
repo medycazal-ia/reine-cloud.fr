@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Commander — {{DOMAINE}}</title><meta name="robots" content="noindex"><link rel="icon" href="favicon.ico">
+<style>
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500;font-display:swap;src:url(fonts/CormorantGaramond-500i.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:600;font-display:swap;src:url(fonts/CormorantGaramond-500i.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/CormorantGaramond-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/CormorantGaramond-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/Montserrat-300.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/Montserrat-300.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/Montserrat-300.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/Montserrat-300.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/Montserrat-300.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+:root{--violet:#491E65;--nuit:#22103A;--or:#D9A93A;--or-clair:#F3D77A;--ivoire:#FAF7F0;--encre:#25182F;--gris:#6B6275;--trait:#E4DCCD}
+*{box-sizing:border-box}body{margin:0;font-family:"Montserrat",system-ui,sans-serif;color:var(--encre);background:var(--ivoire);line-height:1.7}
+header{background:var(--nuit);padding:22px 0}header .wrap,main,footer .wrap{width:min(820px,calc(100% - 32px));margin:0 auto}
+header a{color:var(--or-clair);text-decoration:none;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+main{padding:56px 0 72px}h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(2.2rem,5vw,3.2rem);color:var(--violet);line-height:1.1;margin:0 0 .4rem}
+.maj{color:var(--gris);font-size:.85rem;margin-bottom:2.2rem}h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;color:var(--violet);margin:2.2rem 0 .5rem}
+p,li{font-size:.98rem}ul{padding-left:1.2rem}a{color:var(--violet)}
+footer{background:#170A29;color:#9C8BB8;font-size:.78rem;padding:30px 0}footer a{color:var(--or-clair)}
+</style>
+<style>
+.wrapc{width:min(980px,calc(100% - 32px));margin:0 auto}
+main.cmd{width:min(980px,calc(100% - 32px))}
+.etapes{display:flex;gap:10px;flex-wrap:wrap;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--gris);margin-bottom:1.6rem}
+.etapes b{color:var(--violet)}
+.grille2{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
+.carte{background:#fff;border:1px solid var(--trait);padding:34px}
+.carte h2{margin-top:0}
+.prix{font-family:"Cormorant Garamond",Georgia,serif;font-size:3rem;font-weight:600;color:var(--violet);line-height:1}
+.prix small{font-family:"Montserrat",system-ui,sans-serif;font-size:.85rem;font-weight:400;color:var(--gris)}
+.carte ul{list-style:none;padding:0;margin:1.2rem 0 0}
+.carte li{padding:9px 0 9px 26px;position:relative;border-top:1px solid var(--trait);font-size:.93rem}
+.carte li::before{content:"✓";position:absolute;left:0;color:#1E9A5C;font-weight:700}
+.paiement{background:linear-gradient(170deg,var(--violet),var(--nuit));color:#fff;padding:34px;border:1px solid var(--or)}
+.paiement h2{color:#fff;margin-top:0}
+.paiement label{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;line-height:1.5;color:#E5DCF2;margin:1rem 0 1.4rem}
+.paiement label input{margin-top:4px;accent-color:#D9A93A;width:18px;height:18px;flex:none}
+.paiement a{color:var(--or-clair)}
+.paiement a.btn{color:var(--nuit)}
+.btn{display:block;width:100%;text-align:center;padding:16px 24px;font:600 .8rem "Montserrat",system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border:1px solid transparent;cursor:pointer;color:var(--nuit);background:linear-gradient(135deg,var(--or-clair),var(--or) 55%,#A97B1E)}
+.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed;filter:grayscale(.3)}
+.aide{font-size:.8rem;color:#BFAFD6;margin-top:1rem}
+.securite{margin-top:1.4rem;font-size:.78rem;color:#BFAFD6;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
+.retour{display:inline-block;margin-bottom:1rem;color:var(--violet);font-size:.85rem}
+@media(max-width:760px){.grille2{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="wrap"><a href="/">← {{DOMAINE}}</a></div></header>
+<main class="cmd">
+<div class="etapes"><b>1. Votre offre</b><span>›</span><span>2. Conditions</span><span>›</span><span>3. Paiement sécurisé</span></div>
+<h1 id="titre">Votre commande</h1>
+<p class="maj" id="sous-titre">Prix nets, TVA non applicable, art. 293 B du CGI.</p>
+<div class="grille2">
+  <section class="carte" aria-labelledby="titre-offre">
+    <h2 id="titre-offre"></h2>
+    <div class="prix" id="prix"></div>
+    <p id="detail" style="color:var(--gris);font-size:.9rem;margin-top:.6rem"></p>
+    <ul id="inclus"></ul>
+    <p style="margin-top:1.4rem;font-size:.85rem"><a class="retour" href="/#offres">← Voir toutes les offres</a></p>
+  </section>
+  <section class="paiement" aria-labelledby="titre-paiement">
+    <h2 id="titre-paiement">Finaliser</h2>
+    <label><input type="checkbox" id="accord"> <span>Je certifie agir pour mon activité professionnelle et j'accepte les <a href="cgv.html" target="_blank" rel="noopener">conditions générales de vente</a>.</span></label>
+    <a class="btn" id="payer" href="#" aria-disabled="true">Payer en ligne</a>
+    <p class="aide" id="aide">Cochez la case pour continuer.</p>
+    <p class="securite">Le paiement se fait sur la page sécurisée de notre prestataire de paiement : nous ne voyons jamais votre numéro de carte. Un reçu de paiement (sans nom) vous est adressé par e-mail ; votre facture se récupère avec le lien et le QR code du reçu. Une question ? <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a> · {{TELEPHONE}}</p>
+  </section>
+</div>
+</main>
+<footer><div class="wrap">© 2026 {{DOMAINE}} · {{NOM_COMMERCIAL}} · <a href="/">Accueil</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="cgv.html">CGV</a></div></footer>
+<script src="paiement.js"></script>
+<script>
+(function(){
+  var OFFRES={
+    socle:{titre:"Le socle",prix:"19,99&nbsp;€",unite:" / mois",detail:"Abonnement mensuel, sans engagement de durée.",
+      inclus:["Site et e-mails professionnels","Hébergement en France","Sauvegardes et mises à jour","Un interlocuteur unique","2 révisions par an d'environ 1 heure"]},
+    agent:{titre:"L'agent standard",prix:"99&nbsp;€",unite:" / mois par agent",detail:"Abonnement mensuel, sans engagement de durée. Remise dès 3 agents : indiquez le nombre d'agents souhaité en nous écrivant.",
+      inclus:["Un agent, 2 problématiques proches sur le même outil","Adaptation gratuite à vos problématiques","Remise dès 3 agents, jusqu'à 40 % avec 5 agents","Audit en visio facultatif","Modifications et suivi à 49 €/h"]},
+    cadrage:{titre:"Le cadrage",prix:"199&nbsp;€",unite:" · paiement unique",detail:"Première étape du sur mesure. Déduit à 50 % si vous poursuivez avec la mise en place.",
+      inclus:["Analyse de vos besoins et de vos outils","Proposition chiffrée pour l'agent sur mesure","Cadrage déduit à 50 % si vous poursuivez"]}
+  };
+  var cle=(location.search.match(/[?&]offre=([a-z]+)/)||[])[1];
+  if(!OFFRES[cle]){cle='socle';}
+  var o=OFFRES[cle];
+  document.getElementById('titre-offre').textContent=o.titre;
+  document.getElementById('prix').innerHTML=o.prix+'<small>'+o.unite+'</small>';
+  document.getElementById('detail').textContent=o.detail;
+  document.getElementById('inclus').innerHTML=o.inclus.map(function(x){return '<li>'+x.replace(/</g,'&lt;')+'</li>';}).join('');
+  document.title='Commander : '+o.titre+' — {{DOMAINE}}';
+  var L=window.LIENS_PAIEMENT||{};
+  var lien=L[cle];
+  var ok=typeof lien==='string'&&/^https:\/\/[^\s"'<>]+$/.test(lien);
+  var b=document.getElementById('payer'),c=document.getElementById('accord'),a=document.getElementById('aide');
+  var sujet=encodeURIComponent('Commande : '+o.titre);
+  var corps=encodeURIComponent('Bonjour,\n\nJe souhaite commander : '+o.titre+'.\nJe certifie agir pour mon activité professionnelle et j\'accepte les conditions générales de vente.\n\nNom / entreprise :\nNombre d\'agents (si concerné) :\n\nMerci de m\'envoyer mon lien de paiement.');
+  if(!ok){b.textContent='Recevoir mon lien de paiement';}
+  function maj(){
+    var actif=c.checked;
+    b.setAttribute('aria-disabled',actif?'false':'true');
+    if(!actif){b.removeAttribute('target');b.href='#';a.textContent='Cochez la case pour continuer.';return;}
+    if(ok){b.href=lien;b.target='_blank';b.rel='noopener';a.textContent='Vous serez redirigé vers la page de paiement sécurisée.';}
+    else{b.href='mailto:{{EMAIL_CONTACT}}?subject='+sujet+'&body='+corps;b.removeAttribute('target');a.textContent='Le paiement en ligne ouvre bientôt : votre message est prêt, nous vous répondons avec votre lien de paiement.';}
+  }
+  b.addEventListener('click',function(e){if(!c.checked){e.preventDefault();}});
+  c.addEventListener('change',maj);maj();
+})();
+</script>
+</body></html>
