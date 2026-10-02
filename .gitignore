@@ -3,3 +3,4 @@ __pycache__/
 node_modules/
 model/model-identite.json
 model/model-sortie/
+sauvegardes/*.bundle
