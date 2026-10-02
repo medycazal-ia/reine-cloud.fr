@@ -82,3 +82,10 @@ $p4->exec("INSERT INTO factures (numero,date_facture,nom,objet,montant,statut,je
 creer_tables($p4); eq('rattrapage jeton_recu', strlen((string)$p4->query("SELECT jeton_recu FROM factures WHERE numero='F-2026-0099'")->fetchColumn()),32);
 eq('recu refuse si non payee', envoyer_recu($p4,(int)$p4->query("SELECT id FROM factures WHERE numero='F-2026-0099'")->fetchColumn()),false);
 echo "TOTAL apres ajouts -> OK: $ok, ECHECS: $ko\n";
+// --- lecture des liens publiés (ne rien effacer par erreur) ---
+$tmpjs=sys_get_temp_dir().'/paiement-test.js';
+file_put_contents($tmpjs,"window.LIENS_PAIEMENT = {\n  socle: \"https://checkout.revolut.com/pay/abc\",\n  agent: \"\",\n  cadrage: \"javascript:alert(1)\",\n  libre: \"https://checkout.revolut.com/pay/zzz\"\n};\n");
+$l=lire_paiement_js($tmpjs); eq('lecture socle',$l['socle'],'https://checkout.revolut.com/pay/abc'); eq('lecture agent vide',$l['agent'],'');
+eq('lecture lien douteux ignoré',$l['cadrage'],''); eq('lecture libre',$l['libre'],'https://checkout.revolut.com/pay/zzz');
+eq('fichier absent',lire_paiement_js('/chemin/inexistant.js'),[]);
+echo "TOTAL liens -> OK: $ok, ECHECS: $ko\n";

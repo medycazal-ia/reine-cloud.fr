@@ -304,3 +304,15 @@ function ecrire_paiement_js(string $chemin, array $liens): bool
     }
     return rename($tmp, $chemin);
 }
+
+/** Lit les liens actuellement publiés dans paiement.js (pour préremplir le formulaire et ne rien effacer par erreur). */
+function lire_paiement_js(string $chemin): array
+{
+    $liens = [];
+    if (is_file($chemin) && preg_match_all('/\b(socle|agent|cadrage|libre)\s*:\s*"([^"]*)"/', (string) file_get_contents($chemin), $m, PREG_SET_ORDER)) {
+        foreach ($m as $x) {
+            $liens[$x[1]] = lien_valide($x[2]) ? $x[2] : '';
+        }
+    }
+    return $liens;
+}

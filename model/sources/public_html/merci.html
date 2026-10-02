@@ -25,13 +25,24 @@ footer{background:#170A29;color:#9C8BB8;font-size:.78rem;padding:30px 0}footer a
 <main>
 <h1>Merci pour votre confiance.</h1>
 <p class="maj">Votre paiement a bien été pris en compte.</p>
+<p id="offre-ligne" hidden style="font-weight:600"></p>
 <h2>Et maintenant ?</h2>
 <ul>
-<li>Vous recevez dans quelques minutes un e-mail de confirmation et votre facture.</li>
+<li>Vous recevez dans quelques minutes un e-mail avec votre <strong>reçu de paiement</strong> (il ne comporte aucun nom). Votre facture nominative s'y récupère vous-même, grâce à un lien et à un QR code.</li>
 <li>Nous vous écrivons rapidement pour lancer la mise en place et recueillir les informations nécessaires.</li>
 <li>Une question ? Écrivez-nous à <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a> ou appelez le {{TELEPHONE}}.</li>
 </ul>
 <p>Conditions applicables : <a href="cgv.html">conditions générales de vente</a>.</p>
 </main>
 <footer><div class="wrap">© 2026 {{DOMAINE}} · {{NOM_COMMERCIAL}} · <a href="/">Accueil</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="cgv.html">CGV</a></div></footer>
+<script>
+(function(){
+  var O={socle:"Votre commande : le socle (site et e-mails professionnels hébergés en France).",
+         agent:"Votre commande : l'agent standard.",
+         cadrage:"Votre règlement : le cadrage."};
+  var k=(location.search.match(/[?&]offre=([a-z]+)/)||[])[1];
+  var e=document.getElementById('offre-ligne');
+  if(e&&O[k]){e.textContent=O[k];e.hidden=false;}
+})();
+</script>
 </body></html>

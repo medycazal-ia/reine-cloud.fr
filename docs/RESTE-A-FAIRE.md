@@ -18,7 +18,8 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [ ] Vérifier dans l'onglet « Site et technique » que tout est au vert.
 
 ### Paiement
-- [ ] Créer les vrais liens Revolut (socle 19,99 € réutilisable, agent 99 €, cadrage 199 €, montant libre) et les coller dans l'onglet Paiements. **Remplacer le lien de test à 1 €**, aujourd'hui sur les quatre boutons.
+- [x] Lien Revolut du **socle** renseigné (2026-10-02). À faire dans Revolut : régler l'**adresse de retour après paiement** de ce lien sur `https://reine-cloud.fr/merci.html?offre=socle`.
+- [ ] Créer les vrais liens Revolut de l'agent (99 €), du cadrage (199 €) et du montant libre, et les coller dans l'onglet Paiements (ou `paiement.js`). **Remplacer le lien de test à 1 €**, encore sur ces trois boutons.
 - [ ] Vérifier que le lien du socle est réutilisable (plusieurs clients, plusieurs mois).
 - [ ] Attendre le retour de l'examen du site par Revolut ; noter ce qu'ils proposent (encaissement, récurrent).
 

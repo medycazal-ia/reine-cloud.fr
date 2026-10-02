@@ -76,6 +76,12 @@ def copier(src, dst):
 shutil.rmtree(MODEL + '/sources', ignore_errors=True)
 for src, dst in COPIES:
     copier(src, f'{MODEL}/sources/{dst}')
+# le modèle ne doit contenir aucun lien de paiement réel
+with open(f'{MODEL}/sources/public_html/paiement.js', 'w', encoding='utf-8') as f:
+    f.write('// Liens de paiement du site. Ne contient aucun secret : ces adresses sont publiques.\n'
+            '// Collez entre les guillemets l\'adresse (https://…) du lien de paiement créé chez le prestataire.\n'
+            '// Laissez "" pour désactiver un bouton.\n'
+            'window.LIENS_PAIEMENT = {\n  socle:   "",\n  agent:   "",\n  cadrage: "",\n  libre:   ""\n};\n')
 shutil.copyfile('outils/model_personnaliser.py', f'{MODEL}/model_personnaliser.py')
 print('model/ généré :', sum(len(fs) for _, _, fs in os.walk(MODEL + '/sources')), 'fichiers')
 

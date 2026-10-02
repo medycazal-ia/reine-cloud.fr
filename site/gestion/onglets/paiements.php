@@ -96,6 +96,8 @@ $abonnes = $pdo->query('SELECT * FROM abonnes ORDER BY actif DESC, prochaine_ech
 $clients = $pdo->query('SELECT id, nom, entreprise, email FROM clients ORDER BY nom')->fetchAll(PDO::FETCH_ASSOC);
 $aujourdhui = date('Y-m-d');
 $preclient = (int) ($_GET['client'] ?? 0);
+$liens_publies = lire_paiement_js(dirname(__DIR__, 2) . '/paiement.js');
+$valeur_lien = static fn(string $k) => param('lien_' . $k) !== '' ? param('lien_' . $k) : ($liens_publies[$k] ?? '');
 ?>
 <h1>Paiements</h1>
 <p class="note">Abonnements, liens de paiement et paiements ponctuels. Mode automatique : le lien part 7 jours avant l'échéance, un rappel la veille, une relance 3 jours après. Mode manuel : rien ne part sans votre clic.</p>
@@ -154,9 +156,9 @@ $preclient = (int) ($_GET['client'] ?? 0);
 <h2>Liens de paiement du site</h2>
 <p class="note">Ces liens alimentent les boutons « Payer en ligne » du site et les e-mails d'échéance. Collez chaque lien Revolut puis publiez : le site est mis à jour aussitôt. Laissez vide pour désactiver un bouton. Ce ne sont pas des secrets.</p>
 <form class="grille" method="post" action="?o=paiements"><?= champ_jeton() ?><input type="hidden" name="action" value="liens">
-  <div class="large"><label>Le socle (19,99 €, lien réutilisable)</label><input name="lien_socle" maxlength="500" value="<?= h(param('lien_socle')) ?>" placeholder="https://checkout.revolut.com/pay/…"></div>
-  <div class="large"><label>L'agent standard (99 € par agent)</label><input name="lien_agent" maxlength="500" value="<?= h(param('lien_agent')) ?>"></div>
-  <div class="large"><label>Le cadrage (199 €)</label><input name="lien_cadrage" maxlength="500" value="<?= h(param('lien_cadrage')) ?>"></div>
-  <div class="large"><label>Montant libre (le client saisit le montant)</label><input name="lien_libre" maxlength="500" value="<?= h(param('lien_libre')) ?>"></div>
+  <div class="large"><label>Le socle (19,99 €, lien réutilisable)</label><input name="lien_socle" maxlength="500" value="<?= h($valeur_lien('socle')) ?>" placeholder="https://checkout.revolut.com/pay/…"></div>
+  <div class="large"><label>L'agent standard (99 € par agent)</label><input name="lien_agent" maxlength="500" value="<?= h($valeur_lien('agent')) ?>"></div>
+  <div class="large"><label>Le cadrage (199 €)</label><input name="lien_cadrage" maxlength="500" value="<?= h($valeur_lien('cadrage')) ?>"></div>
+  <div class="large"><label>Montant libre (le client saisit le montant)</label><input name="lien_libre" maxlength="500" value="<?= h($valeur_lien('libre')) ?>"></div>
   <div style="align-self:end"><button class="pl">Enregistrer et publier sur le site</button></div>
 </form>
