@@ -89,3 +89,8 @@ $l=lire_paiement_js($tmpjs); eq('lecture socle',$l['socle'],'https://checkout.re
 eq('lecture lien douteux ignoré',$l['cadrage'],''); eq('lecture libre',$l['libre'],'https://checkout.revolut.com/pay/zzz');
 eq('fichier absent',lire_paiement_js('/chemin/inexistant.js'),[]);
 echo "TOTAL liens -> OK: $ok, ECHECS: $ko\n";
+file_put_contents($tmpjs,"window.LIENS_PAIEMENT = {\n  surmesure: \"https://checkout.revolut.com/pay/sm\"\n};\n");
+eq('lecture surmesure',lire_paiement_js($tmpjs)['surmesure'] ?? '', 'https://checkout.revolut.com/pay/sm');
+$dest=sys_get_temp_dir().'/paiement-ecrit.js'; eq('écriture ok', ecrire_paiement_js($dest,['socle'=>'https://a.fr/1','surmesure'=>'https://a.fr/sm']),true);
+$relu=lire_paiement_js($dest); eq('relecture surmesure',$relu['surmesure'],'https://a.fr/sm'); eq('relecture agent vide',$relu['agent'],'');
+echo "TOTAL surmesure -> OK: $ok, ECHECS: $ko\n";

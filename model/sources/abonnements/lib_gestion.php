@@ -19,6 +19,7 @@ const PARAM_DEFAUTS = [
     'lien_socle' => '',
     'lien_agent' => '',
     'lien_cadrage' => '',
+    'lien_surmesure' => '',
     'lien_libre' => '',
     'cron_dernier' => '',
 ];
@@ -288,7 +289,7 @@ function csv_recettes(array $recettes): string
 // ---------- Site : liens de paiement publiés dans paiement.js ----------
 function ecrire_paiement_js(string $chemin, array $liens): bool
 {
-    $cles = ['socle', 'agent', 'cadrage', 'libre'];
+    $cles = ['socle', 'agent', 'cadrage', 'surmesure', 'libre'];
     $corps = "// Généré par l'administration (onglet Paiements). Ne contient aucun secret : ces adresses sont publiques.\nwindow.LIENS_PAIEMENT = {\n";
     foreach ($cles as $i => $k) {
         $v = (string) ($liens[$k] ?? '');
@@ -309,7 +310,7 @@ function ecrire_paiement_js(string $chemin, array $liens): bool
 function lire_paiement_js(string $chemin): array
 {
     $liens = [];
-    if (is_file($chemin) && preg_match_all('/\b(socle|agent|cadrage|libre)\s*:\s*"([^"]*)"/', (string) file_get_contents($chemin), $m, PREG_SET_ORDER)) {
+    if (is_file($chemin) && preg_match_all('/\b(socle|agent|cadrage|surmesure|libre)\s*:\s*"([^"]*)"/', (string) file_get_contents($chemin), $m, PREG_SET_ORDER)) {
         foreach ($m as $x) {
             $liens[$x[1]] = lien_valide($x[2]) ? $x[2] : '';
         }

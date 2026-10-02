@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($action === 'liens') {
         $liens = [];
-        foreach (['socle', 'agent', 'cadrage', 'libre'] as $k) { $liens[$k] = trim((string) ($_POST['lien_' . $k] ?? '')); }
+        foreach (['socle', 'agent', 'cadrage', 'surmesure', 'libre'] as $k) { $liens[$k] = trim((string) ($_POST['lien_' . $k] ?? '')); }
         $mauvais = array_filter($liens, static fn($v) => $v !== '' && !lien_valide($v));
         if ($mauvais) {
             flash('Chaque lien doit commencer par https:// (ou rester vide).', true);
@@ -159,6 +159,7 @@ $valeur_lien = static fn(string $k) => param('lien_' . $k) !== '' ? param('lien_
   <div class="large"><label>Le socle (19,99 €, lien réutilisable)</label><input name="lien_socle" maxlength="500" value="<?= h($valeur_lien('socle')) ?>" placeholder="https://checkout.revolut.com/pay/…"></div>
   <div class="large"><label>L'agent standard (99 € par agent)</label><input name="lien_agent" maxlength="500" value="<?= h($valeur_lien('agent')) ?>"></div>
   <div class="large"><label>Le cadrage (199 €)</label><input name="lien_cadrage" maxlength="500" value="<?= h($valeur_lien('cadrage')) ?>"></div>
+  <div class="large"><label>Le sur mesure (selon devis)</label><input name="lien_surmesure" maxlength="500" value="<?= h($valeur_lien('surmesure')) ?>"></div>
   <div class="large"><label>Montant libre (le client saisit le montant)</label><input name="lien_libre" maxlength="500" value="<?= h($valeur_lien('libre')) ?>"></div>
   <div style="align-self:end"><button class="pl">Enregistrer et publier sur le site</button></div>
 </form>

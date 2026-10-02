@@ -39,7 +39,8 @@ footer{background:#170A29;color:#9C8BB8;font-size:.78rem;padding:30px 0}footer a
 (function(){
   var O={socle:"Votre commande : le socle (site et e-mails professionnels hébergés en France).",
          agent:"Votre commande : l'agent standard.",
-         cadrage:"Votre règlement : le cadrage."};
+         cadrage:"Votre règlement : le cadrage.",
+         surmesure:"Votre commande : l'agent sur mesure."};
   var k=(location.search.match(/[?&]offre=([a-z]+)/)||[])[1];
   var e=document.getElementById('offre-ligne');
   if(e&&O[k]){e.textContent=O[k];e.hidden=false;}

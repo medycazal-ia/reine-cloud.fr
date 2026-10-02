@@ -5,5 +5,6 @@ window.LIENS_PAIEMENT = {
   socle:   "",
   agent:   "",
   cadrage: "",
+  surmesure: "",
   libre:   ""
 };

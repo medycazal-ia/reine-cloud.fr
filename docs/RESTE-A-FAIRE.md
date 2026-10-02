@@ -18,8 +18,14 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [ ] Vérifier dans l'onglet « Site et technique » que tout est au vert.
 
 ### Paiement
-- [x] Lien Revolut du **socle** renseigné (2026-10-02). À faire dans Revolut : régler l'**adresse de retour après paiement** de ce lien sur `https://reine-cloud.fr/merci.html?offre=socle`.
-- [ ] Créer les vrais liens Revolut de l'agent (99 €), du cadrage (199 €) et du montant libre, et les coller dans l'onglet Paiements (ou `paiement.js`). **Remplacer le lien de test à 1 €**, encore sur ces trois boutons.
+- [x] Liens Revolut renseignés le 2026-10-02 : **socle**, **agent standard**, **cadrage**, **sur mesure** (nouveau bouton « Commander le sur mesure »). Le **règlement libre** (page « Payer ») pointe encore vers le lien de TEST à 1 € : à remplacer.
+- [ ] Dans Revolut, régler l'**adresse de retour après paiement** de chaque lien :
+  - socle → `https://reine-cloud.fr/merci.html?offre=socle`
+  - agent standard → `https://reine-cloud.fr/merci.html?offre=agent`
+  - cadrage → `https://reine-cloud.fr/merci.html?offre=cadrage`
+  - sur mesure → `https://reine-cloud.fr/merci.html?offre=surmesure`
+- [ ] Vérifier le **montant** de chaque lien (socle 19,99 €, agent 99 €, cadrage 199 €) et ce que couvre le lien « sur mesure » (le site indique : montant exact selon devis).
+- [ ] Mettre en ligne les fichiers modifiés : `paiement.js`, `index.html`, `commander.html`, `merci.html`.
 - [ ] Vérifier que le lien du socle est réutilisable (plusieurs clients, plusieurs mois).
 - [ ] Attendre le retour de l'examen du site par Revolut ; noter ce qu'ils proposent (encaissement, récurrent).
 

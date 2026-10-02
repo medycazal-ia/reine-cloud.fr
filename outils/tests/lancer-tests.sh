@@ -3,7 +3,7 @@
 # Usage : bash outils/tests/lancer-tests.sh
 set -e
 RACINE="$(cd "$(dirname "$0")/../.." && pwd)"
-pkill -f "[p]hp -S 127.0.0.1:8090" 2>/dev/null || true   # coupe un ancien serveur de test éventuel
+pkill -f "[p]hp -S 127.0.0.1:809" 2>/dev/null || true; pkill -f "[p]hp -S 127.0.0.1:8088" 2>/dev/null || true   # coupe un ancien serveur de test éventuel
 T=/tmp/reine-cloud-tests/home
 rm -rf /tmp/reine-cloud-tests && mkdir -p $T/abonnements $T/public_html/js
 
@@ -37,4 +37,9 @@ echo "== Tests bout en bout =="
 sleep 1
 NODE_PATH="$(npm root -g)" node "$RACINE/outils/tests/test_bout_en_bout.js" | grep -E "ECHEC|!!|erreurs" || true
 kill "$(cat /tmp/reine-cloud-tests/php.pid)" 2>/dev/null || true
+echo "== Pages publiques =="
+( cd "$RACINE/site" && php -S 127.0.0.1:8088 >/dev/null 2>&1 & echo $! > /tmp/reine-cloud-tests/php2.pid )
+sleep 1
+NODE_PATH="$(npm root -g)" node "$RACINE/outils/tests/test_pages_publiques.js" 8088 | grep -E "ECHEC|aucune erreur" || true
+kill "$(cat /tmp/reine-cloud-tests/php2.pid)" 2>/dev/null || true
 echo "Terminé : aucune ligne « ECHEC » ci-dessus = tout est bon."
