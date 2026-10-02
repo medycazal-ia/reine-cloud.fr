@@ -48,6 +48,8 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 ## B ter. Projet Formedy (séparé de reine-cloud.fr)
 - Formedy est un projet **distinct** (dépôt `of-medy`), construit à partir du modèle. Aucun code, aucune clé, aucune base ni aucun hébergement n'est partagé avec reine-cloud.fr.
 - Sa sauvegarde et son guide de déploiement sont livrés à part (pas dans ce dépôt).
+- **Constat du 2026-10-02** : le dépôt `medycazal-ia/of-medy` ne contient que `model-site-deployable.zip` (le modèle de reine-cloud.fr). Les 46 fichiers de Formedy décrits dans un résumé n'y sont pas : à envoyer (zip du dossier `ofmedy_model/`) pour relecture, sauvegarde et guide de déploiement définitif.
+- Un guide provisoire a été remis à Medy (écrit d'après le résumé, code non vu). Points critiques notés : webhook Stripe à sortir du dossier protégé, scripts cron hors du dossier public, clés hors de `public_html`.
 
 ## C. Décisions en attente
 - Formule des abonnements : l'administration envoie déjà le lien de paiement 7 jours avant l'échéance (mode automatique) ou à la demande (mode manuel) ; « Payé » reste manuel. À confirmer avec ce que propose Revolut.
