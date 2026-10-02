@@ -1,6 +1,6 @@
 # Reste à faire — reine-cloud.fr
 
-**Version 1 — 29 septembre 2026** (mise à jour à chaque fin de session ou à la demande de Medy)
+**Version 2 — 2 octobre 2026** (mise à jour à chaque fin de session ou à la demande de Medy)
 
 ## A. À faire par Medy (déploiement et vérifications)
 Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
@@ -44,6 +44,10 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [x] Modèle créé le 2026-09-30 : `model/` et `livrables/model-site-deployable.zip` (guide : `model/MODEL-LISEZ-MOI.md`).
 - [ ] Pour un nouveau site : remplir `model-identite.json`, lancer `python3 model_personnaliser.py`, puis réécrire la page d'accueil, les offres et faire relire les textes juridiques.
 - [ ] Après toute évolution du site d'origine : `python3 outils/model_generer.py` pour remettre le modèle à jour.
+
+## B ter. Projet Formedy (séparé de reine-cloud.fr)
+- Formedy est un projet **distinct** (dépôt `of-medy`), construit à partir du modèle. Aucun code, aucune clé, aucune base ni aucun hébergement n'est partagé avec reine-cloud.fr.
+- Sa sauvegarde et son guide de déploiement sont livrés à part (pas dans ce dépôt).
 
 ## C. Décisions en attente
 - Formule des abonnements : l'administration envoie déjà le lien de paiement 7 jours avant l'échéance (mode automatique) ou à la demande (mode manuel) ; « Payé » reste manuel. À confirmer avec ce que propose Revolut.

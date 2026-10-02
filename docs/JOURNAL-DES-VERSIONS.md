@@ -19,3 +19,9 @@ Première sauvegarde complète.
 - Ajout du **modèle déployable** (`model/`, `livrables/model-site-deployable.zip`) : copie du site avec champs à remplir et script de personnalisation.
 - Sera inclus dans la sauvegarde V2.
 
+## V2 — 2 octobre 2026
+- Inclut le **modèle déployable** (`model/`, `livrables/model-site-deployable.zip`, script `outils/model_generer.py`).
+- Précisions sur l'utilisation du modèle (modifier le modèle ou un site personnalisé).
+- Séparation explicite du projet **Formedy** (dépôt distinct `of-medy`) : aucun partage de code, clés, base ou hébergement.
+- Reste à faire : voir `docs/RESTE-A-FAIRE.md` (version 2).
+
