@@ -63,7 +63,7 @@ main.cmd{width:min(980px,calc(100% - 32px))}
   <section class="paiement" aria-labelledby="titre-paiement">
     <h2 id="titre-paiement">Finaliser</h2>
     <label><input type="checkbox" id="accord"> <span>Je certifie agir pour mon activité professionnelle et j'accepte les <a href="cgv.html" target="_blank" rel="noopener">conditions générales de vente</a>.</span></label>
-    <a class="btn" id="payer" href="#" aria-disabled="true">Payer en ligne</a>
+    <a class="btn" id="payer" href="#" target="_blank" rel="noopener" aria-disabled="true">Payer en ligne</a>
     <p class="aide" id="aide">Cochez la case pour continuer.</p>
     <p class="securite">Le paiement se fait sur la page sécurisée de notre prestataire de paiement : nous ne voyons jamais votre numéro de carte. Un reçu de paiement (sans nom) vous est adressé par e-mail ; votre facture se récupère avec le lien et le QR code du reçu. Une question ? <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a> · {{TELEPHONE}}</p>
   </section>
@@ -105,7 +105,10 @@ main.cmd{width:min(980px,calc(100% - 32px))}
     if(ok){b.href=lien;b.target='_blank';b.rel='noopener';a.textContent='Vous serez redirigé vers la page de paiement sécurisée.';}
     else{b.href='mailto:{{EMAIL_CONTACT}}?subject='+sujet+'&body='+corps;b.removeAttribute('target');a.textContent='Le paiement en ligne ouvre bientôt : votre message est prêt, nous vous répondons avec votre lien de paiement.';}
   }
-  b.addEventListener('click',function(e){if(!c.checked){e.preventDefault();}});
+  b.addEventListener('click',function(e){
+    if(!c.checked){e.preventDefault();return;}
+    if(ok){a.textContent='La page de paiement s’est ouverte dans un nouvel onglet. Une fois le paiement terminé, revenez sur cet onglet : vous recevrez votre reçu par e-mail. Rien ne s’est ouvert ? Autorisez les fenêtres pop-up, puis cliquez de nouveau.';}
+  });
   c.addEventListener('change',maj);maj();
 })();
 </script>

@@ -25,3 +25,11 @@ Première sauvegarde complète.
 - Séparation explicite du projet **Formedy** (dépôt distinct `of-medy`) : aucun partage de code, clés, base ou hébergement.
 - Reste à faire : voir `docs/RESTE-A-FAIRE.md` (version 2).
 
+## V3 — 2 octobre 2026
+- Les **cinq liens de paiement Revolut** sont en place (socle, agent standard, cadrage, sur mesure, règlement libre) ; le lien de test à 1 € est supprimé.
+- Nouveau bouton **« Commander le sur mesure »** et page de remerciement reconnaissant l'offre.
+- Le paiement s'ouvre toujours dans un **nouvel onglet**, avec un message qui invite à revenir sur le site.
+- L'administration préremplit les liens à partir de `paiement.js` (aucun effacement par erreur) et gère cinq liens.
+- Nouveau test des **pages publiques** dans la suite de tests ; modèle « model » à jour (sans lien réel).
+- Reste à faire : voir `docs/RESTE-A-FAIRE.md` (version 3).
+

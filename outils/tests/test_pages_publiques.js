@@ -14,6 +14,7 @@ const B = `http://127.0.0.1:${port}/`;
     const href = await p.getAttribute('#payer', 'href');
     const lienOk = href.startsWith('https://') ? href : null;
     ok((await p.textContent('#titre-offre')).length > 0, `commander ${o} : titre affiché`);
+    if (lienOk) { ok((await p.getAttribute('#payer', 'target')) === '_blank' && (await p.getAttribute('#payer', 'rel')).includes('noopener'), `commander ${o} : le paiement s'ouvre dans un nouvel onglet`); }
     ok(lienOk === null ? /""/.test(liens) : liens.includes(href), `commander ${o} : bouton ${lienOk ? 'relié au lien du site' : 'en attente de lien (e-mail)'}`);
   }
   await p.goto(B + 'merci.html?offre=socle'); ok((await p.textContent('#offre-ligne')).includes('socle'), 'merci : offre reconnue');
@@ -21,6 +22,11 @@ const B = `http://127.0.0.1:${port}/`;
   await p.goto(B);
   const boutons = await p.$$eval('#offres a[href*="commander.html"]', a => a.length);
   ok(boutons === 4, `accueil : 4 boutons de commande (${boutons})`);
+  await p.goto(B + 'payer.html');
+  for (const k of ['cadrage', 'libre']) {
+    ok((await p.getAttribute(`[data-lien=${k}]`, 'target')) === '_blank' && (await p.$eval(`[data-lien=${k}]`, e => !e.hidden)), `payer ${k} : nouvel onglet et bouton visible`);
+  }
+  ok(!liens.includes('9fe62e54'), 'plus aucun lien de test à 1 € dans paiement.js');
   for (const page of ['payer.html', 'cgv.html', 'mentions-legales.html', 'confidentialite.html']) {
     const r = await p.goto(B + page); ok(r.status() === 200, `${page} -> ${r.status()}`);
   }
