@@ -59,6 +59,9 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - **Constat du 2026-10-02** : le dépôt `medycazal-ia/of-medy` ne contient que `model-site-deployable.zip` (le modèle de reine-cloud.fr). Les 46 fichiers de Formedy décrits dans un résumé n'y sont pas : à envoyer (zip du dossier `ofmedy_model/`) pour relecture, sauvegarde et guide de déploiement définitif.
 - Un guide provisoire a été remis à Medy (écrit d'après le résumé, code non vu). Points critiques notés : webhook Stripe à sortir du dossier protégé, scripts cron hors du dossier public, clés hors de `public_html`.
 
+## B quater. Entretien du dépôt
+- [ ] L'historique git contient encore deux anciens fichiers d'historique (`sauvegardes/*.bundle`, ~58 Mo) enregistrés par erreur lors des versions V1 et V2 ; ils ne sont plus suivis. Les retirer de l'historique demande de le réécrire (à décider avec Medy, sans urgence).
+
 ## C. Décisions en attente
 - Formule des abonnements : l'administration envoie déjà le lien de paiement 7 jours avant l'échéance (mode automatique) ou à la demande (mode manuel) ; « Payé » reste manuel. À confirmer avec ce que propose Revolut.
 - Prestataire de paiement définitif (Revolut Pro envisagé ; Stripe et Stancer étudiés).

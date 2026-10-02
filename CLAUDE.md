@@ -56,10 +56,10 @@ encore à préciser.
   2026-09-29, clients professionnels uniquement), à mettre en ligne et à relire.
 - Paiement en ligne : parcours de commande (`site/commander.html`, `site/payer.html`), liens
   dans `site/paiement.js` (aucun secret). Prestataire envisagé : Revolut Pro (liens
-  de paiement, pas d'API). État au 2026-09-29 : lien de TEST à 1 € sur les quatre
-  boutons, à remplacer par les vrais liens ; abonnements mensuels (récurrent) non
-  tranchés (facturation mensuelle, paiement annuel ou Stripe). Examen du site par
-  Revolut en cours.
+  de paiement, pas d'API). État au 2026-10-02 : les cinq liens Revolut (socle, agent, cadrage,
+  sur mesure, règlement libre) sont en place et s'ouvrent dans un nouvel onglet ; adresse de retour
+  après paiement à régler dans Revolut (`merci.html?offre=…`). Abonnements mensuels : l'administration
+  envoie les liens (mode automatique ou manuel), « Payé » reste manuel. Examen du site par Revolut en cours.
 - Administration maison sur LWS : `site/gestion/` (7 onglets : tableau de bord, clients, demandes,
   paiements, comptabilité, site et technique, paramètres), `site/facture.php`, code métier dans
   `serveur/abonnements/` (cron quotidien `rappels.php`). Paquet à déployer :
