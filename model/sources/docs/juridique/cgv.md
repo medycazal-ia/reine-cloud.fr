@@ -15,7 +15,7 @@ associations, indépendants) agissant pour leurs besoins professionnels (« le C
 Aucune vente n'est faite à des consommateurs.
 
 ## 2. Nos services
-- **Le socle** : site et e-mails professionnels, hébergement en France, sauvegardes
+- **Le socle** : nom de domaine, site web, 2 adresses e-mail professionnelles, hébergement en France, sauvegardes
   et mises à jour, un interlocuteur unique, 2 révisions par an d'environ 1 heure.
 - **L'agent standard** : un agent d'intelligence artificielle traitant 2
   problématiques proches sur le même outil, avec adaptation à vos problématiques

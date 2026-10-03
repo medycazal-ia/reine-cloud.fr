@@ -319,7 +319,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <div class="wrap">
     <div class="eyebrow">Votre nom de domaine</div>
     <h2>Votre nom, disponible ?</h2>
-    <p class="lead">Vérifiez en quelques secondes si l’adresse de votre futur site est libre.</p>
+    <p class="lead">Le nom de domaine est inclus dans le socle, avec l’hébergement, votre site et 2 adresses e-mail. Vérifiez en quelques secondes si l’adresse de votre futur site est libre.</p>
     <form id="dom-form" action="#domaine" autocomplete="off">
       <label for="dom-q" class="sr-only" style="position:absolute;left:-9999px">Nom recherché</label>
       <input type="text" id="dom-q" name="q" maxlength="80" placeholder="ex. : boulangerie-dupont" required>
@@ -342,13 +342,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <div class="prix">19,99&nbsp;€ <small>/ mois</small></div>
         <div class="note">Moins de 0,70&nbsp;€ par jour</div>
         <ul>
-          <li>Site et e-mails professionnels</li>
+          <li>Votre nom de domaine inclus</li>
+          <li>Votre site web</li>
           <li>Hébergement en France</li>
+          <li>2 adresses e-mail professionnelles incluses</li>
           <li>Sauvegardes et mises à jour</li>
           <li>Un interlocuteur unique</li>
           <li>2 révisions par an d'environ 1&nbsp;heure</li>
         </ul>
         <a class="btn plein" href="commander.html?offre=socle">Commander le socle</a>
+        <a class="btn" href="#domaine">Choisir mon nom de domaine</a>
         <a class="question" href="#contact">Une question ? Écrivez-nous</a>
       </article>
       <article class="offre vedette">
@@ -456,7 +459,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   function reserver(d){
     var s=document.getElementById('sujet'), m=document.getElementById('message');
     if(s) s.value='Hébergement / site web';
-    if(m && !m.value) m.value='Bonjour, je souhaite réserver le nom de domaine '+d+'.';
+    if(m && !m.value) m.value='Bonjour, je souhaite le socle avec le nom de domaine '+d+'.';
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
     if(m) m.focus({preventScroll:true});
   }
