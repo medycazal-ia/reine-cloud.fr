@@ -70,4 +70,8 @@ $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"Contact 
 [$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s);
 eq('contact : détail des champs invalides affiché', str_contains($m, 'bad format') && str_contains($m, 'too weak'), true);
 eq('contact : mot de passe masqué dans le détail', str_contains($m, 'unmotdepasselong'), false);
+$GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"Contact is invalid","extra":"champ x unmotdepasselong"}'];
+[$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s);
+eq('contact : réponse brute affichée', str_contains($m, 'réponse complète') && str_contains($m, '"extra"'), true);
+eq('contact : mot de passe masqué dans la réponse brute', str_contains($m, 'unmotdepasselong'), false);
 echo "TOTAL achat domaine -> OK: $ok, ECHECS: $ko\n";

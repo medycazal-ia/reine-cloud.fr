@@ -164,6 +164,10 @@ function creer_proprietaire(PDO $pdo, array $config, array $s): array
         $info .= ($info !== '' ? ' — ' : '') . $detail;
         $info = str_replace($mdp, '***', $info);   // sécurité : le mot de passe n'est jamais réaffiché
     }
+    if (!$ok) {
+        $brut = str_replace($mdp, '***', preg_replace('/\s+/', ' ', $corps) ?? '');
+        $info .= ' — réponse complète de LWS : ' . mb_substr($brut, 0, 600);
+    }
     $id = '';
     if ($ok && is_array($d)) {
         $data = $d['data'] ?? null;
@@ -172,5 +176,5 @@ function creer_proprietaire(PDO $pdo, array $config, array $s): array
     $mode = $r['reel'] ? '' : ' [MODE ESSAI]';
     journaliser($pdo, $r['reel'] ? 'domaine (contact)' : 'domaine (essai)', 'contact', ($ok ? 'contact créé' : 'échec') . " code $code" . ($id !== '' ? ", numéro $id" : ''));
     return [$ok, $ok ? 'Contact créé' . ($id !== '' ? ', numéro ' . $id : ' (numéro non reconnu dans la réponse : cliquez sur « Voir mes propriétaires »)') . $mode . '.'
-        : 'LWS a refusé la création du contact (code ' . $code . ($info !== '' ? ' : ' . mb_substr($info, 0, 300) : '') . ')' . $mode . '.'];
+        : 'LWS a refusé la création du contact (code ' . $code . ($info !== '' ? ' : ' . mb_substr($info, 0, 900) : '') . ')' . $mode . '.'];
 }
