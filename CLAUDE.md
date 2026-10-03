@@ -75,6 +75,7 @@ encore à préciser.
   session ou à la demande de Medy) ; tests : `bash outils/tests/lancer-tests.sh`.
 - Modèle déployable « model » : `model/` (sources avec champs `{{...}}`, `model_personnaliser.py`, `MODEL-LISEZ-MOI.md`) et
   `livrables/model-site-deployable.zip`, généré par `python3 outils/model_generer.py` (à relancer après toute évolution du site).
+- Recherche de nom de domaine : `site/domaine.php` (registres officiels RDAP, sans clé, rien enregistré) + section `#domaine` de la page d'accueil. Non testé contre les vrais registres depuis le bac à sable (réseau bloqué) : à essayer en ligne. API LWS (noms de domaine, prix) : possible plus tard, clé hors dépôt dans `config-reine-cloud.php`.
 - Rappels de renouvellement de l'hébergement : `serveur/rappels/rappel.php` (cron LWS).
 - Dépôt en lecture seule pour Claude tant que l'app GitHub Claude n'est pas
   installée sur medycazal-ia/reine-cloud.fr.

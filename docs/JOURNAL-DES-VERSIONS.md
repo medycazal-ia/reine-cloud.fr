@@ -33,3 +33,6 @@ Première sauvegarde complète.
 - Nouveau test des **pages publiques** dans la suite de tests ; modèle « model » à jour (sans lien réel).
 - Reste à faire : voir `docs/RESTE-A-FAIRE.md` (version 3).
 
+
+## Après V3 — Recherche de nom de domaine
+- Ajout de `site/domaine.php` (registres officiels, sans clé, rien enregistré, limitation de débit) et de la section `#domaine` sur la page d'accueil ; texte de confidentialité complété ; tests ajoutés (37 unitaires + parcours navigateur). Non testé contre les vrais registres depuis le bac à sable.

@@ -31,7 +31,7 @@ function pastille(bool $ok, string $oui = 'OK', string $non = 'À vérifier'): s
 $cron = param('cron_dernier');
 $cron_ok = $cron !== '' && strtotime($cron) > time() - 36 * 3600;
 $fichiers = ['index.html' => 'Page d\'accueil', 'commander.html' => 'Page de commande', 'payer.html' => 'Page de règlement', 'merci.html' => 'Page de remerciement',
-    'cgv.html' => 'CGV', 'mentions-legales.html' => 'Mentions légales', 'confidentialite.html' => 'Confidentialité', 'contact.php' => 'Formulaire de contact',
+    'cgv.html' => 'CGV', 'mentions-legales.html' => 'Mentions légales', 'confidentialite.html' => 'Confidentialité', 'contact.php' => 'Formulaire de contact', 'domaine.php' => 'Recherche de nom de domaine',
     'paiement.js' => 'Liens de paiement', 'facture.php' => 'Affichage des factures', 'favicon.ico' => 'Icône du site'];
 $comptes = [];
 foreach (TABLES_EXPORT as $t) { $comptes[$t] = (int) $pdo->query("SELECT COUNT(*) FROM $t")->fetchColumn(); }

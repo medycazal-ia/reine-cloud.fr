@@ -30,6 +30,20 @@ const B = `http://127.0.0.1:${port}/`;
   for (const page of ['payer.html', 'cgv.html', 'mentions-legales.html', 'confidentialite.html']) {
     const r = await p.goto(B + page); ok(r.status() === 200, `${page} -> ${r.status()}`);
   }
+  // Recherche de nom de domaine (réponse du serveur simulée)
+  await p.route('**/domaine.php*', r => r.fulfill({ contentType: 'application/json', body: JSON.stringify({ nom: 'ma-boite', resultats: [
+    { domaine: 'ma-boite.fr', etat: 'disponible' }, { domaine: 'ma-boite.com', etat: 'indisponible' }, { domaine: 'ma-boite.eu', etat: 'inconnu' }] }) }));
+  await p.goto(B); await p.fill('#dom-q', 'Ma Boîte'); await p.click('#dom-form button');
+  await p.waitForSelector('#dom-res li');
+  ok((await p.$$('#dom-res li')).length === 3, 'domaine : trois résultats affichés');
+  ok((await p.textContent('#dom-res')).includes('Déjà pris'), 'domaine : « Déjà pris » affiché');
+  await p.click('#dom-res .reserver');
+  ok((await p.inputValue('#message')).includes('ma-boite.fr'), 'domaine : « Réserver » préremplit le message');
+  ok((await p.inputValue('#sujet')) === 'Hébergement / site web', 'domaine : sujet présélectionné');
+  await p.unroute('**/domaine.php*');
+  await p.route('**/domaine.php*', r => r.fulfill({ status: 500, body: 'x' }));
+  await p.click('#dom-form button'); await p.waitForFunction(() => document.getElementById('dom-msg').textContent.includes('indisponible'));
+  ok(true, 'domaine : message de repli si le service échoue');
   ok(errs.length === 0, `aucune erreur JavaScript (${errs.length})`);
   await b.close(); process.exit(ko ? 1 : 0);
 })();

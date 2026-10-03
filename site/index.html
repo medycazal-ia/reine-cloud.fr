@@ -180,6 +180,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 }
 @media(max-width:560px){.grille{grid-template-columns:1fr}header .logo svg{height:38px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.domaine{background:var(--ivoire-2)}
+.domaine form{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.4rem;max-width:640px}
+.domaine input[type=text]{flex:1 1 260px;padding:14px 16px;font:inherit;border:1px solid var(--trait);background:#fff;color:var(--encre)}
+.domaine button.btn{cursor:pointer;background:transparent;color:var(--violet,#491E65);font-family:inherit}
+.domaine button.btn:hover{background:rgba(217,169,58,.15)}
+#dom-res{list-style:none;margin:1.4rem 0 0;padding:0;max-width:640px}
+#dom-res li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--trait)}
+#dom-res .etat{font-size:.82rem;font-weight:600}
+#dom-res .dispo{color:#1E9A5C}#dom-res .pris{color:var(--gris)}
+#dom-res .reserver{background:none;border:0;border-bottom:1px solid var(--or-ombre);color:var(--or-ombre);cursor:pointer;font:inherit;font-weight:600;padding:0}
+#dom-msg{margin-top:1rem;color:var(--gris);min-height:1.4em}
+.domaine .note{font-size:.82rem;color:var(--gris);margin-top:1rem;max-width:640px}
 </style>
 </head>
 <body>
@@ -195,6 +208,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <a href="#histoire">L'esprit</a>
       <a href="#souverainete">Souveraineté</a>
       <a href="#sante">Santé</a>
+      <a href="#domaine">Nom de domaine</a>
       <a href="#offres">Offres</a>
       <a class="btn" href="#contact">Nous écrire</a>
     </nav>
@@ -298,6 +312,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <p>Cabinets, établissements, éditeurs de solutions de santé, structures du médico-social : si votre projet touche à des données de santé, parlons-en dès maintenant pour cadrer vos besoins et ce qui sera nécessaire.</p>
       <p class="avert">Cette offre n'est pas encore disponible. À ce jour, aucune certification HDS n'est revendiquée par reine-cloud.fr.</p>
     </div>
+  </div>
+</section>
+
+<section class="domaine" id="domaine">
+  <div class="wrap">
+    <div class="eyebrow">Votre nom de domaine</div>
+    <h2>Votre nom, disponible ?</h2>
+    <p class="lead">Vérifiez en quelques secondes si l’adresse de votre futur site est libre.</p>
+    <form id="dom-form" action="#domaine" autocomplete="off">
+      <label for="dom-q" class="sr-only" style="position:absolute;left:-9999px">Nom recherché</label>
+      <input type="text" id="dom-q" name="q" maxlength="80" placeholder="ex. : boulangerie-dupont" required>
+      <button class="btn" type="submit">Vérifier</button>
+    </form>
+    <p id="dom-msg" role="status" aria-live="polite"></p>
+    <ul id="dom-res"></ul>
+    <p class="note">Vérification auprès des registres officiels, depuis un serveur en France. Votre recherche n’est ni enregistrée ni associée à vous.</p>
   </div>
 </section>
 
@@ -417,6 +447,42 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   if(e&&m[e]){var b=document.getElementById('retour-form');
     if(b){b.textContent=m[e][0];b.style.display='block';if(m[e][1])b.className+=' erreur';
       setTimeout(function(){b.scrollIntoView({behavior:'smooth',block:'center'});},150);}}
+})();
+</script>
+<script>
+(function(){
+  var f=document.getElementById('dom-form'); if(!f) return;
+  var q=document.getElementById('dom-q'), msg=document.getElementById('dom-msg'), liste=document.getElementById('dom-res');
+  function reserver(d){
+    var s=document.getElementById('sujet'), m=document.getElementById('message');
+    if(s) s.value='Hébergement / site web';
+    if(m && !m.value) m.value='Bonjour, je souhaite réserver le nom de domaine '+d+'.';
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    if(m) m.focus({preventScroll:true});
+  }
+  f.addEventListener('submit',function(e){
+    e.preventDefault(); liste.innerHTML=''; msg.textContent='Recherche en cours…';
+    fetch('domaine.php?q='+encodeURIComponent(q.value),{headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});})
+      .then(function(o){
+        if(o.s===400){msg.textContent='Ce nom ne semble pas valide. Utilisez des lettres, chiffres et tirets.';return;}
+        if(o.s===429){msg.textContent='Beaucoup de recherches d’affilée : réessayez dans quelques minutes.';return;}
+        if(o.s!==200||!o.j.resultats){throw new Error('x');}
+        msg.textContent='Résultats pour « '+o.j.nom+' » :';
+        o.j.resultats.forEach(function(r){
+          var li=document.createElement('li'), n=document.createElement('strong'), d=document.createElement('span');
+          n.textContent=r.domaine; li.appendChild(n); d.className='etat';
+          if(r.etat==='disponible'){
+            d.className+=' dispo'; d.textContent='Disponible ';
+            var b=document.createElement('button'); b.type='button'; b.className='reserver'; b.textContent='Réserver ce nom';
+            b.addEventListener('click',function(){reserver(r.domaine);}); d.appendChild(b);
+          } else if(r.etat==='indisponible'){ d.className+=' pris'; d.textContent='Déjà pris'; }
+          else { d.className+=' pris'; d.textContent='À vérifier avec nous'; }
+          li.appendChild(d); liste.appendChild(li);
+        });
+      })
+      .catch(function(){msg.textContent='La recherche est momentanément indisponible. Écrivez-nous, nous vérifierons pour vous.';});
+  });
 })();
 </script>
 </body>

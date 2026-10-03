@@ -16,6 +16,9 @@ Votre accord, donné en cochant la case du formulaire, et notre intérêt à ré
 ## Où vont-elles ?
 Le formulaire envoie un e-mail à l'éditeur et en garde une copie dans une base de données protégée, hébergée en France chez l'hébergeur du site. Seul l'éditeur y accède.
 
+## Recherche de nom de domaine
+Le nom que vous saisissez dans l'outil de recherche est transmis aux registres officiels des noms de domaine pour savoir s'il est libre. Il n'est ni enregistré, ni associé à votre personne. Pour limiter les abus, une empreinte non réversible de votre connexion est conservée au plus une journée.
+
 ## Paiement en ligne
 Si vous payez en ligne, le paiement est traité par un prestataire de paiement agréé, dont le nom figure sur la page de paiement, et qui agit pour son propre compte. Nous recevons votre nom, votre e-mail, le montant et l'état du paiement, jamais votre numéro de carte. Consultez la politique de confidentialité de ce prestataire pour connaître le détail de son traitement. Les données de facturation sont conservées selon les obligations comptables (jusqu'à dix ans). Nos reçus de paiement ne comportent aucun nom : seulement la référence de la commande. Votre facture nominative n'est pas envoyée par e-mail : vous la récupérez vous-même avec un lien personnel et un QR code. Pour les abonnements, nous conservons dans une base protégée, hébergée en France, votre nom, votre e-mail, votre offre, le montant et les dates d'échéance, afin de vous adresser vos liens de paiement et rappels.
 
