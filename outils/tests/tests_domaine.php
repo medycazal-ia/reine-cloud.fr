@@ -60,4 +60,28 @@ $passes = 0; for ($i = 0; $i < LIMITE_REQUETES + 5; $i++) { if (debit_autorise('
 eq('limite de débit', $passes, LIMITE_REQUETES); eq('autre visiteur non bloqué', debit_autorise('8.8.8.8'), true);
 [$code] = traiter_requete(['q' => 'abc'], '9.9.9.9'); eq('429 quand limite atteinte', $code, 429);
 foreach (glob(sys_get_temp_dir() . '/reine-domaine-*') ?: [] as $f) { @unlink($f); }
+// API LWS (réponses simulées)
+foreach (glob(sys_get_temp_dir() . '/reine-domaine-*') ?: [] as $f) { @unlink($f); }
+$vus = [];
+$GLOBALS['LWS_CONFIG'] = ['login' => 'L', 'pass' => 'P'];
+$GLOBALS['RDAP_FETCH'] = function ($url, $h = []) use (&$vus) {
+    $vus[] = [$url, $h];
+    if (str_contains($url, 'api.lws.net')) {
+        if (str_contains($url, 'libre.fr')) { return [200, '{"code":200,"info":"x","data":true}']; }
+        if (str_contains($url, 'pris.fr')) { return [200, '{"code":200,"info":"x","data":false}']; }
+        return [400, '{}'];   // LWS ne gère pas cette extension -> repli sur les registres
+    }
+    return [404, '{}'];
+};
+$r = verifier('libre', ['fr'], SECOURS); eq('LWS : libre', $r[0]['etat'], 'disponible');
+eq('LWS : identifiants en en-têtes', in_array('X-Auth-Login: L', $vus[0][1], true) && in_array('X-Auth-Pass: P', $vus[0][1], true), true);
+eq('LWS : adresse', $vus[0][0], 'https://api.lws.net/v1/domain/libre.fr/availability');
+$r = verifier('pris', ['fr'], SECOURS); eq('LWS : pris', $r[0]['etat'], 'indisponible');
+$r = verifier('autre', ['eu'], SECOURS); eq('LWS en échec -> repli registre', $r[0]['etat'], 'disponible');
+eq('repli : le registre est interrogé', str_contains(end($vus)[0], 'rdap.eurid.eu'), true);
+eq('repli : pas d identifiants envoyés au registre', end($vus)[1], []);
+$GLOBALS['LWS_CONFIG'] = [];
+foreach (glob(sys_get_temp_dir() . '/reine-domaine-*') ?: [] as $f) { @unlink($f); }
+$vus = []; verifier('sanslws', ['fr'], SECOURS); eq('sans config LWS : aucun appel LWS', count(array_filter($vus, fn($v) => str_contains($v[0], 'lws.net'))), 0);
+foreach (glob(sys_get_temp_dir() . '/reine-domaine-*') ?: [] as $f) { @unlink($f); }
 echo "TOTAL domaine -> OK: $ok, ECHECS: $ko\n";

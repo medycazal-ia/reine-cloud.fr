@@ -42,7 +42,7 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [ ] Vérifier la forme juridique de LWS (https://www.lws.fr/a_propos_infos.php) et décider de l'ajouter aux mentions.
 
 ## B. À faire par Claude (prochaines sessions)
-- [ ] **API LWS** (noms de domaine : prix, commande) : Medy en a une ; à brancher sur la recherche de domaine quand Medy m'enverra le lien de la documentation (jamais la clé : elle ira dans `config-reine-cloud.php`, hors de `public_html`).
+- [ ] **API LWS** : la vérification de disponibilité est branchée (facultative). Medy : ajouter `lws_login` et `lws_pass` dans `config-reine-cloud.php` (hors de `public_html`) pour l'activer. Reste : prix (appel « TLDs disponibles », prix de revente à fixer par Medy) et achat depuis l'administration protégée.
 - [ ] **GED** : espace de documents par client, accès par lien + QR code + code de retrait, liens à durée limitée, journal de consultation (note de conception : `docs/ged-conception.md`). Questions à trancher listées dans la note.
 - [ ] Adapter la page d'accueil et les CGV si Medy change la formule d'abonnement ou de paiement.
 - [ ] Améliorations de l'administration : conserver la saisie après une erreur de formulaire, pagination et recherche des factures, avoirs, suivi des heures facturées à 49 €/h, export comptable dédié, authentification renforcée.

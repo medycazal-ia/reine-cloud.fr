@@ -52,14 +52,14 @@ function bootstrap_depuis_json(string $json): array
 }
 
 /** [code HTTP, corps] ; code 0 = échec réseau. Remplaçable pour les tests. */
-function http_get(string $url, int $delai = 5): array
+function http_get(string $url, int $delai = 5, array $entetes = []): array
 {
     if (isset($GLOBALS['RDAP_FETCH']) && is_callable($GLOBALS['RDAP_FETCH'])) {
-        return $GLOBALS['RDAP_FETCH']($url);
+        return $GLOBALS['RDAP_FETCH']($url, $entetes);
     }
     $ch = curl_init($url);
     curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => $delai, CURLOPT_CONNECTTIMEOUT => 3, CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_MAXREDIRS => 3, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_HTTPHEADER => ['Accept: application/rdap+json, application/json']]);
+        CURLOPT_MAXREDIRS => 3, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_HTTPHEADER => array_merge(['Accept: application/rdap+json, application/json'], $entetes)]);
     $corps = curl_exec($ch);
     $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     curl_close($ch);
@@ -86,6 +86,35 @@ function charger_bootstrap(): array
     return SECOURS;
 }
 
+/** Identifiants de l'API LWS : lus dans config-reine-cloud.php (hors de public_html), jamais dans le site. */
+function config_lws(): ?array
+{
+    if (isset($GLOBALS['LWS_CONFIG'])) {
+        return $GLOBALS['LWS_CONFIG'] ?: null;
+    }
+    $fichier = dirname(__DIR__) . '/config-reine-cloud.php';
+    $c = is_file($fichier) ? (include $fichier) : null;
+    if (is_array($c) && !empty($c['lws_login']) && !empty($c['lws_pass'])) {
+        return ['login' => (string) $c['lws_login'], 'pass' => (string) $c['lws_pass']];
+    }
+    return null;
+}
+
+/** Disponibilité selon l'API LWS (lecture seule) : 'disponible', 'indisponible' ou null si LWS ne sait pas répondre. */
+function etat_lws(string $domaine, ?array $lws): ?string
+{
+    if (!$lws) {
+        return null;
+    }
+    [$code, $corps] = http_get('https://api.lws.net/v1/domain/' . rawurlencode($domaine) . '/availability', 5,
+        ['X-Auth-Login: ' . $lws['login'], 'X-Auth-Pass: ' . $lws['pass'], 'Accept: application/json']);
+    $d = $code === 200 ? json_decode($corps, true) : null;
+    if (is_array($d) && ($d['code'] ?? 0) === 200 && is_bool($d['data'] ?? null)) {
+        return $d['data'] ? 'disponible' : 'indisponible';
+    }
+    return null;
+}
+
 /** 200 = déjà enregistré ; 404 = libre ; autre = on ne sait pas. */
 function etat_depuis_code(int $code): string
 {
@@ -94,6 +123,7 @@ function etat_depuis_code(int $code): string
 
 function verifier(string $nom, array $extensions, array $bootstrap): array
 {
+    $lws = config_lws();
     $resultats = [];
     foreach ($extensions as $ext) {
         $domaine = "$nom.$ext";
@@ -101,9 +131,9 @@ function verifier(string $nom, array $extensions, array $bootstrap): array
         if (is_file($cache) && filemtime($cache) > time() - CACHE_SECONDES) {
             $etat = (string) json_decode((string) file_get_contents($cache), true);
         } else {
+            $etat = etat_lws($domaine, $lws) ?? 'inconnu';
             $base = $bootstrap[$ext] ?? '';
-            $etat = 'inconnu';
-            if ($base !== '') {
+            if ($etat === 'inconnu' && $base !== '') {
                 [$code] = http_get($base . 'domain/' . $domaine);
                 $etat = etat_depuis_code($code);
                 if ($etat !== 'inconnu') {

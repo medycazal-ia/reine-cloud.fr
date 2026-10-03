@@ -9,6 +9,9 @@ return [
     'base'  => 'COMPTE_reine',   // nom complet de la base, préfixe cPanel compris
     'user'  => 'COMPTE_rcweb',   // nom complet de l'utilisateur, préfixe compris
     'mdp'   => 'COLLER_ICI_LE_MOT_DE_PASSE',
+    // Facultatif : API LWS, lecture seule (vérification des noms de domaine). Sans ces deux lignes, seuls les registres officiels sont utilisés.
+    // 'lws_login' => 'COLLER_ICI_L_IDENTIFIANT_API',
+    // 'lws_pass'  => 'COLLER_ICI_LE_MOT_DE_PASSE_API',
     // Liens de paiement (publics, pas des secrets) utilisés dans les e-mails d'échéance :
     'liens' => [
         'socle' => 'https://…',   // lien à 19,99 € (réutilisable)
