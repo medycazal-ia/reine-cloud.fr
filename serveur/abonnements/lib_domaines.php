@@ -149,8 +149,8 @@ function creer_proprietaire(PDO $pdo, array $config, array $s): array
     if (!filter_var($c['email'], FILTER_VALIDATE_EMAIL)) {
         return [false, 'Adresse e-mail invalide.'];
     }
-    if (mb_strlen($mdp) < 12) {
-        return [false, 'Mot de passe du contact : 12 caractères au minimum.'];
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-!*$@%_])[A-Za-z\d\-!*$@%_]{10,15}$/', $mdp)) {
+        return [false, 'Mot de passe du contact (règle de LWS) : de 10 à 15 caractères, avec une majuscule, une minuscule, un chiffre et un symbole parmi - ! * $ @ % _ (aucun autre symbole).'];
     }
     if ($c['company'] === '') {
         unset($c['company']);   // laisser vide = contact individuel

@@ -52,7 +52,7 @@ $historique = $pdo->query("SELECT le, type, destinataire, detail FROM journal WH
   <div><label>Pays (2 lettres)</label><input name="country" value="FR" maxlength="2" required></div>
   <div><label>Téléphone (0033…)</label><input name="phone" placeholder="0033674000000" required></div>
   <div><label>E-mail</label><input type="email" name="email" required></div>
-  <div><label>Mot de passe du contact chez LWS (12 caractères minimum)</label><input type="password" name="password" autocomplete="new-password" required></div>
+  <div><label>Mot de passe du contact chez LWS (10 à 15 caractères : majuscule, minuscule, chiffre et un symbole parmi - ! * $ @ % _)</label><input type="password" name="password" autocomplete="new-password" required></div>
   <div class="large"><button class="pl">Créer ce propriétaire</button></div>
 </form>
 <p class="note">Ces informations partent chez LWS et ne sont pas gardées ici. Le mot de passe n'est ni affiché ni enregistré : notez-le dans votre gestionnaire de mots de passe. Pour un client, ne saisissez que ses coordonnées professionnelles.</p></details>
