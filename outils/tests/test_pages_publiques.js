@@ -44,6 +44,26 @@ const B = `http://127.0.0.1:${port}/`;
   await p.route('**/domaine.php*', r => r.fulfill({ status: 500, body: 'x' }));
   await p.click('#dom-form button'); await p.waitForFunction(() => document.getElementById('dom-msg').textContent.includes('indisponible'));
   ok(true, 'domaine : message de repli si le service échoue');
+  // Code parrain sur la page de commande (réponse du serveur simulée)
+  await p.route('**/code.php*', r => {
+    const u = new URL(r.request().url());
+    if (r.request().method() === 'POST') { return r.fulfill({ contentType: 'application/json', body: '{"ok":true}' }); }
+    const c = (u.searchParams.get('code') || '').toUpperCase();
+    const corps = c === 'AMIS2026' ? { valide: true, code: c, offre: 'socle', pourcentage: 20, prix_initial: 19.99, prix_remise: 15.99, gratuit: false }
+      : c === 'OFFERT100' ? { valide: true, code: c, offre: 'socle', pourcentage: 100, prix_initial: 19.99, prix_remise: 0, gratuit: true } : { valide: false };
+    r.fulfill({ contentType: 'application/json', body: JSON.stringify(corps) });
+  });
+  await p.goto(B + 'commander.html?offre=socle'); await p.click('#ouvrir-code'); await p.fill('#code', 'faux'); await p.click('#form-code button');
+  await p.waitForFunction(() => document.getElementById('msg-code').textContent.includes('pas valide')); ok(true, 'code parrain : code faux refusé');
+  await p.fill('#code', 'amis2026'); await p.click('#form-code button'); await p.waitForFunction(() => document.getElementById('msg-code').textContent.includes('−20'));
+  ok((await p.textContent('#prix')).includes('15,99'), 'code parrain : prix remisé affiché'); ok((await p.textContent('#prix')).includes('19,99'), 'code parrain : ancien prix barré');
+  await p.check('#accord'); ok(/^https:/.test(await p.getAttribute('#payer', 'href')), 'code parrain : lien de paiement libre utilisé');
+  ok((await p.textContent('#aide')).includes('exactement') && (await p.textContent('#aide')).includes('15,99'), 'code parrain : consigne du montant exact');
+  await p.goto(B + 'commander.html?offre=socle&code=OFFERT100'); await p.waitForFunction(() => document.getElementById('msg-code').textContent.includes('offerte'));
+  await p.check('#accord'); ok((await p.getAttribute('#payer', 'href')).startsWith('mailto:'), 'code 100 % : pas de paiement, message prêt');
+  ok((await p.textContent('#prix')).includes('Offert'), 'code 100 % : « Offert » affiché');
+  await p.goto(B + 'commander.html?offre=surmesure'); ok(await p.isHidden('#zone-code'), 'sur mesure : pas de code parrain');
+  await p.unroute('**/code.php*');
   ok(errs.length === 0, `aucune erreur JavaScript (${errs.length})`);
   await b.close(); process.exit(ko ? 1 : 0);
 })();

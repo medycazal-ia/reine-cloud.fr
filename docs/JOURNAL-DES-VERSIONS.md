@@ -37,3 +37,4 @@ Première sauvegarde complète.
 ## Après V3 — Recherche de nom de domaine
 - Ajout de `site/domaine.php` (registres officiels, sans clé, rien enregistré, limitation de débit) et de la section `#domaine` sur la page d'accueil ; texte de confidentialité complété ; tests ajoutés (37 unitaires + parcours navigateur). Non testé contre les vrais registres depuis le bac à sable.
 - Socle redéfini (nom de domaine, site, hébergement, 2 e-mails inclus) sur le site et les CGV ; vérification de disponibilité via l'API LWS (facultative) ; onglet d'administration « Noms de domaine » pour l'achat par l'API LWS, en mode essai par défaut.
+- Codes parrain : table `codes_remise`, onglet d'administration, vérification publique `code.php`, remise sur la page de commande (socle, agent, cadrage) ; tests ajoutés (50 unitaires, parcours navigateur et administration).

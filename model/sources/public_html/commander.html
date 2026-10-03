@@ -45,6 +45,13 @@ main.cmd{width:min(980px,calc(100% - 32px))}
 .aide{font-size:.8rem;color:#BFAFD6;margin-top:1rem}
 .securite{margin-top:1.4rem;font-size:.78rem;color:#BFAFD6;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
 .retour{display:inline-block;margin-bottom:1rem;color:var(--violet);font-size:.85rem}
+
+.zone-code{margin-top:1.2rem;font-size:.88rem}
+.zone-code .ouvrir{background:none;border:0;border-bottom:1px solid var(--or);color:var(--violet);cursor:pointer;font:600 .8rem "Montserrat",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:0 0 2px}
+.zone-code form{display:flex;gap:8px;margin-top:.7rem}
+.zone-code input{flex:1;padding:10px 12px;font:inherit;border:1px solid var(--trait);text-transform:uppercase}
+.zone-code form button{padding:10px 16px;border:1px solid var(--violet);background:#fff;color:var(--violet);font:600 .75rem "Montserrat",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+#msg-code{margin:.6rem 0 0;color:var(--gris);min-height:1.2em}#msg-code.ok{color:#1E7A4C;font-weight:600}
 @media(max-width:760px){.grille2{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap"><a href="/">← {{DOMAINE}}</a></div></header>
@@ -58,6 +65,11 @@ main.cmd{width:min(980px,calc(100% - 32px))}
     <div class="prix" id="prix"></div>
     <p id="detail" style="color:var(--gris);font-size:.9rem;margin-top:.6rem"></p>
     <ul id="inclus"></ul>
+    <div class="zone-code" id="zone-code" hidden>
+      <button type="button" class="ouvrir" id="ouvrir-code" aria-expanded="false" aria-controls="form-code">Code parrain</button>
+      <form id="form-code" hidden autocomplete="off"><label for="code" style="position:absolute;left:-9999px">Code parrain</label><input id="code" maxlength="32" placeholder="Votre code parrain"><button type="submit">Appliquer</button></form>
+      <p id="msg-code" role="status" aria-live="polite"></p>
+    </div>
     <p style="margin-top:1.4rem;font-size:.85rem"><a class="retour" href="/#offres">← Voir toutes les offres</a></p>
   </section>
   <section class="paiement" aria-labelledby="titre-paiement">
@@ -92,24 +104,63 @@ main.cmd{width:min(980px,calc(100% - 32px))}
   document.getElementById('inclus').innerHTML=o.inclus.map(function(x){return '<li>'+x.replace(/</g,'&lt;')+'</li>';}).join('');
   document.title='Commander : '+o.titre+' — {{DOMAINE}}';
   var L=window.LIENS_PAIEMENT||{};
-  var lien=L[cle];
-  var ok=typeof lien==='string'&&/^https:\/\/[^\s"'<>]+$/.test(lien);
+  function lienOk(l){return typeof l==='string'&&/^https:\/\/[^\s"'<>]+$/.test(l);}
   var b=document.getElementById('payer'),c=document.getElementById('accord'),a=document.getElementById('aide');
-  var sujet=encodeURIComponent('Commande : '+o.titre);
-  var corps=encodeURIComponent('Bonjour,\n\nJe souhaite commander : '+o.titre+'.\nJe certifie agir pour mon activité professionnelle et j\'accepte les conditions générales de vente.\n\nNom / entreprise :\nNombre d\'agents (si concerné) :\n\nMerci de m\'envoyer mon lien de paiement.');
-  if(!ok){b.textContent='Recevoir mon lien de paiement';}
+  var rem=null;   // code parrain appliqué : {code,pourcentage,prix_initial,prix_remise,gratuit}
+  function eur(n){return Number(n).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+  function afficherPrix(){
+    var pe=document.getElementById('prix');
+    if(rem&&rem.pourcentage>0){pe.innerHTML='<s style="font-size:1.6rem;color:var(--gris);font-weight:400">'+eur(rem.prix_initial)+'</s> '+(rem.gratuit?'Offert':eur(rem.prix_remise))+'<small>'+o.unite+'</small>';}
+    else{pe.innerHTML=o.prix+'<small>'+o.unite+'</small>';}
+  }
+  function mailto(){
+    var s='Commande : '+o.titre+(rem?' (code parrain '+rem.code+')':'');
+    var m='Bonjour,\n\nJe souhaite commander : '+o.titre+'.\n'+(rem?'Code parrain : '+rem.code+' (−'+rem.pourcentage+' %), montant : '+(rem.gratuit?'offert':eur(rem.prix_remise))+'.\n':'')+'Je certifie agir pour mon activité professionnelle et j\'accepte les conditions générales de vente.\n\nNom / entreprise :\nNombre d\'agents (si concerné) :\n\nMerci de m\'envoyer '+(rem&&rem.gratuit?'la confirmation de ma commande.':'mon lien de paiement.');
+    return 'mailto:{{EMAIL_CONTACT}}?subject='+encodeURIComponent(s)+'&body='+encodeURIComponent(m);
+  }
   function maj(){
+    var partielle=rem&&rem.pourcentage>0&&!rem.gratuit;
+    var lien=partielle?L.libre:L[cle];
+    var ok=lienOk(lien)&&!(rem&&rem.gratuit);
     var actif=c.checked;
+    b.textContent=ok?(partielle?'Payer '+eur(rem.prix_remise)+' en ligne':'Payer en ligne'):(rem&&rem.gratuit?'Valider ma commande offerte':'Recevoir mon lien de paiement');
     b.setAttribute('aria-disabled',actif?'false':'true');
     if(!actif){b.removeAttribute('target');b.href='#';a.textContent='Cochez la case pour continuer.';return;}
-    if(ok){b.href=lien;b.target='_blank';b.rel='noopener';a.textContent='Vous serez redirigé vers la page de paiement sécurisée.';}
-    else{b.href='mailto:{{EMAIL_CONTACT}}?subject='+sujet+'&body='+corps;b.removeAttribute('target');a.textContent='Le paiement en ligne ouvre bientôt : votre message est prêt, nous vous répondons avec votre lien de paiement.';}
+    if(ok){b.href=lien;b.target='_blank';b.rel='noopener';a.textContent=partielle?'Sur la page de paiement, saisissez exactement le montant de '+eur(rem.prix_remise)+'.':'Vous serez redirigé vers la page de paiement sécurisée.';}
+    else{b.href=mailto();b.removeAttribute('target');a.textContent=rem&&rem.gratuit?'Votre code offre cette commande : votre message est prêt, nous vous répondons avec la confirmation.':'Le paiement en ligne ouvre bientôt : votre message est prêt, nous vous répondons avec votre lien de paiement.';}
   }
   b.addEventListener('click',function(e){
     if(!c.checked){e.preventDefault();return;}
-    if(ok){a.textContent='La page de paiement s’est ouverte dans un nouvel onglet. Une fois le paiement terminé, revenez sur cet onglet : vous recevrez votre reçu par e-mail. Rien ne s’est ouvert ? Autorisez les fenêtres pop-up, puis cliquez de nouveau.';}
+    if(rem&&window.fetch){try{fetch('code.php',{method:'POST',body:new URLSearchParams({action:'utiliser',code:rem.code,offre:cle}),keepalive:true}).catch(function(){});}catch(x){}}
+    if(b.target==='_blank'){a.textContent='La page de paiement s’est ouverte dans un nouvel onglet. Une fois le paiement terminé, revenez sur cet onglet : vous recevrez votre reçu par e-mail. Rien ne s’est ouvert ? Autorisez les fenêtres pop-up, puis cliquez de nouveau.'+(rem&&rem.pourcentage>0&&!rem.gratuit?' Pensez à saisir exactement '+eur(rem.prix_remise)+'.':'');}
   });
-  c.addEventListener('change',maj);maj();
+  c.addEventListener('change',maj);
+
+  // Code parrain (offres à prix fixe seulement)
+  var zone=document.getElementById('zone-code'),fc=document.getElementById('form-code'),ic=document.getElementById('code'),mc=document.getElementById('msg-code');
+  function message(t,bon){mc.textContent=t;mc.className=bon?'ok':'';}
+  function appliquer(saisie){
+    var v=(saisie||'').trim();if(!v){message('Saisissez votre code parrain.');return;}
+    message('Vérification…');
+    fetch('code.php?code='+encodeURIComponent(v)+'&offre='+encodeURIComponent(cle),{headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});})
+      .then(function(x){
+        if(x.s===429){message('Beaucoup d’essais d’affilée : réessayez dans quelques minutes.');return;}
+        if(x.s!==200){throw new Error('x');}
+        if(!x.j.valide){rem=null;afficherPrix();maj();message('Ce code n’est pas valide.');return;}
+        rem=x.j;afficherPrix();maj();
+        message(rem.gratuit?'Code parrain appliqué : commande offerte.':(rem.pourcentage>0?'Code parrain appliqué : −'+rem.pourcentage+' %, soit '+eur(rem.prix_remise)+' pour cette commande.':'Code reconnu, sans remise.'),true);
+      })
+      .catch(function(){message('Vérification momentanément indisponible. Vous pouvez payer sans code ou nous écrire.');});
+  }
+  if(['socle','agent','cadrage'].indexOf(cle)>=0&&window.fetch){
+    zone.hidden=false;
+    document.getElementById('ouvrir-code').addEventListener('click',function(){fc.hidden=!fc.hidden;this.setAttribute('aria-expanded',String(!fc.hidden));if(!fc.hidden){ic.focus();}});
+    fc.addEventListener('submit',function(e){e.preventDefault();appliquer(ic.value);});
+    var pre=(location.search.match(/[?&]code=([A-Za-z0-9-]{4,32})/)||[])[1];
+    if(pre){fc.hidden=false;ic.value=pre.toUpperCase();document.getElementById('ouvrir-code').setAttribute('aria-expanded','true');appliquer(pre);}
+  }
+  maj();
 })();
 </script>
 </body></html>

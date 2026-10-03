@@ -7,7 +7,7 @@ import zipfile
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 fichiers = []
-for f in ('lib.php', 'lib_gestion.php', 'lib_domaines.php', 'rappels.php'):
+for f in ('lib.php', 'lib_gestion.php', 'lib_domaines.php', 'lib_remises.php', 'rappels.php'):
     fichiers.append((f'serveur/abonnements/{f}', f'abonnements/{f}'))
 for dossier, _, noms in os.walk(f'{RACINE}/site/gestion'):
     for nom in noms:
@@ -16,6 +16,7 @@ for dossier, _, noms in os.walk(f'{RACINE}/site/gestion'):
             fichiers.append((f'site/{rel}', f'public_html/{rel}'))
 fichiers += [('site/facture.php', 'public_html/facture.php'),
              ('site/recu.php', 'public_html/recu.php'),
+             ('site/code.php', 'public_html/code.php'),
              ('site/js/qrcode.js', 'public_html/js/qrcode.js')]
 os.makedirs(f'{RACINE}/livrables', exist_ok=True)
 sortie = f'{RACINE}/livrables/administration-a-deployer.zip'

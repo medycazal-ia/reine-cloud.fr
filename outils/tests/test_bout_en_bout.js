@@ -7,7 +7,7 @@ const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accep
 const bad=async(nom)=>{const t=await p.content();const m=t.match(/(Warning|Fatal error|Notice|Deprecated|Parse error)[^<]{0,120}/);if(m)console.log('  !! PHP',nom,m[0]);};
 const ok=(c,m)=>console.log((c?'OK  ':'ECHEC ')+m);
 // 1. chaque onglet
-for(const o of ['tableau','clients','demandes','paiements','compta','domaines','technique','parametres']){const r=await p.goto(B+'?o='+o);ok(r.status()===200,'onglet '+o+' -> '+r.status());await bad(o);}
+for(const o of ['tableau','clients','demandes','paiements','compta','domaines','codes','technique','parametres']){const r=await p.goto(B+'?o='+o);ok(r.status()===200,'onglet '+o+' -> '+r.status());await bad(o);}
 // sans protection
 const r0=await p.goto(B+'?sans=1');ok(r0.status()===403,'sans protection -> 403');
 // 2. paramètres
@@ -73,4 +73,19 @@ ok(require('fs').readFileSync(await dl2[0].path(),'utf8').includes('F-2026-0002'
 await p.goto(B+'?o=tableau');const t=await p.textContent('body');ok(t.includes('218,99')&&t.includes('19,99'),'tableau de bord chiffres');
 await bad('tableau');await p.screenshot({path:'/tmp/reine-cloud-tests/tab.png',fullPage:true});
 await p.goto(B+'?o=compta');await p.screenshot({path:'/tmp/reine-cloud-tests/compta.png',fullPage:true});
+// 10. codes parrain : création dans l'administration, puis vérification publique
+await p.goto(B+'?o=codes');await p.fill('input[name=code]','AMIS2026');await p.fill('form.grille input[name=pourcentage]','20');await p.click('button:has-text("Créer le code")');
+ok((await p.textContent('.msg')).includes('AMIS2026'),'code parrain créé');
+ok((await p.$$eval('input[readonly]',els=>els.map(e=>e.value))).some(v=>v.endsWith('/commander.html?offre=socle&code=AMIS2026')),'lien à partager affiché');
+const rep=await p.evaluate(async()=>{const r=await fetch('http://127.0.0.1:8090/code.php?code=amis2026&offre=socle');return {s:r.status,j:await r.json()};});
+ok(rep.s===200&&rep.j.valide===true&&rep.j.prix_remise===15.99,'code.php : remise 20 % sur le socle = 15,99');
+const rep2=await p.evaluate(async()=>{const r=await fetch('http://127.0.0.1:8090/code.php?code=FAUX1234&offre=socle');return await r.json();});
+ok(rep2.valide===false,'code.php : code inconnu refusé');
+const rep3=await p.evaluate(async()=>{const r=await fetch('http://127.0.0.1:8090/code.php',{method:'POST',body:new URLSearchParams({action:'utiliser',code:'AMIS2026',offre:'socle'})});return await r.json();});
+ok(rep3.ok===true,'code.php : utilisation comptée');
+await p.goto(B+'?o=codes');ok((await p.textContent('body')).includes('1 (illimité)'),'compteur d\'utilisations affiché');
+await p.click('tr:has-text("AMIS2026") button:has-text("Désactiver")');
+const rep4=await p.evaluate(async()=>{const r=await fetch('http://127.0.0.1:8090/code.php?code=AMIS2026&offre=socle');return await r.json();});
+ok(rep4.valide===false,'code désactivé refusé');
+await bad('codes');
 console.log('erreurs JS:',errs.length);await b.close();})();

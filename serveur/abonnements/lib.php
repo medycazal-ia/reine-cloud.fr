@@ -115,6 +115,16 @@ function creer_tables(PDO $pdo): void
         cle VARCHAR(60) NOT NULL PRIMARY KEY,
         valeur TEXT
     )$fin");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS codes_remise (
+        id $id,
+        code VARCHAR(32) NOT NULL UNIQUE,
+        pourcentage DECIMAL(5,2) NOT NULL,
+        actif TINYINT NOT NULL DEFAULT 1,
+        max_utilisations INT NOT NULL DEFAULT 0,
+        utilisations INT NOT NULL DEFAULT 0,
+        note VARCHAR(200) NOT NULL DEFAULT '',
+        cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )$fin");
     foreach (['ALTER TABLE abonnes ADD COLUMN client_id INT NULL',
               "ALTER TABLE factures ADD COLUMN jeton_recu VARCHAR(40) NOT NULL DEFAULT ''"] as $sql) {
         try {

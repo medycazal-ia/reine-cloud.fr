@@ -38,7 +38,7 @@ REMPLACEMENTS = [
 ]
 
 SITE_FICHIERS = ['index.html', 'commander.html', 'payer.html', 'merci.html', 'cgv.html', 'mentions-legales.html',
-                 'confidentialite.html', 'contact.php', 'domaine.php', 'paiement.js', 'facture.php', 'recu.php', 'favicon.ico']
+                 'confidentialite.html', 'contact.php', 'domaine.php', 'code.php', 'paiement.js', 'facture.php', 'recu.php', 'favicon.ico']
 COPIES = []   # (source, destination sous model/sources/)
 for f in SITE_FICHIERS:
     COPIES.append((f'site/{f}', f'public_html/{f}'))

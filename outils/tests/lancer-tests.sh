@@ -13,11 +13,12 @@ php "$RACINE/outils/tests/tests_unitaires.php" | grep -E "ECHEC|TOTAL"
 php "$RACINE/outils/tests/tests_domaine.php" | grep -E "ECHEC|TOTAL"
 
 php "$RACINE/outils/tests/tests_achat_domaine.php" | grep -E "ECHEC|TOTAL"
+php "$RACINE/outils/tests/tests_remises.php" | grep -E "ECHEC|TOTAL"
 
 echo "== Environnement de test (reproduit l'hébergement) =="
 cp "$RACINE"/serveur/abonnements/*.php $T/abonnements/
 cp -r "$RACINE/site/gestion" $T/public_html/
-cp "$RACINE/site/facture.php" "$RACINE/site/recu.php" $T/public_html/
+cp "$RACINE/site/facture.php" "$RACINE/site/recu.php" "$RACINE/site/code.php" $T/public_html/
 cp "$RACINE/site/js/qrcode.js" $T/public_html/js/
 echo '/* ancien */' > $T/public_html/paiement.js
 cat > $T/config-reine-cloud.php <<PHP
@@ -30,6 +31,7 @@ cat > $T/public_html/router.php <<PHP
 if(str_starts_with(\$path,'/gestion')){ if((\$_GET['sans']??'')!=='1'){\$_SERVER['REMOTE_USER']='medy';} chdir(__DIR__.'/gestion'); require __DIR__.'/gestion/index.php'; return true; }
 if(\$path==='/facture.php'){ require __DIR__.'/facture.php'; return true; }
 if(\$path==='/recu.php'){ require __DIR__.'/recu.php'; return true; }
+if(\$path==='/code.php'){ require __DIR__.'/code.php'; return true; }
 if(\$path==='/js/qrcode.js'){ header('Content-Type: text/javascript'); readfile(__DIR__.'/js/qrcode.js'); return true; }
 if(\$path==='/paiement.js'){ header('Content-Type: text/javascript'); readfile(__DIR__.'/paiement.js'); return true; }
 return false;

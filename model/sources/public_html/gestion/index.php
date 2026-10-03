@@ -31,6 +31,7 @@ const ONGLETS = [
     'clients'    => ['Clients', '☺'],
     'demandes'   => ['Demandes', '✉'],
     'paiements'  => ['Paiements', '€'],
+    'codes'      => ['Codes parrain', '%'],
     'compta'     => ['Comptabilité', '≡'],
     'domaines'   => ['Noms de domaine', '◎'],
     'technique'  => ['Site et technique', '⚙'],

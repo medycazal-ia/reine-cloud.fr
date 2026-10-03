@@ -16,6 +16,12 @@ Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 - [ ] Supprimer les copies de secours : `cgv1.html`, `index1.html`, `merci1.html`, `index-ancien.html` (garder `payer.html`, `mentions-legales.html`, `.htaccess-sauvegarde`).
 - [ ] Avant un VRAI achat : valeur `lws_package` confirmée par LWS, solde prépayé, contact créé dans l'environnement réel, titulaire des noms et clause CGV, prix de revente, puis seulement `lws_achat_reel`.
 
+### Codes parrain (nouveau, 2026-10-03)
+- [ ] Téléverser les fichiers (voir les zips envoyés), régler les autorisations 0644, puis créer un premier code dans l'onglet « Codes parrain » et l'essayer sur la page de commande.
+- [ ] Décision à confirmer : la remise ne s'applique qu'au premier paiement affiché ; à étendre aux mensualités suivantes si Medy le souhaite (les abonnements sont aujourd'hui envoyés à la main depuis l'administration).
+- [ ] Le montant remisé se règle via le lien Revolut « paiement libre » : le client saisit le montant. À surveiller dans Revolut (montant saisi = montant remisé).
+- [ ] Mentionner les codes parrain dans les CGV si Medy le souhaite (relecture juriste).
+
 ### Mise en ligne du site (dossier `site/` de GitHub, à téléverser dans `public_html`)
 - [ ] Renommer l'ancien `index.html` en copie de secours, puis téléverser : `index.html`, `commander.html`, `payer.html`, `merci.html`, `paiement.js`, `cgv.html`, `confidentialite.html`, `mentions-legales.html`, et le nouveau **`domaine.php`** (recherche de nom de domaine). *(À vérifier : je ne sais pas lesquels sont déjà en ligne.)*
 - [ ] Tester en fenêtre privée : les liens du pied de page (Mentions légales, Confidentialité, CGV, Payer) s'ouvrent ; « Commander le socle » ouvre la page de commande.
