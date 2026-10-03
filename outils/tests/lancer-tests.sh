@@ -12,6 +12,8 @@ php "$RACINE/outils/tests/tests_unitaires.php" | grep -E "ECHEC|TOTAL"
 
 php "$RACINE/outils/tests/tests_domaine.php" | grep -E "ECHEC|TOTAL"
 
+php "$RACINE/outils/tests/tests_achat_domaine.php" | grep -E "ECHEC|TOTAL"
+
 echo "== Environnement de test (reproduit l'hébergement) =="
 cp "$RACINE"/serveur/abonnements/*.php $T/abonnements/
 cp -r "$RACINE/site/gestion" $T/public_html/

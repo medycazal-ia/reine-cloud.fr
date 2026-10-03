@@ -12,6 +12,10 @@ return [
     // Facultatif : API LWS, lecture seule (vérification des noms de domaine). Sans ces deux lignes, seuls les registres officiels sont utilisés.
     // 'lws_login' => 'COLLER_ICI_L_IDENTIFIANT_API',
     // 'lws_pass'  => 'COLLER_ICI_LE_MOT_DE_PASSE_API',
+    // Achat de noms de domaine (administration, onglet « Noms de domaine »). MODE ESSAI par défaut : rien n'est débité.
+    // 'lws_owner' => 0,                  // votre numéro de client LWS
+    // 'lws_package' => 'domaine',        // à vérifier en mode essai : doit n'acheter que le domaine
+    // 'lws_achat_reel' => true,          // à n'ajouter qu'après un essai concluant : les achats débitent alors le compte LWS
     // Liens de paiement (publics, pas des secrets) utilisés dans les e-mails d'échéance :
     'liens' => [
         'socle' => 'https://…',   // lien à 19,99 € (réutilisable)

@@ -32,6 +32,7 @@ const ONGLETS = [
     'demandes'   => ['Demandes', '✉'],
     'paiements'  => ['Paiements', '€'],
     'compta'     => ['Comptabilité', '≡'],
+    'domaines'   => ['Noms de domaine', '◎'],
     'technique'  => ['Site et technique', '⚙'],
     'parametres' => ['Paramètres', '✎'],
 ];

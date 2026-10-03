@@ -7,7 +7,7 @@ import zipfile
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 fichiers = []
-for f in ('lib.php', 'lib_gestion.php', 'rappels.php'):
+for f in ('lib.php', 'lib_gestion.php', 'lib_domaines.php', 'rappels.php'):
     fichiers.append((f'serveur/abonnements/{f}', f'abonnements/{f}'))
 for dossier, _, noms in os.walk(f'{RACINE}/site/gestion'):
     for nom in noms:
