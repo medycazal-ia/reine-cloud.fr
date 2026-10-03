@@ -40,4 +40,7 @@ $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => $m === 'GET' ? [200, '{"data":true}
 [$s] = acheter_domaine($pdo, $cfg, 'libre.fr', 'libre.fr', 12); eq('refus LWS = échec', $s, false);
 $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [500, ''];
 [$s] = acheter_domaine($pdo, $cfg, 'libre.fr', 'libre.fr', 12); eq('LWS en panne = échec sans achat', $s, false);
+$GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"Invalid credentials"}'];
+[$s, $m] = acheter_domaine($pdo, $cfg, 'libre.fr', 'libre.fr', 12); eq('400 : refus', $s, false); eq('400 : raison de LWS affichée', str_contains($m, 'Invalid credentials'), true);
+eq('400 : aucun identifiant dans le message', str_contains($m, 'P') && str_contains($m, 'X-Auth'), false);
 echo "TOTAL achat domaine -> OK: $ok, ECHECS: $ko\n";

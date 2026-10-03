@@ -81,7 +81,8 @@ function acheter_domaine(PDO $pdo, array $config, string $saisie, string $confir
     [$code, $corps] = lws_http('GET', '/domain/' . rawurlencode($domaine) . '/availability', null, $r, $test);
     $d = json_decode($corps, true);
     if ($code !== 200 || !is_array($d) || !is_bool($d['data'] ?? null)) {
-        return [false, 'Vérification de disponibilité impossible auprès de LWS (code ' . $code . '). Aucun achat effectué.'];
+        $raison = is_array($d) && isset($d['info']) ? ' : ' . mb_substr((string) $d['info'], 0, 200) : ($corps !== '' ? ' : ' . mb_substr(preg_replace('/\s+/', ' ', $corps) ?? '', 0, 200) : '');
+        return [false, 'Vérification de disponibilité impossible auprès de LWS (code ' . $code . $raison . '). Aucun achat effectué.'];
     }
     if ($d['data'] !== true) {
         return [false, $domaine . ' n\'est pas disponible. Aucun achat effectué.'];
