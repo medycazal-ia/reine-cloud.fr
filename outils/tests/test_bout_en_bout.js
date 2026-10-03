@@ -7,7 +7,7 @@ const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accep
 const bad=async(nom)=>{const t=await p.content();const m=t.match(/(Warning|Fatal error|Notice|Deprecated|Parse error)[^<]{0,120}/);if(m)console.log('  !! PHP',nom,m[0]);};
 const ok=(c,m)=>console.log((c?'OK  ':'ECHEC ')+m);
 // 1. chaque onglet
-for(const o of ['tableau','clients','demandes','paiements','compta','technique','parametres']){const r=await p.goto(B+'?o='+o);ok(r.status()===200,'onglet '+o+' -> '+r.status());await bad(o);}
+for(const o of ['tableau','clients','demandes','paiements','compta','domaines','technique','parametres']){const r=await p.goto(B+'?o='+o);ok(r.status()===200,'onglet '+o+' -> '+r.status());await bad(o);}
 // sans protection
 const r0=await p.goto(B+'?sans=1');ok(r0.status()===403,'sans protection -> 403');
 // 2. paramètres

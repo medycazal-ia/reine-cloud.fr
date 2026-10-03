@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__, 2) . '/abonnements/lib_domaines.php';
+require_once dirname(__DIR__, 3) . '/abonnements/lib_domaines.php';
 $reg = lws_reglages($cfg);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
