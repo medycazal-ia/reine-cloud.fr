@@ -66,4 +66,8 @@ foreach ([['phone', '06 12'], ['email', 'xx'], ['password', 'court'], ['country'
 [$s] = creer_proprietaire($pdo, [], $ok_s); eq('contact : sans réglages', $s, false);
 $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":["email déjà utilisé"]}'];
 [$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s); eq('contact : refus LWS affiché', $s === false && str_contains($m, 'email déjà utilisé'), true);
+$GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"Contact is invalid","data":{"password":"too weak: unmotdepasselong","phone":"bad format"}}'];
+[$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s);
+eq('contact : détail des champs invalides affiché', str_contains($m, 'bad format') && str_contains($m, 'too weak'), true);
+eq('contact : mot de passe masqué dans le détail', str_contains($m, 'unmotdepasselong'), false);
 echo "TOTAL achat domaine -> OK: $ok, ECHECS: $ko\n";

@@ -159,6 +159,11 @@ function creer_proprietaire(PDO $pdo, array $config, array $s): array
     $d = json_decode($corps, true);
     $ok = $code >= 200 && $code < 300;
     $info = is_array($d) && isset($d['info']) ? (is_scalar($d['info']) ? (string) $d['info'] : (string) json_encode($d['info'], JSON_UNESCAPED_UNICODE)) : '';
+    if (!$ok && is_array($d) && isset($d['data']) && $d['data'] !== '' && $d['data'] !== []) {
+        $detail = is_scalar($d['data']) ? (string) $d['data'] : (string) json_encode($d['data'], JSON_UNESCAPED_UNICODE);
+        $info .= ($info !== '' ? ' — ' : '') . $detail;
+        $info = str_replace($mdp, '***', $info);   // sécurité : le mot de passe n'est jamais réaffiché
+    }
     $id = '';
     if ($ok && is_array($d)) {
         $data = $d['data'] ?? null;
