@@ -121,3 +121,51 @@ function lister_proprietaires(array $config): array
     }
     return [true, count($liste) . ' propriétaire(s) trouvé(s).', $liste];
 }
+
+/** Crée un contact (futur propriétaire de noms) chez LWS. Le mot de passe n'est jamais gardé ni journalisé. @return array{0:bool,1:string} */
+function creer_proprietaire(PDO $pdo, array $config, array $s): array
+{
+    $r = lws_reglages($config);
+    if ($r['login'] === '' || $r['pass'] === '') {
+        return [false, 'Réglages LWS incomplets : lws_login et lws_pass doivent figurer dans config-{{SLUG}}.php.'];
+    }
+    $c = [];
+    foreach (['company', 'lastname', 'firstname', 'address', 'postal', 'city', 'country', 'phone', 'email'] as $k) {
+        $c[$k] = trim((string) ($s[$k] ?? ''));
+    }
+    $mdp = (string) ($s['password'] ?? '');
+    foreach (['lastname' => 'nom', 'firstname' => 'prénom', 'address' => 'adresse', 'postal' => 'code postal', 'city' => 'ville'] as $k => $lib) {
+        if ($c[$k] === '' || mb_strlen($c[$k]) > 120) {
+            return [false, "Champ « $lib » manquant ou trop long."];
+        }
+    }
+    $c['country'] = strtoupper($c['country']);
+    if (!preg_match('/^[A-Z]{2}$/', $c['country'])) {
+        return [false, 'Pays : deux lettres, par exemple FR.'];
+    }
+    if (!preg_match('/^00\d{8,14}$/', $c['phone'])) {
+        return [false, 'Téléphone au format international, par exemple 0033674000000 (sans espace ni +).'];
+    }
+    if (!filter_var($c['email'], FILTER_VALIDATE_EMAIL)) {
+        return [false, 'Adresse e-mail invalide.'];
+    }
+    if (mb_strlen($mdp) < 12) {
+        return [false, 'Mot de passe du contact : 12 caractères au minimum.'];
+    }
+    if ($c['company'] === '') {
+        unset($c['company']);   // laisser vide = contact individuel
+    }
+    [$code, $corps] = lws_http('POST', '/contact', $c + ['password' => $mdp], $r, !$r['reel']);
+    $d = json_decode($corps, true);
+    $ok = $code >= 200 && $code < 300;
+    $info = is_array($d) && isset($d['info']) ? (is_scalar($d['info']) ? (string) $d['info'] : (string) json_encode($d['info'], JSON_UNESCAPED_UNICODE)) : '';
+    $id = '';
+    if ($ok && is_array($d)) {
+        $data = $d['data'] ?? null;
+        $id = is_scalar($data) ? (string) $data : (is_array($data) ? (string) ($data['id'] ?? $data['ID'] ?? $data['owner'] ?? array_key_first($data) ?? '') : '');
+    }
+    $mode = $r['reel'] ? '' : ' [MODE ESSAI]';
+    journaliser($pdo, $r['reel'] ? 'domaine (contact)' : 'domaine (essai)', 'contact', ($ok ? 'contact créé' : 'échec') . " code $code" . ($id !== '' ? ", numéro $id" : ''));
+    return [$ok, $ok ? 'Contact créé' . ($id !== '' ? ', numéro ' . $id : ' (numéro non reconnu dans la réponse : cliquez sur « Voir mes propriétaires »)') . $mode . '.'
+        : 'LWS a refusé la création du contact (code ' . $code . ($info !== '' ? ' : ' . mb_substr($info, 0, 300) : '') . ')' . $mode . '.'];
+}

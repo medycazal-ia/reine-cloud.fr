@@ -10,6 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash($message, !$ok);
         aller('?o=domaines');
     }
+    if (($_POST['action'] ?? '') === 'creer_proprietaire') {
+        [$ok, $message] = creer_proprietaire($pdo, $cfg, $_POST);
+        flash($message, !$ok);
+        aller('?o=domaines');
+    }
     [$ok, $message] = acheter_domaine($pdo, $cfg, (string) ($_POST['domaine'] ?? ''), (string) ($_POST['confirmation'] ?? ''), (int) ($_POST['mois'] ?? 0));
     flash($message, !$ok);
     aller('?o=domaines');
@@ -35,6 +40,22 @@ $historique = $pdo->query("SELECT le, type, destinataire, detail FROM journal WH
 <?php foreach ($props as $num => $lib): ?><tr><td><b><?= h($num) ?></b></td><td><?= h($lib) ?></td></tr><?php endforeach; ?>
 <?php if (!$props): ?><tr><td colspan="2" class="gris">Aucun contact. Créez-en un dans votre espace client LWS.</td></tr><?php endif; ?></table>
 <?php endif; ?>
+
+<details><summary>Créer un propriétaire</summary>
+<form class="grille" method="post" action="?o=domaines" autocomplete="off"><?= champ_jeton() ?><input type="hidden" name="action" value="creer_proprietaire">
+  <div><label>Société (facultatif)</label><input name="company"></div>
+  <div><label>Nom</label><input name="lastname" required></div>
+  <div><label>Prénom</label><input name="firstname" required></div>
+  <div><label>Adresse</label><input name="address" required></div>
+  <div><label>Code postal</label><input name="postal" required></div>
+  <div><label>Ville</label><input name="city" required></div>
+  <div><label>Pays (2 lettres)</label><input name="country" value="FR" maxlength="2" required></div>
+  <div><label>Téléphone (0033…)</label><input name="phone" placeholder="0033674000000" required></div>
+  <div><label>E-mail</label><input type="email" name="email" required></div>
+  <div><label>Mot de passe du contact chez LWS (12 caractères minimum)</label><input type="password" name="password" autocomplete="new-password" required></div>
+  <div class="large"><button class="pl">Créer ce propriétaire</button></div>
+</form>
+<p class="note">Ces informations partent chez LWS et ne sont pas gardées ici. Le mot de passe n'est ni affiché ni enregistré : notez-le dans votre gestionnaire de mots de passe. Pour un client, ne saisissez que ses coordonnées professionnelles.</p></details>
 
 <h2>Acheter un nom</h2>
 <form class="grille" method="post" action="?o=domaines" autocomplete="off"><?= champ_jeton() ?>

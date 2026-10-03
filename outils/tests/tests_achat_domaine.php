@@ -54,4 +54,16 @@ eq('propriétaires : libellé', $l['565487'], 'Ma Société — Jean Dupont (Par
 [$s] = lister_proprietaires([]); eq('propriétaires : sans réglages', $s, false);
 $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"bad source 1.2.3.4"}'];
 [$s, $m] = lister_proprietaires($cfg); eq('propriétaires : erreur LWS affichée', $s === false && str_contains($m, 'bad source'), true);
+$ok_s = ['company' => '', 'lastname' => 'Dupont', 'firstname' => 'Jean', 'address' => '1 rue de la Paix', 'postal' => '75000', 'city' => 'Paris', 'country' => 'fr', 'phone' => '0033612345678', 'email' => 'a@b.fr', 'password' => 'unmotdepasselong'];
+$pris = [];
+$GLOBALS['LWS_HTTP'] = function ($m, $c, $b, $t) use (&$pris) { $pris = [$m, $c, $b, $t]; return [200, '{"code":200,"info":"Customer created","data":{"id":777}}']; };
+[$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s);
+eq('contact : créé', $s, true); eq('contact : numéro lu', str_contains($m, '777'), true); eq('contact : appel', array_slice($pris, 0, 2), ['POST', '/contact']);
+eq('contact : mode essai', $pris[3], true); eq('contact : pays en majuscules', $pris[2]['country'], 'FR'); eq('contact : société vide omise', isset($pris[2]['company']), false);
+eq('contact : mot de passe jamais dans le journal', (int) $pdo->query("SELECT COUNT(*) FROM journal WHERE detail LIKE '%unmotdepasselong%'")->fetchColumn(), 0);
+eq('contact : mot de passe jamais dans le message', str_contains($m, 'unmotdepasselong'), false);
+foreach ([['phone', '06 12'], ['email', 'xx'], ['password', 'court'], ['country', 'FRA'], ['lastname', '']] as [$k, $v]) { $pris = []; [$s] = creer_proprietaire($pdo, $cfg, [$k => $v] + $ok_s); eq("contact : $k invalide refusé", $s === false && !$pris, true); }
+[$s] = creer_proprietaire($pdo, [], $ok_s); eq('contact : sans réglages', $s, false);
+$GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":["email déjà utilisé"]}'];
+[$s, $m] = creer_proprietaire($pdo, $cfg, $ok_s); eq('contact : refus LWS affiché', $s === false && str_contains($m, 'email déjà utilisé'), true);
 echo "TOTAL achat domaine -> OK: $ok, ECHECS: $ko\n";
