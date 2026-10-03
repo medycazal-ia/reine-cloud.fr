@@ -5,6 +5,17 @@
 ## A. À faire par Medy (déploiement et vérifications)
 Cochez au fur et à mesure. Le guide pas à pas est `docs/mode-emploi-lws.md`.
 
+### Essais en cours (2026-10-03) — à valider
+- [x] Site en ligne avec le socle redéfini, la recherche de domaine et l'administration protégée (autorisations 0644 corrigées).
+- [x] API LWS : adresse du serveur autorisée, vérification de disponibilité acceptée, contact de test créé (numéro 42).
+- [ ] `lws_owner` mis à 42 dans `config-reine-cloud.php`, puis achat d'essai de `essai-reine-cloud-test.fr` en mode essai : message de réussite attendu.
+- [ ] Recherche de domaine sur le site public : un nom libre et un nom pris (ex. google) ; bouton « Réserver ce nom » qui préremplit le formulaire.
+- [ ] Parcours « Commander le socle » : la page affiche nom de domaine, site, hébergement, 2 e-mails.
+- [ ] Changer le mot de passe de la base de données (affiché sur une capture) et le mettre à jour dans `config-reine-cloud.php`.
+- [ ] Installer la tâche automatique (Tâches Cron) : le tableau de bord affiche « jamais lancée ».
+- [ ] Supprimer les copies de secours : `cgv1.html`, `index1.html`, `merci1.html`, `index-ancien.html` (garder `payer.html`, `mentions-legales.html`, `.htaccess-sauvegarde`).
+- [ ] Avant un VRAI achat : valeur `lws_package` confirmée par LWS, solde prépayé, contact créé dans l'environnement réel, titulaire des noms et clause CGV, prix de revente, puis seulement `lws_achat_reel`.
+
 ### Mise en ligne du site (dossier `site/` de GitHub, à téléverser dans `public_html`)
 - [ ] Renommer l'ancien `index.html` en copie de secours, puis téléverser : `index.html`, `commander.html`, `payer.html`, `merci.html`, `paiement.js`, `cgv.html`, `confidentialite.html`, `mentions-legales.html`, et le nouveau **`domaine.php`** (recherche de nom de domaine). *(À vérifier : je ne sais pas lesquels sont déjà en ligne.)*
 - [ ] Tester en fenêtre privée : les liens du pied de page (Mentions légales, Confidentialité, CGV, Payer) s'ouvrent ; « Commander le socle » ouvre la page de commande.
