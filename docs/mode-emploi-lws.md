@@ -226,3 +226,11 @@ Mise à jour ultérieure : reprendre le zip le plus récent et l'extraire de nou
 historique git, outils, tests, reste à faire). Le numéro de version augmente à chaque exécution. À lancer en fin de session
 ou sur demande. La liste des versions est dans `docs/JOURNAL-DES-VERSIONS.md`, le reste à faire dans `docs/RESTE-A-FAIRE.md`.
 
+
+
+## Après avoir extrait un zip dans public_html : vérifier les autorisations
+Constaté le 2026-10-03 : les fichiers extraits d'un zip peuvent arriver avec l'autorisation **0600**. Le serveur web ne peut alors plus les lire et le site affiche « Forbidden » (403).
+1. Gestionnaire de fichiers > `public_html` > repérer les fichiers dont la colonne « Autorisations » vaut 0600.
+2. Les sélectionner (Ctrl + clic) > **Autorisations** > mettre **0644** (lecture pour tous, écriture pour le propriétaire) > **Modifier les autorisations**.
+3. Les dossiers doivent rester en **0755**.
+4. Recharger le site en navigation privée.
