@@ -95,3 +95,29 @@ function acheter_domaine(PDO $pdo, array $config, string $saisie, string $confir
     $mode = $test ? ' [MODE ESSAI : rien n\'a été débité]' : '';
     return [$ok, ($ok ? 'Réponse de LWS pour ' . $domaine : 'LWS a refusé l\'achat de ' . $domaine) . " (code $code)$mode : $reponse"];
 }
+
+/** Contacts (propriétaires possibles d'un nom) gérés par le compte LWS : [numéro => libellé lisible]. @return array{0:bool,1:string,2:array} */
+function lister_proprietaires(array $config): array
+{
+    $r = lws_reglages($config);
+    if ($r['login'] === '' || $r['pass'] === '') {
+        return [false, 'Réglages LWS incomplets : lws_login et lws_pass doivent figurer dans config-reine-cloud.php.', []];
+    }
+    [$code, $corps] = lws_http('GET', '/contact/0/list', null, $r, !$r['reel']);
+    $d = json_decode($corps, true);
+    if ($code !== 200 || !is_array($d) || !is_array($d['data'] ?? null)) {
+        $raison = is_array($d) && isset($d['info']) ? ' : ' . mb_substr(is_scalar($d['info']) ? (string) $d['info'] : (string) json_encode($d['info'], JSON_UNESCAPED_UNICODE), 0, 300) : '';
+        return [false, 'Liste des propriétaires indisponible (code ' . $code . $raison . ').', []];
+    }
+    $liste = [];
+    foreach ($d['data'] as $id => $c) {
+        if (!is_array($c)) {
+            continue;
+        }
+        $nom = trim(($c['firstname'] ?? '') . ' ' . ($c['lastname'] ?? ''));
+        $societe = trim((string) ($c['company'] ?? ''));
+        $ville = trim((string) ($c['city'] ?? ''));
+        $liste[(string) $id] = trim(($societe !== '' ? $societe . ' — ' : '') . $nom . ($ville !== '' ? ' (' . $ville . ')' : ''));
+    }
+    return [true, count($liste) . ' propriétaire(s) trouvé(s).', $liste];
+}

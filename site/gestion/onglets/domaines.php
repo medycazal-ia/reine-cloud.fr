@@ -4,6 +4,12 @@ $reg = lws_reglages($cfg);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verifier_jeton();
+    if (($_POST['action'] ?? '') === 'proprietaires') {
+        [$ok, $message, $liste] = lister_proprietaires($cfg);
+        $_SESSION['proprietaires'] = $ok ? $liste : null;
+        flash($message, !$ok);
+        aller('?o=domaines');
+    }
     [$ok, $message] = acheter_domaine($pdo, $cfg, (string) ($_POST['domaine'] ?? ''), (string) ($_POST['confirmation'] ?? ''), (int) ($_POST['mois'] ?? 0));
     flash($message, !$ok);
     aller('?o=domaines');
@@ -19,6 +25,15 @@ $historique = $pdo->query("SELECT le, type, destinataire, detail FROM journal WH
 <div class="msg err"><b>Mode réel activé :</b> chaque achat débite votre compte LWS.</div>
 <?php else: ?>
 <div class="msg"><b>Mode essai :</b> LWS simule l'achat, rien n'est débité. Pour acheter pour de vrai, ajoutez <code>'lws_achat_reel' =&gt; true</code> dans <code>config-reine-cloud.php</code>.</div>
+<?php endif; ?>
+
+<h2>Propriétaires possibles</h2>
+<p class="note">Le propriétaire est le contact qui sera titulaire du nom. Son numéro va dans <code>lws_owner</code> de <code>config-reine-cloud.php</code>.</p>
+<form method="post" action="?o=domaines"><?= champ_jeton() ?><button name="action" value="proprietaires" class="pl" <?= $reg['login'] !== '' ? '' : 'disabled' ?>>Voir mes propriétaires</button></form>
+<?php $props = $_SESSION['proprietaires'] ?? null; unset($_SESSION['proprietaires']); if (is_array($props)): ?>
+<table><tr><th>Numéro</th><th>Contact</th></tr>
+<?php foreach ($props as $num => $lib): ?><tr><td><b><?= h($num) ?></b></td><td><?= h($lib) ?></td></tr><?php endforeach; ?>
+<?php if (!$props): ?><tr><td colspan="2" class="gris">Aucun contact. Créez-en un dans votre espace client LWS.</td></tr><?php endif; ?></table>
 <?php endif; ?>
 
 <h2>Acheter un nom</h2>

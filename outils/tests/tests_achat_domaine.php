@@ -46,4 +46,12 @@ eq('400 : aucun identifiant dans le message', str_contains($m, 'P') && str_conta
 $GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":["domaine invalide",{"champ":"domain"}]}'];
 [$s, $m] = acheter_domaine($pdo, $cfg, 'libre.fr', 'libre.fr', 12);
 eq('info en liste : affichée', str_contains($m, 'domaine invalide') && !str_contains($m, ': Array'), true);
+$vu = [];
+$GLOBALS['LWS_HTTP'] = function ($m, $c, $b, $t) use (&$vu) { $vu = [$m, $c, $t]; return [200, '{"code":200,"info":"Customer list fetched","data":{"565487":{"firstname":"Jean","lastname":"Dupont","company":"Ma Société","city":"Paris"},"12":{"firstname":"Ana","lastname":"Roy"}}}']; };
+[$s, $m, $l] = lister_proprietaires($cfg);
+eq('propriétaires : ok', $s, true); eq('propriétaires : appel', $vu, ['GET', '/contact/0/list', true]);
+eq('propriétaires : libellé', $l['565487'], 'Ma Société — Jean Dupont (Paris)'); eq('propriétaires : sans société', $l['12'], 'Ana Roy');
+[$s] = lister_proprietaires([]); eq('propriétaires : sans réglages', $s, false);
+$GLOBALS['LWS_HTTP'] = fn($m, $c, $b, $t) => [400, '{"code":400,"info":"bad source 1.2.3.4"}'];
+[$s, $m] = lister_proprietaires($cfg); eq('propriétaires : erreur LWS affichée', $s === false && str_contains($m, 'bad source'), true);
 echo "TOTAL achat domaine -> OK: $ok, ECHECS: $ko\n";
